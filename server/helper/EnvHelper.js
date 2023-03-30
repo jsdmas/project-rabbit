@@ -7,7 +7,7 @@ import { config } from "dotenv";
  * @returns dotenv config
  */
 export const envExist = () => {
-    const FileName = process.env.NODE_ENV !== "production" ? ".env.server.dev" : ".env.server.production";
+    const FileName = process.env.NODE_ENV !== "production" ? ".env.dev" : ".env.production";
     const path = join(resolve(), FileName);
 
     if (!existsSync(path)) {
