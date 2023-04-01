@@ -8,12 +8,12 @@ class PostService {
     }
 
     async getList(params) {
+        console.log(params);
         let dbcon = null;
         let data = null;
-
         try {
             dbcon = await DBPool.getConnection();
-            let sql = getStatement("postMapper", "test", params);
+            let sql = getStatement("postMapper", "getPost", params);
             let [result] = await dbcon.query(sql);
             if (result.length === 0) {
                 throw new RuntimeException("조회된 데이터가 없습니다.");

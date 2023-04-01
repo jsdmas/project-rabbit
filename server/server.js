@@ -21,7 +21,7 @@ app.use(userAgentLogMiddleware);
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.text());
-app.use(cors());
+// app.use(cors());
 // express로 put, delete를 사용하기위해 설정
 app.use(methodOverride());
 app.use(webHelperMiddleware);

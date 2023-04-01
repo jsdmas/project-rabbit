@@ -3,6 +3,6 @@ import { home } from "../controllers/postController";
 
 const rootRouter = express.Router();
 
-rootRouter.get("/", home);
+rootRouter.get("/getpost", home);
 
 export default rootRouter;

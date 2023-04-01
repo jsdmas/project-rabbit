@@ -4,6 +4,9 @@
   "private": true,
   "proxy": "http://localhost:8000",
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^6.4.0",
+    "@fortawesome/free-solid-svg-icons": "^6.4.0",
+    "@fortawesome/react-fontawesome": "^0.2.0",
     "@tanstack/react-query": "^4.28.0",
     "@tanstack/react-query-devtools": "^4.28.0",
     "@testing-library/jest-dom": "^5.16.5",
@@ -21,6 +24,7 @@
     "express-mysql-session": "^3.0.0",
     "express-session": "^1.17.3",
     "express-useragent": "^1.0.15",
+    "framer-motion": "^10.10.0",
     "method-override": "^3.0.0",
     "mybatis-mapper": "^0.6.8",
     "mysql2": "^3.2.0",

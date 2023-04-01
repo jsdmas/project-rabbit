@@ -1,6 +1,8 @@
 import Router from "./Router";
 import { ThemeProvider, createGlobalStyle } from "styled-components";
 import { darkTheme, lightTheme } from "./theme";
+import { useRecoilValue } from "recoil";
+import { darkState } from "./atoms";
 
 const GlobalStyle = createGlobalStyle`
 html, body, div, span, applet, object, iframe,
@@ -29,6 +31,7 @@ footer, header, hgroup, menu, nav, section {
 	display: block;
 }
 body {
+	background-color: ${props => props.theme.bgColor};
 	line-height: 1;
 }
 ol, ul {
@@ -49,14 +52,15 @@ table {
 `;
 
 const App = () => {
-  return (
-    <>
-      <ThemeProvider theme={darkTheme}>
-        <GlobalStyle />
-        <Router />
-      </ThemeProvider>
-    </>
-  );
+	const isdark = useRecoilValue(darkState);
+	return (
+		<>
+			<ThemeProvider theme={isdark ? darkTheme : lightTheme}>
+				<GlobalStyle />
+				<Router />
+			</ThemeProvider>
+		</>
+	);
 };
 
 export default App;

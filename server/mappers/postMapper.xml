@@ -1,7 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="postMapper">
-    <select id="test">
-        SELECT * FROM post
+    <select id="getPost">
+        SELECT p.*, u.nickname, u.img_url AS userimg , COUNT(c.comment_id) AS commentCnt
+        FROM post p
+        LEFT OUTER JOIN user u ON p.user_id = u.user_id
+        LEFT OUTER JOIN comment c ON p.post_id = c.post_id
+        GROUP BY p.post_id, p.title, p.content, p.created, p.img_name, p.img_url, p.like, p.modified, p.user_id, u.nickname, u.img_url
+        ORDER BY ${orderCommend} ${orderby}
+        <if test="offset >= 0">
+            LIMIT 4 OFFSET ${offset}
+        </if>
+    </select>
+
+    <select id="selectCountAll">
+        SELECT COUNT(*) AS postCount FROM post
     </select>
 </mapper>

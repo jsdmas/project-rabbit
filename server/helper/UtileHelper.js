@@ -34,6 +34,7 @@ class UtilHerlper {
     urlFormat(urlObject) {
         return String(Object.assign(new URL("http://a.com"), urlObject));
     }
+
 }
 
 export default UtilHerlper.getInstunce();
