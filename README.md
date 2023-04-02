@@ -31,3 +31,11 @@ mobile first 개발
 1. staleTime : 데이터를 다시 요청하는 주기 
 2. cacheTime : 캐싱 처리가 이루어지는 시간을 말합니다 (기본값 : 5분)
 3. refetchInterval 사용시 브라우저가 계속 서버에 데이터를 요청해서 사용하지 않았습니다.
+
+# react-query infinity 
+처음에는 전역변수 offset을 변경하는 함수 setOffset을 다음 페이지를 호출하는 함수(getNextPageParam)에 넘겨주었습니다.
+그러나 offset 값은 setOffset 함수를 호출하여 변경되기 전에 반환되므로 항상 동일한 값을 반환했습니다.   
+이로 인해 동일한 페이지의 데이터가 계속 로드되었습니다.    
+
+이 문제를 해결하기 위해 getNextPageParam 옵션에서 lastpage 인자를 사용하여 다음 페이지의 오프셋 값을 계산하고 반환하려 했습니다.
+

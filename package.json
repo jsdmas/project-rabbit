@@ -25,6 +25,7 @@
     "express-session": "^1.17.3",
     "express-useragent": "^1.0.15",
     "framer-motion": "^10.10.0",
+    "lodash": "^4.17.21",
     "method-override": "^3.0.0",
     "mybatis-mapper": "^0.6.8",
     "mysql2": "^3.2.0",
@@ -70,6 +71,7 @@
     "@babel/core": "^7.21.3",
     "@babel/node": "^7.20.7",
     "@babel/preset-env": "^7.20.2",
+    "@types/lodash": "^4.14.192",
     "babel-loader": "^9.1.2",
     "nodemon": "^2.0.22"
   }

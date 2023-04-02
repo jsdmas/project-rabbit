@@ -124,7 +124,7 @@ const Header = () => {
                     <Li>login/signUp</Li>
                     <Li>시간 순 정렬</Li>
                     <Li>좋아요 순 정렬</Li>
-                    <Li><FontAwesomeIcon icon={isdark ? faMoon : faSun} onClick={() => setIsdark(prev => !prev)} /></Li>
+                    <Li onClick={() => setIsdark(prev => !prev)}><FontAwesomeIcon icon={isdark ? faMoon : faSun} /></Li>
                 </Ul>
             </Menu>
         </Nav>

@@ -8,7 +8,6 @@ class PostService {
     }
 
     async getList(params) {
-        console.log(params);
         let dbcon = null;
         let data = null;
         try {
@@ -26,6 +25,26 @@ class PostService {
         }
 
         return data;
+    }
+
+    /** 전체 데이터 수 조회 */
+    async getCount() {
+        let dbcon = null;
+        let postCount = 0;
+        try {
+            dbcon = await DBPool.getConnection();
+            let sql = getStatement('postMapper', 'selectCountAll');
+            let [result] = await dbcon.query(sql);
+            if (result.length > 0) {
+                postCount = result[0].postCount;
+            }
+        } catch (err) {
+            throw err;
+        } finally {
+            if (dbcon) { dbcon.release(); }
+        }
+
+        return postCount;
     }
 }
 

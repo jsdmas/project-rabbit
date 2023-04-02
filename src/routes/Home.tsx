@@ -1,38 +1,56 @@
-import { useQuery } from "@tanstack/react-query";
-import { memo } from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { memo, useEffect, useRef } from "react";
+import { useInfiniteQuery } from "@tanstack/react-query";
+import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { fetchPostData } from "../api";
-import { offsetState, orderbyState, orderCommendState } from "../atoms";
+import { orderbyState, orderCommendState } from "../atoms";
 import Header from "../components/Header";
 import Post, { IPost } from "../components/Post";
-
-interface IData {
-    data: IPost[],
-    pubdate: string,
-    rt: string,
-    rtcode: number,
-    rtmsg: string
-}
+import { throttle } from "lodash";
 
 const Wrapper = styled.div`
     margin: auto;
 `;
 
-const Home = () => {
+const Observer = styled.div`
+background-color: black;
+width: 100%;
+height: 20vh;
+`;
 
-    const [offset, setOffset] = useRecoilState(offsetState);
+const Home = () => {
     const orderCommend = useRecoilValue(orderCommendState);
     const orderby = useRecoilValue(orderbyState);
-    // page 스크롤마다 offset 4 씩 증가
-    const { isLoading, data: response } = useQuery<IData>(["getPost"], () => fetchPostData({ offset, orderCommend, orderby }), { staleTime: 30 * 60 * 1000, cacheTime: 30 * 60 * 1000 });
-    console.log(response?.data);
+    const observerTargetEl = useRef<HTMLDivElement>(null);
+    const throttled = useRef(throttle(() => fetchNextPage(), 1000)).current;
+    const { isLoading, data: response, fetchNextPage }
+        = useInfiniteQuery(["postData"],
+            ({ pageParam = 0 }) => fetchPostData(pageParam, orderCommend, orderby),
+            {
+                getNextPageParam: lastpage => {
+                    return lastpage.nextOffset;
+                },
+            });
+
+    console.log(response);
+    useEffect(() => {
+        if (!observerTargetEl.current) return;
+        const io = new IntersectionObserver((entries) => {
+            if (entries[0].isIntersecting) {
+                throttled();
+            }
+        }, { threshold: 0.8 });
+        io.observe(observerTargetEl.current);
+    }, [throttled]);
+
     return (
         <>
             <Header />
             <Wrapper>
-                {isLoading ? null : response?.data.map(props => <Post {...props} key={props.post_id} />)}
+                {isLoading ? null :
+                    response?.pages.map(value => value.data.map((props: IPost) => <Post {...props} key={props.post_id} />))}
             </Wrapper>
+            <Observer ref={observerTargetEl} />
         </>
     );
 };
