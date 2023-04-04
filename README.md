@@ -22,10 +22,17 @@ favicon 설정
 mobile first 개발
 
 1. 게시글 CRUD
-2. 로그인 기능 (자체 회원가입, 네이버, 카카오)
-3. 회원별 게시글 삭제/수정 여부
-4. 회원 profile
-5. 댓글 기능
+2. 댓글 기능
+3. 로그인 기능 (자체 회원가입, 네이버, 카카오)
+4. 회원별 게시글 삭제/수정 여부
+5. 회원 profile
+
+# 해야할일
+post 개별 페이지 - selector 구현? (filter)
+post crud
+user 회원가입
+user 로그인 여부에따른 post 권한
+user 프로필
 
 # react-query 이슈
 1. staleTime : 데이터를 다시 요청하는 주기 

@@ -9,6 +9,7 @@ import { envExist } from "./helper/EnvHelper";
 import { PageNotFoundException } from "./helper/ExceptionHelper";
 import { userAgentLogMiddleware, webHelperMiddleware } from "./middlewares";
 import rootRouter from "./routers/rootRouter";
+import threadRouter from "./routers/threadRouter";
 const MySQLStore = require("express-mysql-session")(session);
 
 const app = express();
@@ -49,6 +50,7 @@ app.use(session({
 
 
 app.use("/", rootRouter);
+app.use("/thread", threadRouter);
 
 app.use((err, _, res, __) => res.sendError(err));
 app.use("*", (_, res, __) => res.sendError(new PageNotFoundException()));

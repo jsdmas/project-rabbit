@@ -7,7 +7,7 @@ import styled from "styled-components"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faHeart, faMessage } from "@fortawesome/free-solid-svg-icons";
 
-export interface IPost {
+export interface IThreadList {
     title: string
     content: string
     created: string
@@ -88,7 +88,7 @@ const PostInfo = styled.div`
 `;
 
 
-const Post = ({ title, content, created, img_name, img_url, like, modified, post_id, user_id, nickname, userimg, commentCnt }: IPost) => {
+const ThreadList = ({ title, content, created, img_name, img_url, like, modified, post_id, user_id, nickname, userimg, commentCnt }: IThreadList) => {
     return (
         <Wrapper>
             <UserInfo>
@@ -114,4 +114,4 @@ const Post = ({ title, content, created, img_name, img_url, like, modified, post
     );
 };
 
-export default Post;
+export default ThreadList;

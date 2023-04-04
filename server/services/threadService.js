@@ -1,10 +1,10 @@
 import { createMapper, getStatement } from "mybatis-mapper";
 import DBPool from "../helper/DBPool";
 import { RuntimeException } from "../helper/ExceptionHelper";
-class PostService {
+class ThreadService {
 
     constructor() {
-        createMapper(["./server/mappers/postMapper.xml"]);
+        createMapper(["./server/mappers/threadMapper.xml"]);
     }
 
     async getList(params) {
@@ -12,7 +12,27 @@ class PostService {
         let data = null;
         try {
             dbcon = await DBPool.getConnection();
-            let sql = getStatement("postMapper", "getPost", params);
+            let sql = getStatement("threadMapper", "getThreads", params);
+            let [result] = await dbcon.query(sql);
+            if (result.length === 0) {
+                throw new RuntimeException("조회된 데이터가 없습니다.");
+            }
+            data = result;
+        } catch (error) {
+            throw error;
+        } finally {
+            if (dbcon) { dbcon.release(); }
+        }
+
+        return data;
+    }
+
+    async getThread(params) {
+        let dbcon = null;
+        let data = null;
+        try {
+            dbcon = await DBPool.getConnection();
+            let sql = getStatement("threadMapper", "getThread", params);
             let [result] = await dbcon.query(sql);
             if (result.length === 0) {
                 throw new RuntimeException("조회된 데이터가 없습니다.");
@@ -33,7 +53,7 @@ class PostService {
         let postCount = 0;
         try {
             dbcon = await DBPool.getConnection();
-            let sql = getStatement('postMapper', 'selectCountAll');
+            let sql = getStatement('threadMapper', 'selectCountAll');
             let [result] = await dbcon.query(sql);
             if (result.length > 0) {
                 postCount = result[0].postCount;
@@ -48,6 +68,6 @@ class PostService {
     }
 }
 
-const postService = new PostService();
+const threadService = new ThreadService();
 
-export default postService;
+export default threadService;

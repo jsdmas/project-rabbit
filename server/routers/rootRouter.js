@@ -1,8 +1,8 @@
 import express from "express";
-import { home } from "../controllers/postController";
+import { home } from "../controllers/threadController";
 
 const rootRouter = express.Router();
 
-rootRouter.get("/getpost", home);
+rootRouter.get("/thread", home);
 
 export default rootRouter;

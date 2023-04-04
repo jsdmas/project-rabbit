@@ -4,9 +4,11 @@ import lightLogo from "../assets/logo_light.png";
 import darkLogo from "../assets/logo_dark.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faMagnifyingGlass, faMoon, faSun } from "@fortawesome/free-solid-svg-icons";
-import { Link } from "react-router-dom";
-import { useRecoilState } from "recoil";
-import { darkState } from "../atoms";
+import { Link, useLocation } from "react-router-dom";
+import { useRecoilState, useSetRecoilState } from "recoil";
+import { darkState, OrderBy, orderbyState, OrderCommends, orderCommendState } from "../atoms";
+import { useQueryClient } from "@tanstack/react-query";
+import { throttle } from "lodash";
 
 const Nav = styled.nav`
     z-index: 99;
@@ -97,12 +99,37 @@ const Li = styled.li`
     }
 `;
 
+interface IHeader {
+    refetch?: () => void
+    remove?: () => void
+};
 
-const Header = () => {
-    const [isMenu, setIsMenu] = useState(false);
-    // menu값이 변경될때만 함수 호출 (dark모드를 변경할때나 다른 메뉴를 클릭할 때 랜더링 방지)
-    const menuClick = useCallback(() => setIsMenu(prev => !prev), [isMenu]);
+const Header = ({ refetch, remove }: IHeader) => {
+    const queryClient = useQueryClient();
     const [isdark, setIsdark] = useRecoilState(darkState);
+    const sortLike = useSetRecoilState(orderCommendState);
+    const sortTime = useSetRecoilState(orderbyState);
+    const [isMenu, setIsMenu] = useState(false);
+    const { pathname } = useLocation();
+    const menuClick = useCallback(() => setIsMenu(prev => !prev), [isMenu]);
+
+    const sortLikeClick = throttle(() => {
+        if (remove && refetch) {
+            remove();
+            queryClient.setQueryData(["InfiniteThreadData"], []);
+            refetch();
+            sortLike(prev => prev === OrderCommends["p.created"] ? OrderCommends["p.like"] : OrderCommends["p.created"]);
+        }
+    }, 1300);
+    const sortTimeClick = throttle(() => {
+        if (remove && refetch) {
+            remove();
+            queryClient.setQueryData(["InfiniteThreadData"], []);
+            refetch();
+            sortTime(prev => prev === OrderBy.DESC ? OrderBy.ASC : OrderBy.DESC);
+        }
+    }, 1300);
+
     return (
         <Nav>
             <Col>
@@ -122,8 +149,8 @@ const Header = () => {
             <Menu isMenu={isMenu} >
                 <Ul>
                     <Li>login/signUp</Li>
-                    <Li>시간 순 정렬</Li>
-                    <Li>좋아요 순 정렬</Li>
+                    {pathname === "/" ? <Li onClick={sortTimeClick}>시간 순 정렬</Li> : null}
+                    {pathname === "/" ? <Li onClick={sortLikeClick}>좋아요 순 정렬</Li> : null}
                     <Li onClick={() => setIsdark(prev => !prev)}><FontAwesomeIcon icon={isdark ? faMoon : faSun} /></Li>
                 </Ul>
             </Menu>
