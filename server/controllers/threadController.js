@@ -8,7 +8,7 @@ export const home = async (req, res, next) => {
     let nextOffset = offset;
     try {
         const totalCount = await threadService.getCount();
-        if (nextOffset == totalCount) {
+        if (nextOffset >= totalCount) {
             offset = 0;
         }
         data = await threadService.getList({ offset, orderCommend, orderby });

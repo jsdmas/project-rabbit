@@ -145,7 +145,7 @@ const Thread = () => {
             <Wrapper>
                 <Head>
                     <Col><BackPageIcon /></Col>
-                    <Col>{postWriteUserImgUrl ? "" : <FontAwesomeIcon icon={faUser} />} {postWriteUser}</Col>
+                    <Col>{postWriteUserImgUrl ? "" : <FontAwesomeIcon icon={faUser} />} {postWriteUser ? postWriteUser : "anonymous"}</Col>
                     <Col>posted by {postCreated?.slice(0, 10)} {postCreated?.slice(11, 19)}</Col>
                 </Head>
                 <Main>
@@ -156,7 +156,7 @@ const Thread = () => {
                     {postContent}
                     <LoveBox>
                         <Col>
-                            <FontAwesomeIcon icon={faHeart} />&nbsp;&nbsp;{postLike}
+                            <FontAwesomeIcon icon={faHeart} />&nbsp;&nbsp;{postLike ? postLike : 0}
                         </Col>
                     </LoveBox>
                 </Main>

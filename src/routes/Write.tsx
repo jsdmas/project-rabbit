@@ -75,10 +75,10 @@ visibility: hidden;
 const Write = () => {
     const { register, handleSubmit, formState: { errors } } = useForm<IpostData>();
     const navigate = useNavigate();
-    const onVaild = async (data: IpostData) => {
-        const response = await postThread(data);
+    const onVaild = async (postData: IpostData) => {
+        const { data: response } = await postThread(postData);
         console.log(response);
-        // navigate("");
+        navigate(`/thread/${response}`);
     };
     return (
         <>
