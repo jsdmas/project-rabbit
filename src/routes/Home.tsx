@@ -40,19 +40,17 @@ const Home = () => {
                 },
 
             });
-
-    console.log(response);
     useEffect(() => {
         if (!observerTargetEl.current) return;
         const io = new IntersectionObserver((entries) => {
             if (entries[0].isIntersecting) {
                 throttled();
             }
-        }, { threshold: 0.7 });
+        }, { threshold: 0.5 });
         io.observe(observerTargetEl.current);
         return () => io.disconnect();
     }, [throttled]);
-
+    console.log(response);
     return (
         <>
             <Header refetch={refetch} remove={remove} />

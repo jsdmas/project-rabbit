@@ -14,20 +14,25 @@
     </select>
 
     <select id="getThread">
-        SELECT post.post_id, post.title, post.content, post.img_url, post.img_name, post.created, post.modified, post.like,
-        user.user_id AS author_id, user.password AS author_password, user.email AS author_email, user.nickname AS author_nickname,
-        user.img_url AS author_img_url, user.img_name AS author_img_name, user.description AS author_description,
-        user.activated AS author_activated,
-        comment.comment_id, comment.parent_num, comment.content AS comment_content, comment.created AS comment_created,
-        comment.modified AS comment_modified, comment.like AS comment_like, comment.user_id AS commenter_id,
-        comment.post_id AS commented_post_id
+        SELECT post.post_id AS postId, post.title AS postTitle, post.content AS postContent, post.img_url AS postImg, post.img_name AS postImgName, post.created AS postCreated, post.modified AS postModified, post.like AS postLike,
+        user.nickname AS postWriteUser, user.img_url AS  postWriteUserImgUrl
         FROM post
         LEFT OUTER JOIN user ON post.user_id = user.user_id
-        LEFT OUTER JOIN comment ON post.post_id = comment.post_id
         <where>
-            post.post_id = 3
+            post.post_id = ${threadid}
         </where>
-        LIMIT 1 OFFSET 0
+    </select>
+
+    <select id="getThreadComment">
+        SELECT comment.comment_id AS commentId, comment.parent_num AS commentParentNum, comment.content AS commentContent,
+        comment.created AS commentCreated, comment.modified AS commentModified, comment.like AS commentLike,
+        user.nickname AS commentWriteUser, user.img_url AS commentWriteUserImgUrl
+        FROM comment
+        LEFT OUTER JOIN user ON comment.user_id = user.user_id
+        <where>
+            comment.post_id = ${threadid}
+        </where>
+        ORDER BY comment.created ASC
     </select>
 
     <select id="selectCountAll">

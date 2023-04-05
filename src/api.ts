@@ -19,7 +19,6 @@ export const fetchThread = async (threadid: string) => {
     let response = null;
     try {
         const { data } = await axios.get(`/thread/${threadid}`);
-        console.log(data);
         response = data;
     } catch (error) {
         console.log(error);

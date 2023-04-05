@@ -77,7 +77,6 @@ const Menu = styled.div <{ isMenu: boolean }>`
 const Ul = styled.ul`
     font-size: 1em;
     width: 100%;
-
 `;
 
 const Li = styled.li`
@@ -96,6 +95,13 @@ const Li = styled.li`
     }
     &:last-child{
         border-bottom: none;
+    }
+    a{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100%;
     }
 `;
 
@@ -120,7 +126,7 @@ const Header = ({ refetch, remove }: IHeader) => {
             refetch();
             sortLike(prev => prev === OrderCommends["p.created"] ? OrderCommends["p.like"] : OrderCommends["p.created"]);
         }
-    }, 1300);
+    }, 500);
     const sortTimeClick = throttle(() => {
         if (remove && refetch) {
             remove();
@@ -128,7 +134,7 @@ const Header = ({ refetch, remove }: IHeader) => {
             refetch();
             sortTime(prev => prev === OrderBy.DESC ? OrderBy.ASC : OrderBy.DESC);
         }
-    }, 1300);
+    }, 500);
 
     return (
         <Nav>
@@ -148,7 +154,8 @@ const Header = ({ refetch, remove }: IHeader) => {
             </Col>
             <Menu isMenu={isMenu} >
                 <Ul>
-                    <Li>login/signUp</Li>
+                    <Li><Link to="/login">login</Link></Li>
+                    <Li><Link to="/join">Join</Link></Li>
                     {pathname === "/" ? <Li onClick={sortTimeClick}>시간 순 정렬</Li> : null}
                     {pathname === "/" ? <Li onClick={sortLikeClick}>좋아요 순 정렬</Li> : null}
                     <Li onClick={() => setIsdark(prev => !prev)}><FontAwesomeIcon icon={isdark ? faMoon : faSun} /></Li>

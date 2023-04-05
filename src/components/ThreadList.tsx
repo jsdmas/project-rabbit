@@ -6,6 +6,7 @@
 import styled from "styled-components"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faHeart, faMessage } from "@fortawesome/free-solid-svg-icons";
+import { Link } from "react-router-dom";
 
 export interface IThreadList {
     title: string
@@ -97,7 +98,7 @@ const ThreadList = ({ title, content, created, img_name, img_url, like, modified
                 <Col>posted by {created.slice(0, 10)}&nbsp;&nbsp;{created.slice(11, 19)}</Col>
             </UserInfo>
             <Title>
-                {title}
+                <Link to={`/thread/${post_id}`}>{title}</Link>
             </Title>
             <Content>
                 {content}

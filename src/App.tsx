@@ -49,6 +49,16 @@ table {
 	border-collapse: collapse;
 	border-spacing: 0;
 }
+a{
+	text-decoration: none;
+	&:link, :visited,:active {
+		color: ${props => props.theme.textColor};
+	}
+	&:hover{
+		color: ${props => props.theme.buttonColor};
+		transition: 0.2s ;
+	}
+}
 `;
 
 const App = () => {

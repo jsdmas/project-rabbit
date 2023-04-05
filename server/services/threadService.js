@@ -47,6 +47,27 @@ class ThreadService {
         return data;
     }
 
+    async getThreadComment(params) {
+        let dbcon = null;
+        let data = null;
+        try {
+            dbcon = await DBPool.getConnection();
+            let sql = getStatement("threadMapper", "getThreadComment", params);
+            let [result] = await dbcon.query(sql);
+            if (result.length === 0) {
+                data = [];
+            } else {
+                data = result;
+            }
+        } catch (error) {
+            throw error;
+        } finally {
+            if (dbcon) { dbcon.release(); }
+        }
+
+        return data;
+    }
+
     /** 전체 데이터 수 조회 */
     async getCount() {
         let dbcon = null;

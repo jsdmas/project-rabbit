@@ -21,10 +21,16 @@ export const home = async (req, res, next) => {
 export const watch = async (req, res, next) => {
     const { params: { threadid } } = req;
     let data = null;
+    let commentData = null;
     try {
-        data = await threadService.getThread();
+        data = await threadService.getThread({ threadid });
+        commentData = await threadService.getThreadComment({ threadid });
     } catch (error) {
         return next(error);
     }
-    return res.sendResult({ data });
+    return res.sendResult({ data, commentData });
+};
+
+export const getEdit = () => {
+
 };
