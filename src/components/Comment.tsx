@@ -5,17 +5,8 @@ import { faHeart, faUser } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import styled from "styled-components"
 import { Link } from "react-router-dom"
-
-export interface IcommentData {
-    commentId: number
-    commentContent: string
-    commentCreated: string
-    commentLike: number
-    commentWriteUser?: string
-    commentModified?: string
-    commentParentNum?: number
-    commentWriteUserImgUrl?: string
-};
+import { memo } from "react"
+import { IcommentData } from "../types/thread"
 
 const Wrapper = styled.span`
     place-self: center start;
@@ -29,7 +20,6 @@ const Wrapper = styled.span`
 
 const Col = styled.div`
     place-self: center center;
-    padding: 0px 10px 5px 0px;
 `;
 
 const CommentInfo = styled.span`
@@ -55,13 +45,40 @@ const ButtonSction = styled.span`
     opacity: 1;
 `;
 
+const ReplyForm = styled.form`
+    white-space: nowrap;
+    place-self: center center;
+`;
 
-const Comment = ({ commentContent, commentCreated, commentLike, commentWriteUser, commentModified, commentWriteUserImgUrl }: IcommentData) => {
+const ReplyButton = styled.button`
+    color:#fff;
+    background-color: ${props => props.theme.buttonColor};
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+`;
+
+const UserImgDiv = styled.div`
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    margin-right: 10px;
+    place-self: center center;
+    justify-content: space-between;
+    height: 70%;
+`;
+
+const Comment = ({ commentContent, commentCreated, commentLike, commentWriteUser, commentModified, commentWriteUserImgUrl, commentParentNum }: IcommentData) => {
     return (
         <>
-            <Col>
-                {commentWriteUserImgUrl ? "" : <FontAwesomeIcon icon={faUser} />}
-            </Col>
+            <UserImgDiv>
+                <Col>
+                    {commentWriteUserImgUrl ? "" : <FontAwesomeIcon icon={faUser} />}
+                </Col>
+                {!commentParentNum ? (<ReplyForm>
+                    <ReplyButton>답글</ReplyButton>
+                </ReplyForm>) : null}
+            </UserImgDiv>
             <Wrapper>
                 <CommentInfo>
                     <Col>
@@ -82,4 +99,4 @@ const Comment = ({ commentContent, commentCreated, commentLike, commentWriteUser
     );
 };
 
-export default Comment;
+export default memo(Comment);

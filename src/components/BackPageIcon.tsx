@@ -6,6 +6,7 @@ import styled from "styled-components";
 const ButtonStyle = styled.span`
     cursor: pointer;
     color: ${props => props.theme.buttonColor};
+    font-size: 1.5em;
 `;
 
 const BackPageIcon = () => {

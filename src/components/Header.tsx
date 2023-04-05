@@ -10,6 +10,11 @@ import { darkState, OrderBy, orderbyState, OrderCommends, orderCommendState } fr
 import { useQueryClient } from "@tanstack/react-query";
 import { throttle } from "lodash";
 
+interface IHeader {
+    refetch?: () => void
+    remove?: () => void
+};
+
 const Nav = styled.nav`
     z-index: 99;
     position: fixed;
@@ -105,11 +110,6 @@ const Li = styled.li`
     }
 `;
 
-interface IHeader {
-    refetch?: () => void
-    remove?: () => void
-};
-
 const Header = ({ refetch, remove }: IHeader) => {
     const queryClient = useQueryClient();
     const [isdark, setIsdark] = useRecoilState(darkState);
@@ -156,6 +156,7 @@ const Header = ({ refetch, remove }: IHeader) => {
                 <Ul>
                     <Li><Link to="/login">login</Link></Li>
                     <Li><Link to="/join">Join</Link></Li>
+                    <Li><Link to="/write">글쓰기</Link></Li>
                     {pathname === "/" ? <Li onClick={sortTimeClick}>시간 순 정렬</Li> : null}
                     {pathname === "/" ? <Li onClick={sortLikeClick}>좋아요 순 정렬</Li> : null}
                     <Li onClick={() => setIsdark(prev => !prev)}><FontAwesomeIcon icon={isdark ? faMoon : faSun} /></Li>

@@ -7,21 +7,7 @@ import styled from "styled-components"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faHeart, faMessage } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
-
-export interface IThreadList {
-    title: string
-    content: string
-    created: string
-    img_name?: string
-    img_url?: string
-    like?: number
-    modified?: string
-    post_id: number
-    user_id?: number
-    nickname?: string
-    userimg?: string
-    commentCnt: number
-}
+import { IThreadList } from "../types/thread";
 
 const Wrapper = styled.div`
     width: 100%;

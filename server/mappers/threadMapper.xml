@@ -35,6 +35,12 @@
         ORDER BY comment.created ASC
     </select>
 
+    <!-- thread 저장 -->
+    <insert id="postThread">
+        INSERT INTO post(title, content, created, user_id)
+        VALUES(#{postTitle}, #{postContent}, now(), #{userId})
+    </insert>
+
     <select id="selectCountAll">
         SELECT COUNT(*) AS postCount FROM post
     </select>

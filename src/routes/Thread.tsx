@@ -1,39 +1,18 @@
 import { faHeart, faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useQuery } from "@tanstack/react-query";
-import { memo } from "react";
+import { memo, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { fetchThread } from "../api";
 import BackPageIcon from "../components/BackPageIcon";
-import Comment, { IcommentData } from "../components/Comment";
+import Comment from "../components/Comment";
 import Header from "../components/Header";
+import { IcommentData, IResponse } from "../types/thread";
 
 type TTreadId = {
     threadid: string
 };
-
-interface IData {
-    postId: number
-    postTitle: string
-    postWriteUser: string
-    postContent: string
-    postCreated: string
-    postLike: number
-    postImg?: string
-    postImgName?: string
-    postModified?: string
-    postWriteUserImgUrl?: string
-}
-
-interface IResponse {
-    commentData: IcommentData[]
-    data: IData[]
-    pubdate: string
-    rt: string
-    rtcode: number
-    rtmsg: string
-}
 
 const Wrapper = styled.div`
     margin-top: 8vh;
@@ -44,9 +23,6 @@ const Wrapper = styled.div`
 const Head = styled.div`
     display: grid;
     grid-template-columns: 1fr 1.2fr 3fr;
-    div:first-child{
-        font-size: 1.5em;
-    }
     div:last-child{
         opacity: 0.5;
         font-size: 0.7em;
@@ -146,19 +122,6 @@ const CommentDiv = styled.div`
     
 `;
 
-const ReplyForm = styled.form`
-    white-space: nowrap;
-    place-self: center center;
-`;
-
-const ReplyButton = styled.button`
-    color:#fff;
-    background-color: ${props => props.theme.buttonColor};
-    border: none;
-    cursor: pointer;
-    border-radius: 5px;
-`;
-
 const CommentChildDiv = styled(CommentDiv)`
     padding-left: 10vw;
 `;
@@ -167,12 +130,14 @@ const Thread = () => {
     const { threadid } = useParams() as TTreadId;
     const { data: response } = useQuery<IResponse>(["thread", threadid], () => fetchThread(threadid), {
         staleTime: 1000 * 60 * 10,
-        cacheTime: 1000 * 60 * 10
+        cacheTime: 1000 * 60 * 10,
     });
     const [threadItem] = response?.data ?? [];
     const { postContent, postCreated, postLike, postTitle, postWriteUser, postWriteUserImgUrl } = threadItem ?? {};
 
-    console.log(response);
+    useEffect(() => {
+        console.log(response);
+    }, [response]);
 
     return (
         <>
@@ -205,9 +170,6 @@ const Thread = () => {
                             <CommentSection key={parent.commentId}>
                                 <CommentDiv>
                                     <Comment {...parent} />
-                                    <ReplyForm>
-                                        <ReplyButton>답글</ReplyButton>
-                                    </ReplyForm>
                                 </CommentDiv>
                                 {response?.commentData
                                     .filter(child => child.commentParentNum === parent.commentId)

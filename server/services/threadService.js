@@ -68,6 +68,26 @@ class ThreadService {
         return data;
     }
 
+    async addThread(param) {
+        let dbcon = null;
+        let data = null;
+        try {
+            dbcon = await DBPool.getConnection();
+            let sql = getStatement("threadMapper", "postThread", param);
+            let [{ insertId, affectedRows }] = await dbcon.query(sql);
+
+            if (affectedRows === 0) {
+                throw new RuntimeException('저장된 데이터가 없습니다.');
+            }
+            data = insertId;
+        } catch (error) {
+            throw error;
+        } finally {
+            if (dbcon) { dbcon.release(); }
+        }
+        return data;
+    }
+
     /** 전체 데이터 수 조회 */
     async getCount() {
         let dbcon = null;

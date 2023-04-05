@@ -5,8 +5,18 @@ import styled from "styled-components";
 import { fetchThreads } from "../api";
 import { orderbyState, orderCommendState } from "../atoms";
 import Header from "../components/Header";
-import Post, { IThreadList } from "../components/ThreadList";
+import Post from "../components/ThreadList";
 import { throttle } from "lodash";
+import { IThreadList } from "../types/thread";
+
+interface IPageData {
+    data: IThreadList[]
+    nextOffset: number
+    pubdate: string
+    rt: string
+    rtcode: number
+    rtmsg: string
+}
 
 const Wrapper = styled.div`
     margin: auto;
@@ -17,14 +27,6 @@ background-color: black;
 width: 100%;
 height: 20vh;
 `;
-interface IPageData {
-    data: IThreadList[]
-    nextOffset: number
-    pubdate: string
-    rt: string
-    rtcode: number
-    rtmsg: string
-}
 
 const Home = () => {
     const orderCommend = useRecoilValue(orderCommendState);
