@@ -166,11 +166,12 @@ const Thread = () => {
     useEffect(() => setLikeCount(postLike), [postLike]);
 
     // commentSubmit
-    const { register, handleSubmit, formState: { errors } } = useForm<IpostCommentData>();
+    const { register, handleSubmit, formState: { errors }, reset } = useForm<IpostCommentData>();
     const commentSubmit = (data: IpostCommentData) => {
         postComment(data, threadid);
+        queryClient.invalidateQueries(["thread", threadid]);
+        reset();
     };
-    console.log(response);
     return (
         <>
             <Header />
