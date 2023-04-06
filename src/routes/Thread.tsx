@@ -10,6 +10,8 @@ import { fetchThread, patchThreadLike } from "../api";
 import BackPageIcon from "../components/BackPageIcon";
 import Comment from "../components/Comment";
 import Header from "../components/Header";
+import { useRecoilState } from "recoil";
+import { likeIncrementTimeState } from "../atoms";
 
 type TTreadId = {
     threadid: string
@@ -130,7 +132,7 @@ const CommentChildDiv = styled(CommentDiv)`
 const Thread = () => {
     const { threadid } = useParams() as TTreadId;
     const { invalidateQueries } = useQueryClient();
-
+    const [incrementTime, setIncrementTime] = useRecoilState(likeIncrementTimeState);
     // like 클릭시 작동하는 함수, patch요청
     const { mutate, isError } = useMutation(patchThreadLike, {
         onSuccess: () => invalidateQueries(["thread", threadid]),
@@ -142,26 +144,21 @@ const Thread = () => {
     const [threadItem] = response?.data ?? [];
     const { postContent, postCreated, postLike, postTitle, postWriteUser, postWriteUserImgUrl } = threadItem ?? {};
 
-    // likeButton, Comment 동기화, 제약 - atom으로 변환하기
+    // likeButton
     const [likeCount, setLikeCount] = useState(0);
-    const [lastClicke, setLastClick] = useState<Date | null>(() => {
-        const lastClicked = localStorage.getItem("lastClicked");
-        return lastClicked ? new Date(lastClicked) : null;
-    });
     const likeIncrement = useCallback(() => {
         const now = new Date();
-        if (!lastClicke || now.getTime() - lastClicke.getTime() > 1000 * 60) {
+        if (!incrementTime || now.getTime() - incrementTime.getTime() > 1000 * 60) {
             mutate(threadid);
             setLikeCount(prevCount => prevCount + 1);
-            setLastClick(now);
-            localStorage.setItem("lastClicked", now.toString());
+            setIncrementTime(now);
         } else {
             Swal.fire({
                 icon: "warning",
                 text: "좋아요는 1분마다 누를 수 있습니다.",
             });
         }
-    }, [lastClicke, threadid]);
+    }, [incrementTime, setIncrementTime, threadid, mutate]);
     useEffect(() => setLikeCount(postLike), [postLike]);
     return (
         <>

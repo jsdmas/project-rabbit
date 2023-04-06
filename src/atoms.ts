@@ -25,3 +25,8 @@ export const darkState = atom({
     key: "isdark",
     default: false
 });
+
+export const likeIncrementTimeState = atom<Date | null>({
+    key: "likeIncrementTime",
+    default: null,
+});

@@ -20,7 +20,7 @@ export const fetchThread = async (threadid: string) => {
         const { data } = await axios.get(`/thread/${threadid}`);
         response = data;
     } catch (error) {
-        HandleErrorHelper(error);
+        HandleErrorHelper(error, "error");
     }
     return response;
 };
@@ -32,7 +32,7 @@ export const postThread = async (postData: IpostData) => {
         response = data;
         console.log(response);
     } catch (error) {
-        HandleErrorHelper(error);
+        HandleErrorHelper(error, "error");
     }
     return response;
 };
@@ -43,7 +43,7 @@ export const patchThreadLike = async (threadid: string) => {
         const { data } = await axios.patch(`/thread/${threadid}/like`);
         response = data;
     } catch (error) {
-        HandleErrorHelper(error);
+        HandleErrorHelper(error, "error");
     }
     return response;
 };
