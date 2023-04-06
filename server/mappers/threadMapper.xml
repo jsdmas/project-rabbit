@@ -13,24 +13,24 @@
         </if>
     </select>
 
-    <select id="getThread">
+    <select id="getThread" parameterType="int">
         SELECT post.post_id AS postId, post.title AS postTitle, post.content AS postContent, post.img_url AS postImg, post.img_name AS postImgName, post.created AS postCreated, post.modified AS postModified, post.like AS postLike,
         user.nickname AS postWriteUser, user.img_url AS  postWriteUserImgUrl
         FROM post
         LEFT OUTER JOIN user ON post.user_id = user.user_id
         <where>
-            post.post_id = ${threadid}
+            post.post_id = #{threadid}
         </where>
     </select>
 
-    <select id="getThreadComment">
+    <select id="getThreadComment" parameterType="int">
         SELECT comment.comment_id AS commentId, comment.parent_num AS commentParentNum, comment.content AS commentContent,
         comment.created AS commentCreated, comment.modified AS commentModified, comment.like AS commentLike,
         user.nickname AS commentWriteUser, user.img_url AS commentWriteUserImgUrl
         FROM comment
         LEFT OUTER JOIN user ON comment.user_id = user.user_id
         <where>
-            comment.post_id = ${threadid}
+            comment.post_id = #{threadid}
         </where>
         ORDER BY comment.created ASC
     </select>
@@ -40,6 +40,12 @@
         INSERT INTO post(title, content, created, user_id)
         VALUES(#{postTitle}, #{postContent}, now(), #{userId})
     </insert>
+
+    <update id="incrementLike" parameterType="int">
+        UPDATE post
+        SET `like` = COALESCE(`like`, 0) + 1
+        WHERE post_id = #{threadid}
+    </update>
 
     <select id="selectCountAll">
         SELECT COUNT(*) AS postCount FROM post

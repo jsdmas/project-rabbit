@@ -1,14 +1,15 @@
+import { memo, useCallback, useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import Swal from "sweetalert2";
+import styled from "styled-components";
+import { IcommentData, IResponse } from "../types/thread";
 import { faHeart, faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useQuery } from "@tanstack/react-query";
-import { memo, useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
-import styled from "styled-components";
-import { fetchThread } from "../api";
+import { fetchThread, patchThreadLike } from "../api";
 import BackPageIcon from "../components/BackPageIcon";
 import Comment from "../components/Comment";
 import Header from "../components/Header";
-import { IcommentData, IResponse } from "../types/thread";
 
 type TTreadId = {
     threadid: string
@@ -128,17 +129,40 @@ const CommentChildDiv = styled(CommentDiv)`
 
 const Thread = () => {
     const { threadid } = useParams() as TTreadId;
-    const { data: response } = useQuery<IResponse>(["thread", threadid], () => fetchThread(threadid), {
-        staleTime: 1000 * 60 * 10,
-        cacheTime: 1000 * 60 * 10,
+    const { invalidateQueries } = useQueryClient();
+
+    // like 클릭시 작동하는 함수, patch요청
+    const { mutate, isError } = useMutation(patchThreadLike, {
+        onSuccess: () => invalidateQueries(["thread", threadid]),
+        onError: (error) => { console.log(error) }
     });
+
+    // thread 데이터 불러오기
+    const { data: response } = useQuery<IResponse>(["thread", threadid], () => fetchThread(threadid));
     const [threadItem] = response?.data ?? [];
     const { postContent, postCreated, postLike, postTitle, postWriteUser, postWriteUserImgUrl } = threadItem ?? {};
 
-    useEffect(() => {
-        console.log(response);
-    }, [response]);
-
+    // likeButton, Comment 동기화, 제약 - atom으로 변환하기
+    const [likeCount, setLikeCount] = useState(0);
+    const [lastClicke, setLastClick] = useState<Date | null>(() => {
+        const lastClicked = localStorage.getItem("lastClicked");
+        return lastClicked ? new Date(lastClicked) : null;
+    });
+    const likeIncrement = useCallback(() => {
+        const now = new Date();
+        if (!lastClicke || now.getTime() - lastClicke.getTime() > 1000 * 60) {
+            mutate(threadid);
+            setLikeCount(prevCount => prevCount + 1);
+            setLastClick(now);
+            localStorage.setItem("lastClicked", now.toString());
+        } else {
+            Swal.fire({
+                icon: "warning",
+                text: "좋아요는 1분마다 누를 수 있습니다.",
+            });
+        }
+    }, [lastClicke, threadid]);
+    useEffect(() => setLikeCount(postLike), [postLike]);
     return (
         <>
             <Header />
@@ -155,8 +179,8 @@ const Thread = () => {
                     </TitleSection>
                     {postContent}
                     <LoveBox>
-                        <Col>
-                            <FontAwesomeIcon icon={faHeart} />&nbsp;&nbsp;{postLike ? postLike : 0}
+                        <Col onClick={likeIncrement}>
+                            <FontAwesomeIcon icon={faHeart} />&nbsp;&nbsp;{likeCount ? likeCount : postLike}
                         </Col>
                     </LoveBox>
                 </Main>

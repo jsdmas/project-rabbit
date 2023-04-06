@@ -25,7 +25,7 @@ class ThreadService {
         }
 
         return data;
-    }
+    };
 
     async getThread(params) {
         let dbcon = null;
@@ -45,7 +45,7 @@ class ThreadService {
         }
 
         return data;
-    }
+    };
 
     async getThreadComment(params) {
         let dbcon = null;
@@ -66,7 +66,7 @@ class ThreadService {
         }
 
         return data;
-    }
+    };
 
     async addThread(param) {
         let dbcon = null;
@@ -86,7 +86,24 @@ class ThreadService {
             if (dbcon) { dbcon.release(); }
         }
         return data;
-    }
+    };
+
+    async patchThreadLike(param) {
+        let dbcon = null;
+        let data = null;
+        try {
+            dbcon = await DBPool.getConnection();
+            let sql = getStatement("threadMapper", "incrementLike", param);
+            let [result] = await dbcon.query(sql);
+            data = result;
+        } catch (error) {
+            throw error;
+        } finally {
+            if (dbcon) { dbcon.release(); }
+        }
+        return data;
+
+    };
 
     /** 전체 데이터 수 조회 */
     async getCount() {
@@ -106,7 +123,7 @@ class ThreadService {
         }
 
         return postCount;
-    }
+    };
 }
 
 const threadService = new ThreadService();

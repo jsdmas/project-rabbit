@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import RegexHelper from '../RegexHelper';
+import RegexHelper from '../helper/RegexHelper';
 import BackPageIcon from '../components/BackPageIcon';
 import Header from '../components/Header';
 import { useForm } from "react-hook-form"
@@ -77,7 +77,6 @@ const Write = () => {
     const navigate = useNavigate();
     const onVaild = async (postData: IpostData) => {
         const { data: response } = await postThread(postData);
-        console.log(response);
         navigate(`/thread/${response}`);
     };
     return (
@@ -119,7 +118,7 @@ const Write = () => {
                         }
                     })} placeholder='Content...' />
                     <ErrorMessage>{errors?.postContent?.message}</ErrorMessage>
-                    <SubmitButton>완료</SubmitButton>
+                    <SubmitButton type="submit">완료</SubmitButton>
                 </Form>
             </Wrapper>
         </>

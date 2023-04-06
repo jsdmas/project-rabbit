@@ -55,6 +55,19 @@ export const postWrite = async (req, res, next) => {
     return res.sendResult({ data });
 };
 
+export const threadLike = async (req, res, next) => {
+    const { params: { threadid } } = req;
+
+    let data = null;
+    try {
+        data = await threadService.patchThreadLike({ threadid });
+    } catch (error) {
+        console.log(error);
+        next(error);
+    }
+    return data;
+};
+
 export const getEdit = () => {
 
 };
