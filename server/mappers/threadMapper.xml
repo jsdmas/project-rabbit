@@ -32,7 +32,7 @@
         <where>
             comment.post_id = #{threadid}
         </where>
-        ORDER BY comment.created ASC
+        ORDER BY comment.created DESC
     </select>
 
     <!-- thread 저장 -->
@@ -41,11 +41,18 @@
         VALUES(#{postTitle}, #{postContent}, now(), #{userId})
     </insert>
 
+    <!-- 좋아요 버튼 -->
     <update id="incrementLike" parameterType="int">
         UPDATE post
         SET `like` = COALESCE(`like`, 0) + 1
         WHERE post_id = #{threadid}
     </update>
+
+    <!-- comment 저장 -->
+    <insert id="postComment">
+        INSERT INTO comment(content, created, user_id, post_id)
+        VALUES(#{commentContent}, now(), #{userId}, #{threadid})
+    </insert>
 
     <select id="selectCountAll">
         SELECT COUNT(*) AS postCount FROM post

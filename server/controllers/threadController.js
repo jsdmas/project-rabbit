@@ -65,7 +65,27 @@ export const threadLike = async (req, res, next) => {
         console.log(error);
         next(error);
     }
-    return data;
+    return res.sendResult({ data });
+};
+
+export const threadPostComment = async (req, res, next) => {
+    const { params: { threadid }, body: { commentContent, userId = null } } = req;
+    const comment = commentContent.commentContent;
+    try {
+        RegexHelper.value(commentContent, "내용을 올바르게 적어주세요");
+        RegexHelper.minLength(commentContent, 1, "내용은 1글자 이상적어야 합니다.");
+        RegexHelper.maxLength(commentContent, 100, "내용은 최대 100글자입니다.");
+    } catch (error) {
+        return next(error);
+    }
+    let data = null;
+    try {
+        data = await threadService.postComment({ threadid, commentContent: comment, userId });
+    } catch (error) {
+        console.log(error);
+        next(error);
+    }
+    return res.sendResult({ data });
 };
 
 export const getEdit = () => {

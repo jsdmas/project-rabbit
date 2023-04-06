@@ -3,15 +3,17 @@ import { Link, useParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import Swal from "sweetalert2";
 import styled from "styled-components";
-import { IcommentData, IResponse } from "../types/thread";
+import { IcommentData, IpostCommentData, IResponse } from "../types/thread";
 import { faHeart, faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { fetchThread, patchThreadLike } from "../api";
+import { fetchThread, patchThreadLike, postComment } from "../api";
 import BackPageIcon from "../components/BackPageIcon";
 import Comment from "../components/Comment";
 import Header from "../components/Header";
 import { useRecoilState } from "recoil";
 import { likeIncrementTimeState } from "../atoms";
+import { useForm } from "react-hook-form";
+import RegexHelper from "../helper/RegexHelper";
 
 type TTreadId = {
     threadid: string
@@ -92,12 +94,17 @@ const CommentWrapper = styled.div`
 const CommentForm = styled.form`
     display: grid;
     grid-template-columns: 1fr 0.2fr;
+    height: 100%;
     button{
         border: none;
         background-color: ${props => props.theme.buttonColor};
         color: #fff;
         border-radius: 5px;
         cursor: pointer;
+    }
+    span{
+        margin-top: 10px;
+        color:${props => props.theme.accentColor};
     }
 `;
 
@@ -131,13 +138,10 @@ const CommentChildDiv = styled(CommentDiv)`
 
 const Thread = () => {
     const { threadid } = useParams() as TTreadId;
-    const { invalidateQueries } = useQueryClient();
+    const queryClient = useQueryClient();
     const [incrementTime, setIncrementTime] = useRecoilState(likeIncrementTimeState);
     // like 클릭시 작동하는 함수, patch요청
-    const { mutate, isError } = useMutation(patchThreadLike, {
-        onSuccess: () => invalidateQueries(["thread", threadid]),
-        onError: (error) => { console.log(error) }
-    });
+    const { mutate } = useMutation(patchThreadLike, { onSuccess: () => queryClient.invalidateQueries(["thread", threadid]) });
 
     // thread 데이터 불러오기
     const { data: response } = useQuery<IResponse>(["thread", threadid], () => fetchThread(threadid));
@@ -160,6 +164,13 @@ const Thread = () => {
         }
     }, [incrementTime, setIncrementTime, threadid, mutate]);
     useEffect(() => setLikeCount(postLike), [postLike]);
+
+    // commentSubmit
+    const { register, handleSubmit, formState: { errors } } = useForm<IpostCommentData>();
+    const commentSubmit = (data: IpostCommentData) => {
+        postComment(data, threadid);
+    };
+    console.log(response);
     return (
         <>
             <Header />
@@ -182,9 +193,23 @@ const Thread = () => {
                     </LoveBox>
                 </Main>
                 <CommentWrapper>
-                    <CommentForm>
-                        <CommentTextarea placeholder="comment..." />
+                    <CommentForm onSubmit={handleSubmit(commentSubmit)}>
+                        <CommentTextarea {...register("commentContent", {
+                            required: "내용은 반드시 적어야 합니다.",
+                            maxLength: {
+                                value: 100,
+                                message: "내용은 최대 100글자입니다."
+                            },
+                            minLength: {
+                                value: 1,
+                                message: "최소 1글자 이상적어야 합니다."
+                            },
+                            validate: {
+                                RegexValue: (commentContent) => RegexHelper.value(commentContent) ? true : "내용을 올바르게 적어주세요"
+                            }
+                        })} placeholder="comment..." />
                         <button>작성</button>
+                        <span>{errors.commentContent?.message}</span>
                     </CommentForm>
                     {response?.commentData.map((parent: IcommentData) =>
                         parent.commentParentNum === null ? (

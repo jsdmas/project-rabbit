@@ -39,6 +39,7 @@ const CommentContent = styled.span`
     flex-direction: column;
     justify-content: flex-end;
     height: 60%;
+    margin-top: 5px;
 `;
 
 const ButtonSction = styled.span`
@@ -92,7 +93,6 @@ const Comment = ({ commentContent, commentCreated, commentLike, commentWriteUser
                 </CommentInfo>
                 <CommentContent>
                     {commentContent}
-
                 </CommentContent>
             </Wrapper>
         </>

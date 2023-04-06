@@ -126,7 +126,7 @@ const Header = ({ refetch, remove }: IHeader) => {
             refetch();
             sortLike(prev => prev === OrderCommends["p.created"] ? OrderCommends["p.like"] : OrderCommends["p.created"]);
         }
-    }, 500);
+    }, 300);
     const sortTimeClick = throttle(() => {
         if (remove && refetch) {
             remove();
@@ -134,7 +134,7 @@ const Header = ({ refetch, remove }: IHeader) => {
             refetch();
             sortTime(prev => prev === OrderBy.DESC ? OrderBy.ASC : OrderBy.DESC);
         }
-    }, 500);
+    }, 300);
 
     return (
         <Nav>

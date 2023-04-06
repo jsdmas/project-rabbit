@@ -20,8 +20,6 @@ class RegexHelper {
         return true;
     }
 
-
-
 };
 
 

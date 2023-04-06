@@ -46,6 +46,11 @@ export interface IcommentData {
     commentWriteUserImgUrl?: string
 };
 
+export interface IpostCommentData {
+    commentContent: string
+    commentWriteUser?: string
+};
+
 export interface IpostData {
     postTitle: string
     postContent: string

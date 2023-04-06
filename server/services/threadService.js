@@ -1,11 +1,30 @@
 import { createMapper, getStatement } from "mybatis-mapper";
 import DBPool from "../helper/DBPool";
-import { RuntimeException } from "../helper/ExceptionHelper";
+import { RuntimeException, BadRequestException } from "../helper/ExceptionHelper";
 class ThreadService {
 
     constructor() {
         createMapper(["./server/mappers/threadMapper.xml"]);
     }
+    /** 전체 데이터 수 조회 */
+    async getCount() {
+        let dbcon = null;
+        let postCount = 0;
+        try {
+            dbcon = await DBPool.getConnection();
+            let sql = getStatement('threadMapper', 'selectCountAll');
+            let [result] = await dbcon.query(sql);
+            if (result.length > 0) {
+                postCount = result[0].postCount;
+            }
+        } catch (err) {
+            throw err;
+        } finally {
+            if (dbcon) { dbcon.release(); }
+        }
+
+        return postCount;
+    };
 
     async getList(params) {
         let dbcon = null;
@@ -68,12 +87,12 @@ class ThreadService {
         return data;
     };
 
-    async addThread(param) {
+    async addThread(params) {
         let dbcon = null;
         let data = null;
         try {
             dbcon = await DBPool.getConnection();
-            let sql = getStatement("threadMapper", "postThread", param);
+            let sql = getStatement("threadMapper", "postThread", params);
             let [{ insertId, affectedRows }] = await dbcon.query(sql);
 
             if (affectedRows === 0) {
@@ -88,13 +107,16 @@ class ThreadService {
         return data;
     };
 
-    async patchThreadLike(param) {
+    async patchThreadLike(params) {
         let dbcon = null;
         let data = null;
         try {
             dbcon = await DBPool.getConnection();
-            let sql = getStatement("threadMapper", "incrementLike", param);
+            let sql = getStatement("threadMapper", "incrementLike", params);
             let [result] = await dbcon.query(sql);
+            if (result.affectedRows === 0) {
+                throw new BadRequestException();
+            }
             data = result;
         } catch (error) {
             throw error;
@@ -102,28 +124,27 @@ class ThreadService {
             if (dbcon) { dbcon.release(); }
         }
         return data;
-
     };
 
-    /** 전체 데이터 수 조회 */
-    async getCount() {
+    async postComment(params) {
         let dbcon = null;
-        let postCount = 0;
+        let data = null;
+        console.log(params);
         try {
             dbcon = await DBPool.getConnection();
-            let sql = getStatement('threadMapper', 'selectCountAll');
+            let sql = getStatement("threadMapper", "postComment", params);
             let [result] = await dbcon.query(sql);
-            if (result.length > 0) {
-                postCount = result[0].postCount;
+            if (result.affectedRows === 0) {
+                throw new BadRequestException();
             }
-        } catch (err) {
-            throw err;
+            data = result;
+        } catch (error) {
+            throw error;
         } finally {
             if (dbcon) { dbcon.release(); }
         }
-
-        return postCount;
-    };
+        return data;
+    }
 }
 
 const threadService = new ThreadService();

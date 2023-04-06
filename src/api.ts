@@ -1,7 +1,7 @@
 import axios from "axios";
 import { OrderBy, OrderCommends } from "./atoms";
 import { HandleErrorHelper } from "./helper/HandleErrorHelper";
-import { IpostData } from "./types/thread";
+import { IpostCommentData, IpostData } from "./types/thread";
 
 export const fetchThreads = async (offset = 0, orderCommend: OrderCommends, orderby: OrderBy) => {
     let response = null;
@@ -41,6 +41,17 @@ export const patchThreadLike = async (threadid: string) => {
     let response = null;
     try {
         const { data } = await axios.patch(`/thread/${threadid}/like`);
+        response = data;
+    } catch (error) {
+        HandleErrorHelper(error, "error");
+    }
+    return response;
+};
+
+export const postComment = async (commentContent: IpostCommentData, threadid: string) => {
+    let response = null;
+    try {
+        const { data } = await axios.post(`/thread/${threadid}/comment`, { commentContent })
         response = data;
     } catch (error) {
         HandleErrorHelper(error, "error");
