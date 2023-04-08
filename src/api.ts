@@ -30,11 +30,18 @@ export const postThread = async (postData: IpostData) => {
     try {
         const { data } = await axios.post("/write", postData);
         response = data;
-        console.log(response);
     } catch (error) {
         HandleErrorHelper(error);
     }
     return response;
+};
+
+export const deleteThread = async (threadid: string) => {
+    try {
+        await axios.delete(`/thread/${threadid}`, { data: { threadid } });
+    } catch (error) {
+        HandleErrorHelper(error);
+    }
 };
 
 export const patchThreadLike = async (threadid: string) => {
@@ -51,8 +58,8 @@ export const patchThreadLike = async (threadid: string) => {
 export const postComment = async (commentContent: IpostCommentData, threadid: string, commentParentNum?: number) => {
     let responseData = null;
     try {
-        const response = await axios.post(`/thread/${threadid}/comment`, { data: { commentContent, commentParentNum } })
-        responseData = response.data;
+        const { data } = await axios.post(`/thread/${threadid}/comment`, { data: { commentContent, commentParentNum } })
+        responseData = data;
     } catch (error) {
         HandleErrorHelper(error);
     }
@@ -73,8 +80,8 @@ export const editComment = async (commentContent: IpostCommentData, commentId: n
 export const deleteComment = async (commentId: number) => {
     let responseData = null;
     try {
-        const response = await axios.delete(`/thread/comment`, { data: { commentId } });
-        responseData = response.data;
+        const { data } = await axios.delete(`/thread/comment`, { data: { commentId } });
+        responseData = data;
     } catch (error) {
         HandleErrorHelper(error);
     }
@@ -84,8 +91,8 @@ export const deleteComment = async (commentId: number) => {
 export const commentIncrementLike = async (commentId: number) => {
     let responseData = null;
     try {
-        const response = await axios.patch(`/thread/comment-like`, { commentId });
-        responseData = response.data;
+        const { data } = await axios.patch(`/thread/comment-like`, { commentId });
+        responseData = data;
     } catch (error) {
         HandleErrorHelper(error);
     }

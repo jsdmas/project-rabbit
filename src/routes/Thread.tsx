@@ -1,12 +1,12 @@
 import { memo } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import Swal from "sweetalert2";
 import styled from "styled-components";
 import { IcommentData, IResponse, TTreadId } from "../types/thread";
 import { faHeart, faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { fetchThread, patchThreadLike } from "../api";
+import { fetchThread, patchThreadLike, deleteThread } from "../api";
 import BackPageIcon from "../components/BackPageIcon";
 import Comment from "../components/Comment";
 import Header from "../components/Header";
@@ -93,10 +93,13 @@ const CommentSection = styled.div`
 const Thread = () => {
     const { threadid } = useParams() as TTreadId;
     const queryClient = useQueryClient();
+    const navigate = useNavigate();
     const { data: response } = useQuery<IResponse>(["thread", threadid], () => fetchThread(threadid));
     const [threadItem] = response?.data ?? [];
     const { postContent, postCreated, postLike, postTitle, postWriteUser, postWriteUserImgUrl } = threadItem ?? {};
-    const { mutate: threadlike } = useMutation(patchThreadLike, { onSuccess: () => queryClient.invalidateQueries(["thread", threadid]) });
+    const onSuccess = () => queryClient.invalidateQueries(["thread", threadid]);
+    const { mutate: threadlike } = useMutation(patchThreadLike, { onSuccess });
+    const { mutate: deleteMutate } = useMutation(deleteThread, { onSuccess });
     const likeIncrement = () => {
         const now = new Date();
         const incrementTime = new Date(localStorage.getItem("threadIncrementTime") || 0);
@@ -110,7 +113,21 @@ const Thread = () => {
             });
         }
     };
-
+    const handleThreadDelete = () => {
+        Swal.fire({
+            title: "게시글을 정말 삭제 하시겠습니까?",
+            text: "삭제한 게시글은 복구할 수 없습니다.",
+            icon: "question",
+            showCancelButton: true,
+            showLoaderOnConfirm: true,
+            preConfirm: () => {
+                deleteMutate(threadid);
+                navigate(-1);
+            },
+            allowOutsideClick: () => !Swal.isLoading()
+        })
+            .then((result) => result.isConfirmed ? Swal.fire({ title: "삭제 성공!", icon: "success" }) : null)
+    };
 
     return (
         <>
@@ -124,7 +141,7 @@ const Thread = () => {
                 <Main>
                     <TitleSection>
                         <Col>{postTitle}</Col>
-                        <Col><Link to={`edit`}>수정</Link>&nbsp;|&nbsp;<Link to="" >삭제</Link></Col>
+                        <Col><Link to={`edit`}>수정</Link>&nbsp;|&nbsp;<Link to="" onClick={handleThreadDelete}>삭제</Link></Col>
                     </TitleSection>
                     {postContent}
                     <LoveBox>

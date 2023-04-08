@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="threadMapper">
+    <!-- home에 표시되는 threadList -->
     <select id="getThreads">
         SELECT p.*, u.nickname, u.img_url AS userimg , COUNT(c.comment_id) AS commentCnt
         FROM post p
@@ -13,6 +14,7 @@
         </if>
     </select>
 
+    <!-- thread 본문 -->
     <select id="getThread" parameterType="int">
         SELECT post.post_id AS postId, post.title AS postTitle, post.content AS postContent, post.img_url AS postImg, post.img_name AS postImgName, post.created AS postCreated, post.modified AS postModified, post.like AS postLike,
         user.nickname AS postWriteUser, user.img_url AS  postWriteUserImgUrl
@@ -23,6 +25,7 @@
         </where>
     </select>
 
+    <!-- thread 댓글 -->
     <select id="getThreadComment" parameterType="int">
         SELECT comment.comment_id AS commentId, comment.parent_num AS commentParentNum, comment.content AS commentContent,
         comment.created AS commentCreated, comment.modified AS commentModified, comment.like AS commentLike,
@@ -34,6 +37,16 @@
         </where>
         ORDER BY comment.created DESC
     </select>
+
+    <!-- thread 삭제 -->
+    <delete id="deleteThread" parameterType="int">
+        DELETE FROM post WHERE post_id = #{threadid}
+    </delete>
+
+    <!-- thread삭제시 모든 comment 삭제 -->
+    <delete id="deleteThreadComment" parameterType="int">
+        DELETE FROM comment WHERE post_id = #{threadid}
+    </delete>
 
     <!-- thread 저장 -->
     <insert id="postThread">

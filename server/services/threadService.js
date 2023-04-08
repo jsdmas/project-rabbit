@@ -107,6 +107,27 @@ class ThreadService {
         return data;
     };
 
+    async deleteThread(params) {
+        let dbcon = null;
+        try {
+            dbcon = await DBPool.getConnection();
+            let sql = getStatement("threadMapper", "deleteThreadComment", params);
+            let [{ affectedRows }] = await dbcon.query(sql);
+
+            sql = getStatement("threadMapper", "deleteThread", params);
+            [{ affectedRows }] = await dbcon.query(sql);
+
+            if (affectedRows === 0) {
+                throw new RuntimeException('삭제된 데이터가 없습니다.');
+            }
+        } catch (error) {
+            throw error;
+        } finally {
+            if (dbcon) { dbcon.release(); }
+        }
+
+    }
+
     async patchThreadLike(params) {
         let dbcon = null;
         let data = null;

@@ -27,16 +27,14 @@ mobile first 개발
 ## react
 
 1. 게시글 CRUD
-   - 댓글, 답글
-     -  수정,삭제 기능추가하기
   - 게시글
     - 수정, 삭제 기능추가하기
-  - 익명 유저의 경우 댓글이나 게시글 삭제가 다른 모든 사람도 가능하게 만들기
-2. 로그인 기능 (자체 회원가입, 네이버, 카카오)
+2. user 관련
+   - 로그인 기능 (자체 회원가입, 네이버, 카카오)
    - 로그인 유저 session 백엔드로 보내주기
    - 로그인 유저별 삭제/수정 기능 만들기
-3. 회원 profile
-4. atom selector, setter 사용해서 리팩토링
+   - 회원 profile
+3. atom selector, setter 사용해서 리팩토링
 
 # react-query
 1. staleTime : 데이터를 다시 요청하는 주기 

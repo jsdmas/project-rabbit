@@ -132,7 +132,7 @@ const Comment = ({ inside, commentContent, commentCreated, commentLike, commentW
     const handleCommentDelete = () => {
         Swal.fire({
             title: "댓글을 정말 삭제 하시겠습니까?",
-            text: "삭제하신 댓글은 복구할 수 없습니다.",
+            text: "삭제한 댓글은 복구할 수 없습니다.",
             showCancelButton: true,
             showLoaderOnConfirm: true,
             preConfirm: () => {

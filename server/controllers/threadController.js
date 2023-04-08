@@ -62,7 +62,17 @@ export const threadLike = async (req, res, next) => {
     try {
         data = await threadService.patchThreadLike({ threadid });
     } catch (error) {
-        console.log(error);
+        next(error);
+    }
+    return res.sendResult({ data });
+};
+
+export const threadDelete = async (req, res, next) => {
+    const { params: { threadid } } = req;
+    let data = null;
+    try {
+        data = await threadService.deleteThread({ threadid });
+    } catch (error) {
         next(error);
     }
     return res.sendResult({ data });
