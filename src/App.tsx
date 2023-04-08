@@ -51,8 +51,8 @@ table {
 }
 a{
 	text-decoration: none;
-	&:link, :visited,:active {
-		color: ${props => props.theme.textColor};
+	&:link, &:visited,&:active {
+		color: ${props => props.theme.accentColor};
 	}
 	&:hover{
 		color: ${props => props.theme.buttonColor};

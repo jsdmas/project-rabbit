@@ -5,7 +5,7 @@ export const lightTheme: DefaultTheme = {
     postColor: "#DBE2EF",
     textColor: "#000",
     buttonColor: "#3F72AF",
-    accentColor: "#112D4E",
+    accentColor: "#284B75",
 };
 
 export const darkTheme: DefaultTheme = {
@@ -13,5 +13,5 @@ export const darkTheme: DefaultTheme = {
     postColor: "#393E46",
     textColor: "#fff",
     buttonColor: "#00ADB5",
-    accentColor: "#EEEEEE",
+    accentColor: "#057D83",
 }

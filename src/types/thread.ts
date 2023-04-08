@@ -1,3 +1,7 @@
+export type TTreadId = {
+    threadid: string
+};
+
 export interface IThreadList {
     title: string
     content: string
@@ -44,12 +48,14 @@ export interface IcommentData {
     commentModified?: string
     commentParentNum?: number
     commentWriteUserImgUrl?: string
+    inside?: string
 };
 
 export interface IpostCommentData {
     commentContent: string
     commentWriteUser?: string
 };
+
 
 export interface IpostData {
     postTitle: string

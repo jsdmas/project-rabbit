@@ -1,23 +1,17 @@
-import { memo, useCallback, useEffect, useState } from "react";
+import { memo } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import Swal from "sweetalert2";
 import styled from "styled-components";
-import { IcommentData, IpostCommentData, IResponse } from "../types/thread";
+import { IcommentData, IResponse, TTreadId } from "../types/thread";
 import { faHeart, faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { fetchThread, patchThreadLike, postComment } from "../api";
+import { fetchThread, patchThreadLike } from "../api";
 import BackPageIcon from "../components/BackPageIcon";
 import Comment from "../components/Comment";
 import Header from "../components/Header";
-import { useRecoilState } from "recoil";
-import { likeIncrementTimeState } from "../atoms";
-import { useForm } from "react-hook-form";
-import RegexHelper from "../helper/RegexHelper";
+import CommentForm from "../components/CommentForm";
 
-type TTreadId = {
-    threadid: string
-};
 
 const Wrapper = styled.div`
     margin-top: 8vh;
@@ -89,89 +83,35 @@ const LoveBox = styled.div`
 const CommentWrapper = styled.div`
     margin-top: 10px;
     padding: 0px 10px;
-`;
-
-const CommentForm = styled.form`
-    display: grid;
-    grid-template-columns: 1fr 0.2fr;
-    height: 100%;
-    button{
-        border: none;
-        background-color: ${props => props.theme.buttonColor};
-        color: #fff;
-        border-radius: 5px;
-        cursor: pointer;
-    }
-    span{
-        margin-top: 10px;
-        color:${props => props.theme.accentColor};
-    }
-`;
-
-const CommentTextarea = styled.textarea`
-    height: 6vh;
-    width: 90%;
-    resize: none;
-    border: 1px solid ${props => props.theme.accentColor};
-    border-radius: 5px;
+    width: 100%;
 `;
 
 const CommentSection = styled.div`
-    display: flex;
-    flex-direction: column;
-`;
-
-const CommentDiv = styled.div`
-    margin-top: 10px;
-    display: flex;
-    height: 9vh;
-    display: grid;
-    grid-template-columns: 0.2fr 1fr 0.1fr;
-    grid-template-rows: 1fr;
-    column-gap: 5px;
-    
-`;
-
-const CommentChildDiv = styled(CommentDiv)`
-    padding-left: 10vw;
+    border-top: 1px solid ${props => props.theme.postColor};
 `;
 
 const Thread = () => {
     const { threadid } = useParams() as TTreadId;
     const queryClient = useQueryClient();
-    const [incrementTime, setIncrementTime] = useRecoilState(likeIncrementTimeState);
-    // like 클릭시 작동하는 함수, patch요청
-    const { mutate } = useMutation(patchThreadLike, { onSuccess: () => queryClient.invalidateQueries(["thread", threadid]) });
-
-    // thread 데이터 불러오기
     const { data: response } = useQuery<IResponse>(["thread", threadid], () => fetchThread(threadid));
     const [threadItem] = response?.data ?? [];
     const { postContent, postCreated, postLike, postTitle, postWriteUser, postWriteUserImgUrl } = threadItem ?? {};
-
-    // likeButton
-    const [likeCount, setLikeCount] = useState(0);
-    const likeIncrement = useCallback(() => {
+    const { mutate: threadlike } = useMutation(patchThreadLike, { onSuccess: () => queryClient.invalidateQueries(["thread", threadid]) });
+    const likeIncrement = () => {
         const now = new Date();
-        if (!incrementTime || now.getTime() - incrementTime.getTime() > 1000 * 60) {
-            mutate(threadid);
-            setLikeCount(prevCount => prevCount + 1);
-            setIncrementTime(now);
+        const incrementTime = new Date(localStorage.getItem("threadIncrementTime") || 0);
+        if (!incrementTime || now.getTime() - incrementTime.getTime() > 1000 * 30) {
+            threadlike(threadid);
+            localStorage.setItem("threadIncrementTime", now.toString());
         } else {
             Swal.fire({
                 icon: "warning",
-                text: "좋아요는 1분마다 누를 수 있습니다.",
+                text: "게시글 좋아요는 30초마다 누를 수 있습니다.",
             });
         }
-    }, [incrementTime, setIncrementTime, threadid, mutate]);
-    useEffect(() => setLikeCount(postLike), [postLike]);
-
-    // commentSubmit
-    const { register, handleSubmit, formState: { errors }, reset } = useForm<IpostCommentData>();
-    const commentSubmit = (data: IpostCommentData) => {
-        postComment(data, threadid);
-        queryClient.invalidateQueries(["thread", threadid]);
-        reset();
     };
+
+
     return (
         <>
             <Header />
@@ -184,46 +124,25 @@ const Thread = () => {
                 <Main>
                     <TitleSection>
                         <Col>{postTitle}</Col>
-                        <Col><Link to={`edit`}>Edit</Link></Col>
+                        <Col><Link to={`edit`}>수정</Link>&nbsp;|&nbsp;<Link to="" >삭제</Link></Col>
                     </TitleSection>
                     {postContent}
                     <LoveBox>
                         <Col onClick={likeIncrement}>
-                            <FontAwesomeIcon icon={faHeart} />&nbsp;&nbsp;{likeCount ? likeCount : postLike}
+                            <FontAwesomeIcon icon={faHeart} />&nbsp;&nbsp;{postLike ? postLike : 0}
                         </Col>
                     </LoveBox>
                 </Main>
                 <CommentWrapper>
-                    <CommentForm onSubmit={handleSubmit(commentSubmit)}>
-                        <CommentTextarea {...register("commentContent", {
-                            required: "내용은 반드시 적어야 합니다.",
-                            maxLength: {
-                                value: 100,
-                                message: "내용은 최대 100글자입니다."
-                            },
-                            minLength: {
-                                value: 1,
-                                message: "최소 1글자 이상적어야 합니다."
-                            },
-                            validate: {
-                                RegexValue: (commentContent) => RegexHelper.value(commentContent) ? true : "내용을 올바르게 적어주세요"
-                            }
-                        })} placeholder="comment..." />
-                        <button>작성</button>
-                        <span>{errors.commentContent?.message}</span>
-                    </CommentForm>
+                    <CommentForm />
                     {response?.commentData.map((parent: IcommentData) =>
                         parent.commentParentNum === null ? (
                             <CommentSection key={parent.commentId}>
-                                <CommentDiv>
-                                    <Comment {...parent} />
-                                </CommentDiv>
+                                <Comment {...parent} />
                                 {response?.commentData
                                     .filter(child => child.commentParentNum === parent.commentId)
                                     .map(child => (
-                                        <CommentChildDiv key={child.commentId}>
-                                            <Comment {...child} />
-                                        </CommentChildDiv>
+                                        <Comment {...child} inside={"10vw"} key={child.commentId} />
                                     ))}
                             </CommentSection>
                         ) : null

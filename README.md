@@ -15,29 +15,32 @@
 "/>
 ```
 
-0 ~ 400 은 photo_small.png 사용, 401 ~ 700 은 photo_medium 사용, 701이상은 large 사용
+0 ~ 400 은 photo_small.png 사용, 401 ~ 700 은 photo_medium 사용, 701이상은 large 사용  
 
-# 개발순서
-favicon 설정
 mobile first 개발
+# 해야할일
+
+## 서버관련
+
+1. favicon 설정
+
+## react
 
 1. 게시글 CRUD
+   - 댓글, 답글
+     -  수정,삭제 기능추가하기
+  - 게시글
+    - 수정, 삭제 기능추가하기
+  - 익명 유저의 경우 댓글이나 게시글 삭제가 다른 모든 사람도 가능하게 만들기
 2. 로그인 기능 (자체 회원가입, 네이버, 카카오)
-3. 댓글 기능
-4. 회원별 게시글 삭제/수정 여부
-5. 회원 profile
+   - 로그인 유저 session 백엔드로 보내주기
+   - 로그인 유저별 삭제/수정 기능 만들기
+3. 회원 profile
+4. atom selector, setter 사용해서 리팩토링
 
-# 해야할일
-post 개별 페이지 - selector 구현? (filter)
-post crud
-user 회원가입
-user 로그인 여부에따른 post 권한
-user 프로필
-
-# react-query 이슈
+# react-query
 1. staleTime : 데이터를 다시 요청하는 주기 
 2. cacheTime : 캐싱 처리가 이루어지는 시간을 말합니다 (기본값 : 5분)
-3. refetchInterval 사용시 브라우저가 계속 서버에 데이터를 요청해서 사용하지 않았습니다.
 
 # react-query infinity 
 처음에는 전역변수 offset을 변경하는 함수 setOffset을 다음 페이지를 호출하는 함수(getNextPageParam)에 넘겨주었습니다.
@@ -59,7 +62,11 @@ invalidateQueries 메서드를 사용하는 이유는 캐시된 데이터가 최
   - 이를 해결하기위해 구조분해하지않고 그냥 사용해봤는데 오류가 해결되었습니다.
   - 정확한 이유는 모르겠습니다. (gpt에 물어봐도 모른다고함)
 
+# 좋아요버튼
+좋아요 atom 다시 localstorage로 복구하기(새로고침하면 다시 좋아요 버튼 누를수있음..)
 
+# 댓글창 관련
 
-
+`답글` 버튼을 누르면 textArea로 focus가 가능하게 만들고 싶었는데 label을 사용하려 했으나 미뤘습니다.(머리아픔)  
+useEffect와 useRef를 사용하면 마운트될때 focus를 줄 수 있을거 같으나 코드가 난잡해질거 같아서 보류  
 

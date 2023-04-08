@@ -21,7 +21,6 @@ const Wrapper = styled.div`
     grid-template-rows: 0.5fr 0.6fr 2fr 0.5fr;
     row-gap: 5px;
     background-color: ${props => props.theme.postColor};
-    color: ${props => props.theme.textColor};
     box-shadow: 0px 0px 3px 2px ${props => props.theme.postColor};
     &:first-child{
         margin-top: 10vh;
@@ -34,7 +33,7 @@ const UserInfo = styled.div`
     height: 100%;
     grid-template-columns: 0.5fr 2fr 3fr;
     place-items: center start;
-
+    color: ${props => props.theme.textColor};
     span:last-child{
         place-self: center end;
         font-size: 8px;
@@ -52,6 +51,11 @@ const Title = styled.h2`
     place-self: center start;
 `;
 
+const TitleLink = styled(Link)`
+    color: ${props => props.theme.buttonColor};
+`;
+
+
 const Content = styled.div`
     border: 1px solid ${props => props.theme.buttonColor};
     border-radius: inherit;
@@ -62,6 +66,7 @@ const Content = styled.div`
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 4; /* 라인수 */
     line-height: 1.8em;
+    color: ${props => props.theme.textColor};
 `;
 
 const PostInfo = styled.div`
@@ -72,6 +77,7 @@ const PostInfo = styled.div`
     span:last-child{
         margin-top: 2px;
     }
+    color: ${props => props.theme.textColor};
 `;
 
 
@@ -83,9 +89,7 @@ const ThreadList = ({ title, content, created, img_name, img_url, like, modified
                 <Col>{nickname ? nickname : "anonymous"}</Col>
                 <Col>posted by {created.slice(0, 10)}&nbsp;&nbsp;{created.slice(11, 19)}</Col>
             </UserInfo>
-            <Title>
-                <Link to={`/thread/${post_id}`}>{title}</Link>
-            </Title>
+            <TitleLink to={`/thread/${post_id}`}><Title>{title}</Title></TitleLink>
             <Content>
                 {content}
             </Content>

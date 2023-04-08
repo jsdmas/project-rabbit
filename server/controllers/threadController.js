@@ -69,7 +69,39 @@ export const threadLike = async (req, res, next) => {
 };
 
 export const threadPostComment = async (req, res, next) => {
-    const { params: { threadid }, body: { commentContent, userId = null } } = req;
+    const { params: { threadid }, body: { data: { commentParentNum = null, commentContent, userId = null } } } = req;
+    const comment = commentContent.commentContent;
+
+    try {
+        RegexHelper.value(commentContent, "내용을 올바르게 적어주세요");
+        RegexHelper.minLength(commentContent, 1, "내용은 1글자 이상적어야 합니다.");
+        RegexHelper.maxLength(commentContent, 100, "내용은 최대 100글자입니다.");
+    } catch (error) {
+        return next(error);
+    }
+    let data = null;
+    try {
+        data = await threadService.postComment({ threadid, commentContent: comment, userId, commentParentNum });
+    } catch (error) {
+        console.log(error);
+        next(error);
+    }
+    return res.sendResult({ data });
+};
+
+export const threadDeleteComment = async (req, res, next) => {
+    const { body: { commentId } } = req;
+    let data = null;
+    try {
+        data = await threadService.deleteComment({ commentId });
+    } catch (error) {
+        return next(error);
+    }
+    return res.sendResult({ data });
+};
+
+export const threadPatchComment = async (req, res, next) => {
+    const { body: { data: { commentId, commentContent, userId = null } } } = req;
     const comment = commentContent.commentContent;
     try {
         RegexHelper.value(commentContent, "내용을 올바르게 적어주세요");
@@ -80,10 +112,21 @@ export const threadPostComment = async (req, res, next) => {
     }
     let data = null;
     try {
-        data = await threadService.postComment({ threadid, commentContent: comment, userId });
+        data = await threadService.patchComment({ commentContent: comment, userId, commentId });
     } catch (error) {
         console.log(error);
         next(error);
+    }
+    return res.sendResult({ data });
+};
+
+export const commentLike = async (req, res, next) => {
+    const { body: { commentId } } = req;
+    let data = null;
+    try {
+        data = await threadService.commentLike({ commentId });
+    } catch (error) {
+        return next(error);
     }
     return res.sendResult({ data });
 };

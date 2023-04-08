@@ -2,7 +2,7 @@ import { isAxiosError } from 'axios';
 import Swal, { SweetAlertIcon } from 'sweetalert2';
 import { IErrorTypes } from '../types/error';
 
-export const HandleErrorHelper = (error: unknown, icon: SweetAlertIcon = "info") => {
+export const HandleErrorHelper = (error: unknown, icon: SweetAlertIcon = "error") => {
     if (isAxiosError(error) && error.response) {
         const { response: { data } } = error;
         const { rt, rtcode, rtmsg }: IErrorTypes = data;

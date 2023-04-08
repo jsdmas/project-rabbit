@@ -50,9 +50,27 @@
 
     <!-- comment 저장 -->
     <insert id="postComment">
-        INSERT INTO comment(content, created, user_id, post_id)
-        VALUES(#{commentContent}, now(), #{userId}, #{threadid})
+        INSERT INTO comment(content, created, user_id, post_id, parent_num)
+        VALUES(#{commentContent}, now(), #{userId}, #{threadid}, #{commentParentNum})
     </insert>
+
+    <!-- comment 수정 -->
+    <update id="patchComment">
+        UPDATE comment SET content = #{commentContent}, modified = now()
+        WHERE comment_id = #{commentId}
+    </update>
+
+    <!-- commentDelete -->
+    <delete id="deleteComment" parameterType="int">
+        DELETE FROM comment WHERE comment_id = #{commentId} OR parent_num = #{commentId}
+    </delete>
+
+    <!-- comment좋아요 버튼 -->
+    <update id="commentLike" parameterType="int">
+        UPDATE comment
+        SET `like` = COALESCE(`like`, 0) + 1
+        WHERE comment_id = #{commentId}
+    </update>
 
     <select id="selectCountAll">
         SELECT COUNT(*) AS postCount FROM post

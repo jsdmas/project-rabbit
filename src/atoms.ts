@@ -26,7 +26,10 @@ export const darkState = atom({
     default: false
 });
 
-export const likeIncrementTimeState = atom<Date | null>({
-    key: "likeIncrementTime",
-    default: null,
+export const replyState = atom<number | null>({
+    key: "reply",
+    default: null
 });
+
+
+
