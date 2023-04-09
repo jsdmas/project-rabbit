@@ -3,10 +3,10 @@ import { OrderBy, OrderCommends } from "./atoms";
 import { HandleErrorHelper } from "./helper/HandleErrorHelper";
 import { IpostCommentData, IpostData } from "./types/thread";
 
-export const fetchThreads = async (offset = 0, orderCommend: OrderCommends, orderby: OrderBy) => {
+export const fetchThreadList = async (offset = 0, orderCommend: OrderCommends, orderby: OrderBy) => {
     let response = null;
     try {
-        const { data } = await axios.get("/thread", { params: { offset, orderCommend, orderby } });
+        const { data } = await axios.get("/threads", { params: { offset, orderCommend, orderby } });
         response = data;
     } catch (error) {
         HandleErrorHelper(error, "info");
@@ -25,10 +25,32 @@ export const fetchThread = async (threadid: string) => {
     return response;
 };
 
-export const postThread = async (postData: IpostData) => {
+export const fetchMainTextThread = async (threadid: string) => {
+    let response = null;
+    try {
+        const { data } = await axios.get(`/thread/${threadid}/mainText`);
+        response = data;
+    } catch (error) {
+        HandleErrorHelper(error);
+    }
+    return response;
+};
+
+export const createThread = async (postData: IpostData) => {
     let response = null;
     try {
         const { data } = await axios.post("/write", postData);
+        response = data;
+    } catch (error) {
+        HandleErrorHelper(error);
+    }
+    return response;
+};
+
+export const updateThread = async (postData: IpostData, threadid: string) => {
+    let response = null;
+    try {
+        const { data } = await axios.patch(`/thread/${threadid}`, { data: { postData, threadid } });
         response = data;
     } catch (error) {
         HandleErrorHelper(error);

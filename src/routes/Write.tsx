@@ -3,7 +3,7 @@ import RegexHelper from '../helper/RegexHelper';
 import BackPageIcon from '../components/BackPageIcon';
 import Header from '../components/Header';
 import { useForm } from "react-hook-form"
-import { postThread } from '../api';
+import { createThread } from '../api';
 import { useNavigate } from 'react-router-dom';
 import { IpostData } from '../types/thread';
 
@@ -76,7 +76,7 @@ const Write = () => {
     const { register, handleSubmit, formState: { errors } } = useForm<IpostData>();
     const navigate = useNavigate();
     const onVaild = async (postData: IpostData) => {
-        const { data: response } = await postThread(postData);
+        const { data: response } = await createThread(postData);
         navigate(`/thread/${response}`);
     };
     return (

@@ -96,7 +96,7 @@ const Thread = () => {
     const navigate = useNavigate();
     const { data: response } = useQuery<IResponse>(["thread", threadid], () => fetchThread(threadid));
     const [threadItem] = response?.data ?? [];
-    const { postContent, postCreated, postLike, postTitle, postWriteUser, postWriteUserImgUrl } = threadItem ?? {};
+    const { postContent, postCreated, postLike, postTitle, postWriteUser, postWriteUserImgUrl, postModified } = threadItem ?? {};
     const onSuccess = () => queryClient.invalidateQueries(["thread", threadid]);
     const { mutate: threadlike } = useMutation(patchThreadLike, { onSuccess });
     const { mutate: deleteMutate } = useMutation(deleteThread, { onSuccess });
@@ -136,7 +136,7 @@ const Thread = () => {
                 <Head>
                     <Col><BackPageIcon /></Col>
                     <Col>{postWriteUserImgUrl ? "" : <FontAwesomeIcon icon={faUser} />} {postWriteUser ? postWriteUser : "anonymous"}</Col>
-                    <Col>posted by {postCreated?.slice(0, 10)} {postCreated?.slice(11, 19)}</Col>
+                    <Col>{postModified ? `수정됨 : ${postModified?.slice(0, 10)} ${postModified?.slice(11, 19)}` : `posted by ${postCreated?.slice(0, 10)} ${postCreated?.slice(11, 19)}`}</Col>
                 </Head>
                 <Main>
                     <TitleSection>
@@ -152,12 +152,12 @@ const Thread = () => {
                 </Main>
                 <CommentWrapper>
                     <CommentForm />
-                    {response?.commentData.map((parent: IcommentData) =>
+                    {response?.commentData?.map((parent: IcommentData) =>
                         parent.commentParentNum === null ? (
                             <CommentSection key={parent.commentId}>
                                 <Comment {...parent} />
                                 {response?.commentData
-                                    .filter(child => child.commentParentNum === parent.commentId)
+                                    ?.filter(child => child.commentParentNum === parent.commentId)
                                     .map(child => (
                                         <Comment {...child} inside={"10vw"} key={child.commentId} />
                                     ))}

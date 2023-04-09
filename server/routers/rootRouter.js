@@ -1,9 +1,9 @@
 import express from "express";
-import { home, postWrite } from "../controllers/threadController";
+import { getThreadList, createThread } from "../controllers/threadController";
 
 const rootRouter = express.Router();
 
-rootRouter.get("/thread", home);
-rootRouter.post("/write", postWrite);
+rootRouter.get("/threads", getThreadList);
+rootRouter.post("/write", createThread);
 
 export default rootRouter;

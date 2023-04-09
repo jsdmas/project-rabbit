@@ -7,7 +7,7 @@ import { memo, useEffect, useRef } from "react";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
-import { fetchThreads } from "../api";
+import { fetchThreadList } from "../api";
 import { orderbyState, orderCommendState } from "../atoms";
 import Header from "../components/Header";
 import Post from "../components/ThreadList";
@@ -40,7 +40,7 @@ const Home = () => {
     const throttled = useRef(throttle(() => fetchNextPage(), 1200)).current;
     const { data: response, fetchNextPage, refetch, remove, isLoading }
         = useInfiniteQuery(["InfiniteThreadData"],
-            ({ pageParam = 0 }) => fetchThreads(pageParam, orderCommend, orderby),
+            ({ pageParam = 0 }) => fetchThreadList(pageParam, orderCommend, orderby),
             {
                 getNextPageParam: lastpage => {
                     return lastpage.nextOffset;

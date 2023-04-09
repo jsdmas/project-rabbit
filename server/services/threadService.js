@@ -10,6 +10,7 @@ class ThreadService {
     async getCount() {
         let dbcon = null;
         let postCount = 0;
+        console.debug("getCount");
         try {
             dbcon = await DBPool.getConnection();
             let sql = getStatement('threadMapper', 'selectCountAll');
@@ -29,6 +30,8 @@ class ThreadService {
     async getList(params) {
         let dbcon = null;
         let data = null;
+        console.debug("getList");
+        console.debug(params);
         try {
             dbcon = await DBPool.getConnection();
             let sql = getStatement("threadMapper", "getThreads", params);
@@ -49,6 +52,8 @@ class ThreadService {
     async getThread(params) {
         let dbcon = null;
         let data = null;
+        console.debug("getThread");
+        console.debug(params);
         try {
             dbcon = await DBPool.getConnection();
             let sql = getStatement("threadMapper", "getThread", params);
@@ -69,6 +74,8 @@ class ThreadService {
     async getThreadComment(params) {
         let dbcon = null;
         let data = null;
+        console.debug("getThreadComment");
+        console.debug(params);
         try {
             dbcon = await DBPool.getConnection();
             let sql = getStatement("threadMapper", "getThreadComment", params);
@@ -87,9 +94,32 @@ class ThreadService {
         return data;
     };
 
+    async updateThread(params) {
+        let dbcon = null;
+        let data = null;
+        console.debug("updateThread");
+        console.debug(params);
+        try {
+            dbcon = await DBPool.getConnection();
+            let sql = getStatement("threadMapper", "updateThread", params);
+            let [{ insertId, affectedRows }] = await dbcon.query(sql);
+            if (affectedRows === 0) {
+                throw new BadRequestException();
+            }
+            data = insertId;
+        } catch (error) {
+            throw error;
+        } finally {
+            if (dbcon) { dbcon.release(); }
+        }
+        return data;
+    };
+
     async addThread(params) {
         let dbcon = null;
         let data = null;
+        console.debug("addThread");
+        console.debug(params);
         try {
             dbcon = await DBPool.getConnection();
             let sql = getStatement("threadMapper", "postThread", params);
@@ -109,6 +139,8 @@ class ThreadService {
 
     async deleteThread(params) {
         let dbcon = null;
+        console.debug("Thread Delete");
+        console.debug(params);
         try {
             dbcon = await DBPool.getConnection();
             let sql = getStatement("threadMapper", "deleteThreadComment", params);
@@ -131,6 +163,8 @@ class ThreadService {
     async patchThreadLike(params) {
         let dbcon = null;
         let data = null;
+        console.debug("patchThreadLike");
+        console.debug(params);
         try {
             dbcon = await DBPool.getConnection();
             let sql = getStatement("threadMapper", "incrementLike", params);
@@ -150,6 +184,8 @@ class ThreadService {
     async postComment(params) {
         let dbcon = null;
         let data = null;
+        console.debug("postComment");
+        console.debug(params);
         try {
             dbcon = await DBPool.getConnection();
             let sql = getStatement("threadMapper", "postComment", params);
@@ -169,6 +205,8 @@ class ThreadService {
     async deleteComment(params) {
         let dbcon = null;
         let data = null;
+        console.debug("deleteComment");
+        console.debug(params);
         try {
             dbcon = await DBPool.getConnection();
             let sql = getStatement("threadMapper", "deleteComment", params);
@@ -188,6 +226,8 @@ class ThreadService {
     async patchComment(params) {
         let dbcon = null;
         let data = null;
+        console.debug("patchComment");
+        console.debug(params);
         try {
             dbcon = await DBPool.getConnection();
             let sql = getStatement("threadMapper", "patchComment", params);
@@ -207,6 +247,8 @@ class ThreadService {
     async commentLike(params) {
         let dbcon = null;
         let data = null;
+        console.debug("commentLike");
+        console.debug(params);
         try {
             dbcon = await DBPool.getConnection();
             let sql = getStatement("threadMapper", "commentLike", params);

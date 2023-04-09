@@ -112,7 +112,7 @@ const Comment = ({ inside, commentContent, commentCreated, commentLike, commentW
     const { register, handleSubmit, formState: { errors } } = useForm<IpostCommentData>();
     const onSuccess = () => queryClient.invalidateQueries(["thread", threadid]);
     const { mutate: editMutate } = useMutation((data: IpostCommentData) => editComment(data, commentId), { onSuccess });
-    const { mutate: deleteMutate } = useMutation(deleteComment, { onSuccess });
+    const { mutate: deleteCommentMutate } = useMutation(deleteComment, { onSuccess });
     const { mutate: likeMutate } = useMutation(commentIncrementLike, { onSuccess });
 
     const commentEditSubmit = (data: IpostCommentData) => {
@@ -136,7 +136,7 @@ const Comment = ({ inside, commentContent, commentCreated, commentLike, commentW
             showCancelButton: true,
             showLoaderOnConfirm: true,
             preConfirm: () => {
-                deleteMutate(commentId)
+                deleteCommentMutate(commentId)
             },
             allowOutsideClick: () => !Swal.isLoading()
         })

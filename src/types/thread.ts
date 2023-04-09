@@ -31,7 +31,7 @@ export interface IThreadData {
 }
 
 export interface IResponse {
-    commentData: IcommentData[]
+    commentData?: IcommentData[]
     data: IThreadData[]
     pubdate: string
     rt: string

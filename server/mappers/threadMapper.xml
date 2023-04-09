@@ -54,6 +54,13 @@
         VALUES(#{postTitle}, #{postContent}, now(), #{userId})
     </insert>
 
+    <!-- thread 수정 -->
+    <update id="updateThread">
+        UPDATE post
+        SET title = #{postTitle}, content = #{postContent}, modified = now()
+        WHERE post_id = #{threadid}
+    </update>
+
     <!-- 좋아요 버튼 -->
     <update id="incrementLike" parameterType="int">
         UPDATE post

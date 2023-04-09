@@ -29,12 +29,13 @@ mobile first 개발
 1. 게시글 CRUD
   - 게시글
     - 수정, 삭제 기능추가하기
+    
 2. user 관련
    - 로그인 기능 (자체 회원가입, 네이버, 카카오)
    - 로그인 유저 session 백엔드로 보내주기
    - 로그인 유저별 삭제/수정 기능 만들기
    - 회원 profile
-3. atom selector, setter 사용해서 리팩토링
+3. atom selector, setter 사용해서 리팩토링, url, 이름 수정
 
 # react-query
 1. staleTime : 데이터를 다시 요청하는 주기 
