@@ -34,7 +34,7 @@ const Home = () => {
     const keword = useRecoilValue(searchKeywordState);
     const kewordoption = useRecoilValue(keywordOptionState);
     const observerTargetEl = useRef<HTMLDivElement>(null);
-    const throttled = useRef(throttle(() => fetchNextPage(), 300)).current
+    const throttled = useRef(throttle(() => fetchNextPage(), 250)).current;
     const { data: response, fetchNextPage, remove, isLoading }
         = useInfiniteQuery(["InfiniteThreadData"],
             ({ pageParam = 0 }) => fetchThreadList(pageParam, orderCommend, orderby, keword, kewordoption),
