@@ -6,9 +6,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faMagnifyingGlass, faMoon, faSun } from "@fortawesome/free-solid-svg-icons";
 import { Link, useLocation } from "react-router-dom";
 import { useRecoilState, useSetRecoilState } from "recoil";
-import { darkState, OrderBy, orderbyState, OrderCommends, orderCommendState } from "../atoms";
+import { darkState, OrderBy, orderbyState, OrderCommends, orderCommendState, SearchOption } from "../atoms";
 import { useQueryClient } from "@tanstack/react-query";
 import { throttle } from "lodash";
+import { useForm } from "react-hook-form";
 
 interface IHeader {
     refetch?: () => void
@@ -20,7 +21,7 @@ const Nav = styled.nav`
     position: fixed;
     top: 0;
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: 0.5fr 9fr 0.5fr;
     width: 100%;
     max-width: 1440px;
     height: 6vh;
@@ -41,20 +42,19 @@ const Nav = styled.nav`
 `;
 
 const Col = styled.div`
-padding: 0px 15px;
+    padding: 0px 15px;
 `;
 
 const Img = styled.img`
     width: 48px;
     height: 28px;
+    grid-column: span 2;
 `;
 
 const Form = styled.form`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: absolute;
-    width: 50%;
+    display: grid;
+    grid-template-columns: 0.2fr 1fr;
+    width: 100%;
     svg{
         position: relative;
         left: 20px;
@@ -62,10 +62,20 @@ const Form = styled.form`
     }
     input{
         padding: 5px 10px 5px 22px;
-        width: 100%;
         border-radius: 5px;
         border: inherit;
+        width: 100%;
     }
+    select{
+        padding: 5px 0px;
+        border: 1px solid ${props => props.theme.accentColor};
+        border-radius: 5px;
+        color: ${props => props.theme.buttonColor};
+    }
+`;
+
+const Item = styled.div`
+
 `;
 
 const Menu = styled.div <{ isMenu: boolean }>`
@@ -79,6 +89,7 @@ const Menu = styled.div <{ isMenu: boolean }>`
     border-radius: 5px;
     display: ${props => !props.isMenu ? "none" : ""};
 `;
+
 const Ul = styled.ul`
     font-size: 1em;
     width: 100%;
@@ -117,8 +128,6 @@ const Header = ({ refetch, remove }: IHeader) => {
     const sortTime = useSetRecoilState(orderbyState);
     const [isMenu, setIsMenu] = useState(false);
     const { pathname } = useLocation();
-    const menuClick = useCallback(() => setIsMenu(prev => !prev), [isMenu]);
-
     const sortLikeClick = throttle(() => {
         if (remove && refetch) {
             remove();
@@ -136,6 +145,11 @@ const Header = ({ refetch, remove }: IHeader) => {
         }
     }, 300);
 
+    const { register } = useForm();
+    const onSearch = async (event: React.ChangeEvent<HTMLInputElement>) => {
+        const { target: { value } } = event;
+
+    };
     return (
         <Nav>
             <Col>
@@ -143,14 +157,20 @@ const Header = ({ refetch, remove }: IHeader) => {
                     <Img src={isdark ? darkLogo : lightLogo} alt="logo_rabbit" />
                 </Link>
             </Col>
-            <Col>
+            <Item>
                 <Form>
-                    <FontAwesomeIcon icon={faMagnifyingGlass} size="sm" />
-                    <input type="text" />
+                    <select defaultValue={SearchOption.Thread} {...register("searchOption")}>
+                        <option value={SearchOption.Thread}>Thread</option>
+                        <option value={SearchOption.User}>User</option>
+                    </select>
+                    <Item>
+                        <FontAwesomeIcon icon={faMagnifyingGlass} size="sm" />
+                        <input type="text" {...register("search")} onChange={onSearch} />
+                    </Item>
                 </Form>
-            </Col>
+            </Item>
             <Col>
-                <FontAwesomeIcon icon={faBars} onClick={menuClick} cursor="pointer" />
+                <FontAwesomeIcon icon={faBars} onClick={() => setIsMenu(prev => !prev)} cursor="pointer" />
             </Col>
             <Menu isMenu={isMenu} >
                 <Ul>

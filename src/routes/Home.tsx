@@ -1,8 +1,3 @@
-/**
- * @구현필요
- * 게시물 0개일떄 처리,
- * 각 페이지별 error 처리
- */
 import { memo, useEffect, useRef } from "react";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useRecoilValue } from "recoil";

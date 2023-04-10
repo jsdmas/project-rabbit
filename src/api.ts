@@ -121,4 +121,15 @@ export const commentIncrementLike = async (commentId: number) => {
     return responseData;
 };
 
+export const searchThread = async (searchParam: string, option: string) => {
+    let response = null;
+    try {
+        const { data } = await axios.get("/search", { params: { searchParam, option } });
+        response = data;
+    } catch (error) {
+        HandleErrorHelper(error);
+    }
+    return response;
+};
+
 

@@ -177,3 +177,7 @@ export const likecomment = async (req, res, next) => {
     }
     return res.sendResult({ data });
 };
+
+export const searchThread = async (req, res, next) => {
+
+};

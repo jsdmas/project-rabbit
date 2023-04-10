@@ -11,6 +11,11 @@ export enum OrderBy {
     "ASC" = "ASC"
 }
 
+export enum SearchOption {
+    "Thread" = "post",
+    "User" = "user"
+}
+
 export const orderCommendState = atom<OrderCommends>({
     key: "orderCommend",
     default: OrderCommends["p.created"],
