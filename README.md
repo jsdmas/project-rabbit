@@ -1,6 +1,11 @@
 # 아직 미완성입니다
 
 
+# 주요기능
+
+![](https://user-images.githubusercontent.com/105098581/230824846-92a0fbee-27bc-4230-bb5c-35b58b3a0db6.png)
+
+![](https://user-images.githubusercontent.com/105098581/230824560-14425091-f4ad-4a8b-b51a-086a4e6c533f.gif)
 
 
 # 해야할일
