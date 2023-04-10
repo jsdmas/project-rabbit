@@ -7,13 +7,14 @@ class ThreadService {
         createMapper(["./server/mappers/threadMapper.xml"]);
     }
     /** 전체 데이터 수 조회 */
-    async getCount() {
+    async getCount(params) {
         let dbcon = null;
         let postCount = 0;
         console.debug("getCount");
+        console.log(params);
         try {
             dbcon = await DBPool.getConnection();
-            let sql = getStatement('threadMapper', 'selectCountAll');
+            let sql = getStatement('threadMapper', 'selectCountAll', params);
             let [result] = await dbcon.query(sql);
             if (result.length > 0) {
                 postCount = result[0].postCount;
@@ -264,6 +265,7 @@ class ThreadService {
         }
         return data;
     }
+
 }
 
 const threadService = new ThreadService();

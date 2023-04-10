@@ -2,16 +2,17 @@ import RegexHelper from "../helper/RegexHelper";
 import threadService from "../services/threadService";
 
 export const getThreadList = async (req, res, next) => {
-    const { query: { orderCommend = "p.created", orderby = "DESC" } } = req;
+    const { query: { orderCommend = "p.created", orderby = "DESC", searchKeyword = "", keywordoption } } = req;
     let { query: { offset = 0 } } = req;
+    console.log(searchKeyword, keywordoption);
     let data = null;
     let nextOffset = offset;
     try {
-        const totalCount = await threadService.getCount();
+        const totalCount = await threadService.getCount({ searchKeyword, keywordoption });
         if (nextOffset >= totalCount) {
             offset = 0;
         }
-        data = await threadService.getList({ offset, orderCommend, orderby });
+        data = await threadService.getList({ offset, orderCommend, orderby, searchKeyword, keywordoption });
         nextOffset = nextOffset < totalCount ? parseInt(offset) + 4 : 0;
     } catch (error) {
         return next(error);
@@ -176,8 +177,4 @@ export const likecomment = async (req, res, next) => {
         return next(error);
     }
     return res.sendResult({ data });
-};
-
-export const searchThread = async (req, res, next) => {
-
 };

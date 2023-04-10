@@ -128,7 +128,6 @@ const Thread = () => {
         })
             .then((result) => result.isConfirmed ? Swal.fire({ title: "삭제 성공!", icon: "success" }) : null)
     };
-
     return (
         <>
             <Header />

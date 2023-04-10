@@ -22,6 +22,7 @@
 
 1. 게시글 CRUD
    - search 구현
+   - 댓글 포커스주기
    - 이미지 post 가능하게 하기 (로그인 구현 & 세션처리 하면서 같이 구현)
     
 2. user 관련
@@ -36,3 +37,31 @@
    - 디자인 개선 
    - 반응형 디자인 
 
+
+<select id="getThreads">
+   SELECT p.*, u.nickname, u.img_url AS userimg , COUNT(c.comment_id) AS commentCnt
+   FROM post p
+   LEFT OUTER JOIN user u ON p.user_id = u.user_id
+   LEFT OUTER JOIN comment c ON p.post_id = c.post_id
+   GROUP BY p.post_id, p.title, p.content, p.created, p.img_name, p.img_url, p.like, p.modified, p.user_id, u.nickname, u.img_url
+   ORDER BY ${orderCommend} ${orderby}
+      <if test="offset >= 0">
+         LIMIT 4 OFFSET ${offset}
+      </if>
+</select>
+
+
+<select id="selectCountAll">
+   SELECT COUNT(*) AS postCount FROM post
+      <if test="searchKeyword != null and searchKeyword != ''">
+         <if test="keywordoption == 'title'">
+         WHERE post.title LIKE CONCAT('%', #{searchKeyword}, '%')
+         </if>
+         <if test="keywordoption == 'user'">
+         WHERE user.nickname LIKE CONCAT('%', #{searchKeyword}, '%')
+         </if>
+         <if test="keywordoption == 'content'">
+         WHERE post.content LIKE CONCAT('%', #{searchKeyword}, '%')
+         </if>
+      </if>
+</select>

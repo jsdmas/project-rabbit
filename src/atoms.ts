@@ -12,8 +12,10 @@ export enum OrderBy {
 }
 
 export enum SearchOption {
-    "Thread" = "post",
-    "User" = "user"
+    "Thread" = "content",
+    "User" = "user",
+    "Title" = "title",
+    "none" = "none"
 }
 
 export const orderCommendState = atom<OrderCommends>({
@@ -36,5 +38,12 @@ export const replyState = atom<number | null>({
     default: null
 });
 
+export const keywordOptionState = atom<SearchOption>({
+    key: "keywordOption",
+    default: SearchOption.none
+});
 
-
+export const searchKeywordState = atom<null | string>({
+    key: "searchKeyword",
+    default: null
+});

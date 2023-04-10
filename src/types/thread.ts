@@ -1,3 +1,5 @@
+import { SearchOption } from "../atoms";
+
 export type TTreadId = {
     threadid: string
 };
@@ -55,7 +57,6 @@ export interface IpostCommentData {
     commentContent: string
     commentWriteUser?: string
 };
-
 
 export interface IpostData {
     postTitle: string

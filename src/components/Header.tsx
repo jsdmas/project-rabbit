@@ -1,4 +1,4 @@
-import { useState, memo, useCallback } from "react";
+import { useState, memo } from "react";
 import styled from "styled-components";
 import lightLogo from "../assets/logo_light.png";
 import darkLogo from "../assets/logo_dark.png";
@@ -6,13 +6,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faMagnifyingGlass, faMoon, faSun } from "@fortawesome/free-solid-svg-icons";
 import { Link, useLocation } from "react-router-dom";
 import { useRecoilState, useSetRecoilState } from "recoil";
-import { darkState, OrderBy, orderbyState, OrderCommends, orderCommendState, SearchOption } from "../atoms";
+import { darkState, OrderBy, orderbyState, OrderCommends, orderCommendState, keywordOptionState, searchKeywordState, SearchOption } from "../atoms";
 import { useQueryClient } from "@tanstack/react-query";
 import { throttle } from "lodash";
-import { useForm } from "react-hook-form";
+import { FieldValues, useForm } from "react-hook-form";
 
 interface IHeader {
-    refetch?: () => void
     remove?: () => void
 };
 
@@ -53,8 +52,9 @@ const Img = styled.img`
 
 const Form = styled.form`
     display: grid;
-    grid-template-columns: 0.2fr 1fr;
+    grid-template-columns: 0.1fr 1fr 0.1fr;
     width: 100%;
+    column-gap:5px;
     svg{
         position: relative;
         left: 20px;
@@ -69,13 +69,25 @@ const Form = styled.form`
     select{
         padding: 5px 0px;
         border: 1px solid ${props => props.theme.accentColor};
-        border-radius: 5px;
         color: ${props => props.theme.buttonColor};
+        border-radius: 5px;
+    }
+    button{
+        place-self: center end;
+        border: none;
+        padding: 5px;
+        background-color: ${props => props.theme.buttonColor};
+        color: #fff;
+        cursor: pointer;
+        border-radius: 5px;
     }
 `;
 
 const Item = styled.div`
+`;
 
+const SearchButton = styled.button`
+white-space: nowrap;
 `;
 
 const Menu = styled.div <{ isMenu: boolean }>`
@@ -121,34 +133,41 @@ const Li = styled.li`
     }
 `;
 
-const Header = ({ refetch, remove }: IHeader) => {
+const Header = ({ remove }: IHeader) => {
     const queryClient = useQueryClient();
     const [isdark, setIsdark] = useRecoilState(darkState);
     const sortLike = useSetRecoilState(orderCommendState);
     const sortTime = useSetRecoilState(orderbyState);
+    const setSearchOption = useSetRecoilState(keywordOptionState);
+    const setSearchKeyword = useSetRecoilState(searchKeywordState);
     const [isMenu, setIsMenu] = useState(false);
     const { pathname } = useLocation();
     const sortLikeClick = throttle(() => {
-        if (remove && refetch) {
+        if (remove) {
             remove();
-            queryClient.setQueryData(["InfiniteThreadData"], []);
-            refetch();
+            queryClient.resetQueries();
             sortLike(prev => prev === OrderCommends["p.created"] ? OrderCommends["p.like"] : OrderCommends["p.created"]);
         }
     }, 300);
     const sortTimeClick = throttle(() => {
-        if (remove && refetch) {
+        if (remove) {
             remove();
-            queryClient.setQueryData(["InfiniteThreadData"], []);
-            refetch();
+            queryClient.resetQueries();
             sortTime(prev => prev === OrderBy.DESC ? OrderBy.ASC : OrderBy.DESC);
         }
     }, 300);
 
-    const { register } = useForm();
-    const onSearch = async (event: React.ChangeEvent<HTMLInputElement>) => {
-        const { target: { value } } = event;
-
+    const { register, handleSubmit, setFocus } = useForm();
+    const onVaild = (data: FieldValues) => {
+        if (data.searchOption === "none") setFocus("searchOption");
+        if (!data.search) setFocus("search");
+        const { searchOption, search } = data;
+        setSearchOption(searchOption);
+        setSearchKeyword(search);
+        if (remove) {
+            remove();
+        }
+        queryClient.resetQueries();
     };
     return (
         <Nav>
@@ -158,16 +177,20 @@ const Header = ({ refetch, remove }: IHeader) => {
                 </Link>
             </Col>
             <Item>
-                <Form>
-                    <select defaultValue={SearchOption.Thread} {...register("searchOption")}>
-                        <option value={SearchOption.Thread}>Thread</option>
-                        <option value={SearchOption.User}>User</option>
-                    </select>
-                    <Item>
-                        <FontAwesomeIcon icon={faMagnifyingGlass} size="sm" />
-                        <input type="text" {...register("search")} onChange={onSearch} />
-                    </Item>
-                </Form>
+                {pathname === "/" ?
+                    <Form onSubmit={handleSubmit(onVaild)}>
+                        <select  {...register("searchOption")}>
+                            <option value={SearchOption.none}>선택</option>
+                            <option value={SearchOption.Thread}>Thread</option>
+                            <option value={SearchOption.Title}>Title</option>
+                            <option value={SearchOption.User}>User</option>
+                        </select>
+                        <Item>
+                            <FontAwesomeIcon icon={faMagnifyingGlass} size="sm" />
+                            <input type="text" {...register("search")} placeholder="keyword..." />
+                        </Item>
+                        <SearchButton type="submit">검색</SearchButton>
+                    </Form> : null}
             </Item>
             <Col>
                 <FontAwesomeIcon icon={faBars} onClick={() => setIsMenu(prev => !prev)} cursor="pointer" />

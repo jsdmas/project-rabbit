@@ -1,10 +1,10 @@
 import express from "express";
-import { getThreadList, createThread, searchThread } from "../controllers/threadController";
+import { getThreadList, createThread } from "../controllers/threadController";
 
 const rootRouter = express.Router();
-
+// home
 rootRouter.get("/threads", getThreadList);
-rootRouter.get("/search", searchThread);
+// 글쓰기
 rootRouter.post("/write", createThread);
 
 export default rootRouter;

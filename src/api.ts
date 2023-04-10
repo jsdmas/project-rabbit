@@ -1,14 +1,15 @@
 import axios from "axios";
-import { OrderBy, OrderCommends } from "./atoms";
+import { OrderBy, OrderCommends, SearchOption } from "./atoms";
 import { HandleErrorHelper } from "./helper/HandleErrorHelper";
 import { IpostCommentData, IpostData } from "./types/thread";
 
-export const fetchThreadList = async (offset = 0, orderCommend: OrderCommends, orderby: OrderBy) => {
+export const fetchThreadList = async (offset = 0, orderCommend: OrderCommends, orderby: OrderBy, searchKeyword: string | null = "", keywordoption?: SearchOption) => {
     let response = null;
     try {
-        const { data } = await axios.get("/threads", { params: { offset, orderCommend, orderby } });
+        const { data } = await axios.get("/threads", { params: { offset, orderCommend, orderby, searchKeyword, keywordoption } });
         response = data;
     } catch (error) {
+        throw error;
         HandleErrorHelper(error, "info");
     }
     return response;
@@ -121,15 +122,5 @@ export const commentIncrementLike = async (commentId: number) => {
     return responseData;
 };
 
-export const searchThread = async (searchParam: string, option: string) => {
-    let response = null;
-    try {
-        const { data } = await axios.get("/search", { params: { searchParam, option } });
-        response = data;
-    } catch (error) {
-        HandleErrorHelper(error);
-    }
-    return response;
-};
 
 
