@@ -20,6 +20,16 @@ class RegexHelper {
         return true;
     }
 
+    /**
+     * 두 값이 동일한지 검사한다.
+     * @param  {string} origin  원본
+     * @param  {string} compare 검사 대상
+     */
+    compareTo(origin: string, compare: string) {
+        var src = origin.trim();
+        var dsc = compare.trim();
+        return src !== dsc ? false : true;
+    }
 
 };
 

@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { memo } from "react";
+import { memo, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { useParams } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
@@ -39,6 +39,7 @@ const CommentForm = ({ commentParentNum }: { commentParentNum?: number }) => {
     const queryClient = useQueryClient();
     const setReply = useSetRecoilState(replyState);
     const { register, handleSubmit, formState: { errors }, reset } = useForm<IpostCommentData>();
+    const buttonRef = useRef<HTMLButtonElement | null>(null);
     const { mutate } = useMutation((data: IpostCommentData) => postComment(data, threadid, commentParentNum), { onSuccess: () => queryClient.invalidateQueries(["thread", threadid]) });
     const commentSubmit = (data: IpostCommentData) => {
         mutate(data);
@@ -46,23 +47,30 @@ const CommentForm = ({ commentParentNum }: { commentParentNum?: number }) => {
         reset();
     };
 
+    const onkeydown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+        if (event.key === "Enter" && buttonRef.current !== null) {
+            buttonRef.current.focus()
+        }
+    };
+
     return (
         <Form onSubmit={handleSubmit(commentSubmit)}>
-            <CommentTextarea  {...register("commentContent", {
-                required: "내용은 반드시 적어야 합니다.",
-                maxLength: {
-                    value: 50000,
-                    message: "내용은 최대 50000글자입니다."
-                },
-                minLength: {
-                    value: 1,
-                    message: "최소 1글자 이상적어야 합니다."
-                },
-                validate: {
-                    RegexValue: (commentContent) => RegexHelper.value(commentContent) ? true : "내용을 올바르게 적어주세요"
-                }
-            })} placeholder="comment..." />
-            <button>작성</button>
+            <CommentTextarea onKeyDown={onkeydown} placeholder="comment..."
+                {...register("commentContent", {
+                    required: "내용은 반드시 적어야 합니다.",
+                    maxLength: {
+                        value: 50000,
+                        message: "내용은 최대 50000글자입니다."
+                    },
+                    minLength: {
+                        value: 1,
+                        message: "최소 1글자 이상적어야 합니다."
+                    },
+                    validate: {
+                        RegexValue: (commentContent) => RegexHelper.value(commentContent) ? true : "내용을 올바르게 적어주세요"
+                    }
+                })} />
+            <button ref={buttonRef}>작성</button>
             <span>{errors.commentContent?.message}</span>
         </Form>
 

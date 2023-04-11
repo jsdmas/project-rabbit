@@ -165,7 +165,7 @@ const Header = ({ remove }: IHeader) => {
         resetErrorMessage();
         queryClient.refetchQueries();
     };
-    const { register, handleSubmit, setFocus } = useForm();
+    const { register, handleSubmit, setFocus, setValue } = useForm();
     const onVaild = (data: FieldValues) => {
         const { option, search } = data;
         if (option === SearchOption.none) setFocus("option");
@@ -176,6 +176,7 @@ const Header = ({ remove }: IHeader) => {
             setSearchKeyword(search);
             remove();
             resetErrorMessage();
+            setValue("search", null);
             queryClient.resetQueries();
         }
     };

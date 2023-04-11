@@ -2,7 +2,7 @@ import { faHeart, faUser } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import styled from "styled-components"
 import { Link, useParams } from "react-router-dom"
-import { memo, useState } from "react"
+import { memo, useRef, useState } from "react"
 import { IcommentData, IpostCommentData, TTreadId } from "../types/thread"
 import CommentForm from "./CommentForm"
 import { useRecoilState } from "recoil"
@@ -109,7 +109,8 @@ const Comment = ({ inside, commentContent, commentCreated, commentLike, commentW
     const queryClient = useQueryClient();
     const [commentEdit, setCommentEdit] = useState(false);
     const [replyId, setReplyId] = useRecoilState(replyState);
-    const { register, handleSubmit, formState: { errors } } = useForm<IpostCommentData>();
+    const { register, handleSubmit, formState: { errors }, setFocus } = useForm<IpostCommentData>();
+    const buttonRef = useRef<HTMLButtonElement | null>(null);
     const onSuccess = () => queryClient.invalidateQueries(["thread", threadid]);
     const { mutate: editMutate } = useMutation((data: IpostCommentData) => editComment(data, commentId), { onSuccess });
     const { mutate: deleteCommentMutate } = useMutation(deleteComment, { onSuccess });
@@ -155,6 +156,13 @@ const Comment = ({ inside, commentContent, commentCreated, commentLike, commentW
             });
         }
     };
+
+    const onkeydown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+        if (event.key === "Enter" && buttonRef.current !== null) {
+            buttonRef.current.focus()
+        }
+    };
+
     return (
         <Grid inside={inside}>
             <User>
@@ -170,7 +178,7 @@ const Comment = ({ inside, commentContent, commentCreated, commentLike, commentW
                         {commentModified ? `수정:${commentModified.slice(0, 10)}` : commentCreated?.slice(0, 10)}
                     </UserInfoCol>
                     <UserInfoCol>
-                        <Link to="" onClick={() => setCommentEdit(prev => !prev)} >수정</Link> &nbsp;|&nbsp;
+                        <Link to="" onClick={() => setCommentEdit(prev => !prev)}>수정</Link> &nbsp;|&nbsp;
                         <Link to="" onClick={handleCommentDelete}>삭제</Link>
                     </UserInfoCol>
                     <UserInfoCol>
@@ -178,21 +186,23 @@ const Comment = ({ inside, commentContent, commentCreated, commentLike, commentW
                     </UserInfoCol>
                     {!commentEdit ? (<UserComment commentEdit={commentEdit}>{commentContent}</UserComment>) : (
                         <PatchCommentForm commentEdit={commentEdit} onSubmit={handleSubmit(commentEditSubmit)}>
-                            <CommentTextarea defaultValue={commentContent} {...register("commentContent", {
-                                required: "내용은 반드시 적어야 합니다.",
-                                maxLength: {
-                                    value: 50000,
-                                    message: "내용은 최대 50000글자입니다."
-                                },
-                                minLength: {
-                                    value: 1,
-                                    message: "최소 1글자 이상적어야 합니다."
-                                },
-                                validate: {
-                                    RegexValue: (commentContent) => RegexHelper.value(commentContent) ? true : "내용을 올바르게 적어주세요"
-                                }
-                            })} />
-                            <button>수정</button>
+                            <CommentTextarea defaultValue={commentContent} onKeyDown={onkeydown}
+                                {...register("commentContent",
+                                    {
+                                        required: "내용은 반드시 적어야 합니다.",
+                                        maxLength: {
+                                            value: 50000,
+                                            message: "내용은 최대 50000글자입니다."
+                                        },
+                                        minLength: {
+                                            value: 1,
+                                            message: "최소 1글자 이상적어야 합니다."
+                                        },
+                                        validate: {
+                                            RegexValue: (commentContent) => RegexHelper.value(commentContent) ? true : "내용을 올바르게 적어주세요"
+                                        }
+                                    })} />
+                            <button ref={buttonRef}>수정</button>
                             <span>{errors.commentContent?.message}</span>
                         </PatchCommentForm>
                     )}
