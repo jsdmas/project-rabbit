@@ -1,13 +1,15 @@
-import { memo, useEffect, useRef } from "react";
+import { memo, useEffect, useRef, useState } from "react";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { fetchThreadList } from "../api";
-import { orderbyState, orderCommendState, searchKeywordState, keywordOptionState } from "../atoms";
+import { orderbyState, orderCommendState, searchKeywordState, keywordOptionState, errorMessageState } from "../atoms";
 import Header from "../components/Header";
 import Post from "../components/ThreadList";
 import { throttle } from "lodash";
 import { IThreadList } from "../types/thread";
+import Spinner from "../components/Spinner";
+import { isAxiosError } from "axios";
 
 interface IPageData {
     data: IThreadList[]
@@ -22,8 +24,16 @@ const Wrapper = styled.div`
     margin: auto;
 `;
 
+const ErrorMessage = styled.div`
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+`;
+
+
 const Observer = styled.div`
-    background-color: black;
+    background-color: ${props => props.theme.bgColor};
     width: 100%;
     height: 20vh;
 `;
@@ -35,6 +45,7 @@ const Home = () => {
     const kewordoption = useRecoilValue(keywordOptionState);
     const observerTargetEl = useRef<HTMLDivElement>(null);
     const throttled = useRef(throttle(() => fetchNextPage(), 250)).current;
+    const [errorMessage, setErrorMessage] = useRecoilState(errorMessageState);
     const { data: response, fetchNextPage, remove, isLoading }
         = useInfiniteQuery(["InfiniteThreadData"],
             ({ pageParam = 0 }) => fetchThreadList(pageParam, orderCommend, orderby, keword, kewordoption),
@@ -42,8 +53,13 @@ const Home = () => {
                 getNextPageParam: lastpage => {
                     if (lastpage === null) return undefined;
                     return lastpage.nextOffset;
-                }, onError: () => console.log("error!!!"),
-                retry: 3
+                }, onError: (error) => {
+                    if (isAxiosError(error)) {
+                        setErrorMessage(error.response?.data.rtmsg);
+                    }
+                },
+                retry: 3,
+                retryDelay: 600
             });
     useEffect(() => {
         if (!observerTargetEl.current) return;
@@ -55,17 +71,17 @@ const Home = () => {
         io.observe(observerTargetEl.current);
     }, [throttled]);
     console.log(response);
-    console.log(isLoading);
     return (
         <>
             <Header remove={remove} />
             <Wrapper>
-                {isLoading || !response?.pages?.length ? null :
+                {isLoading || !response?.pages?.length ? <Spinner isLoading={isLoading} /> :
                     response?.pages.map((page: IPageData) => {
                         if (!page) return null;
                         return page.data.map((props: IThreadList) => <Post {...props} key={props.post_id} />);
                     })
                 }
+                {errorMessage ? <ErrorMessage>☹️ {errorMessage}</ErrorMessage> : null}
             </Wrapper>
             <Observer ref={observerTargetEl} />
         </>

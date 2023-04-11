@@ -5,8 +5,8 @@ import darkLogo from "../assets/logo_dark.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faMagnifyingGlass, faMoon, faSun } from "@fortawesome/free-solid-svg-icons";
 import { Link, useLocation } from "react-router-dom";
-import { useRecoilState, useSetRecoilState } from "recoil";
-import { darkState, OrderBy, orderbyState, OrderCommends, orderCommendState, keywordOptionState, searchKeywordState, SearchOption } from "../atoms";
+import { useRecoilState, useResetRecoilState, useSetRecoilState } from "recoil";
+import { darkState, OrderBy, orderbyState, OrderCommends, orderCommendState, keywordOptionState, searchKeywordState, SearchOption, errorMessageState } from "../atoms";
 import { useQueryClient } from "@tanstack/react-query";
 import { throttle } from "lodash";
 import { FieldValues, useForm } from "react-hook-form";
@@ -140,46 +140,56 @@ const Header = ({ remove }: IHeader) => {
     const sortTime = useSetRecoilState(orderbyState);
     const setSearchOption = useSetRecoilState(keywordOptionState);
     const setSearchKeyword = useSetRecoilState(searchKeywordState);
+    const resetOption = useResetRecoilState(keywordOptionState);
+    const resetKeyword = useResetRecoilState(searchKeywordState);
+    const resetErrorMessage = useResetRecoilState(errorMessageState);
     const [isMenu, setIsMenu] = useState(false);
     const { pathname } = useLocation();
     const sortLikeClick = throttle(() => {
-        if (remove) {
-            remove();
-            queryClient.resetQueries();
-            sortLike(prev => prev === OrderCommends["p.created"] ? OrderCommends["p.like"] : OrderCommends["p.created"]);
-        }
+        if (!remove) return
+        remove();
+        queryClient.refetchQueries();
+        sortLike(prev => prev === OrderCommends["p.created"] ? OrderCommends["p.like"] : OrderCommends["p.created"]);
     }, 300);
     const sortTimeClick = throttle(() => {
-        if (remove) {
-            remove();
-            queryClient.resetQueries();
-            sortTime(prev => prev === OrderBy.DESC ? OrderBy.ASC : OrderBy.DESC);
-        }
+        if (!remove) return
+        remove();
+        queryClient.refetchQueries();
+        sortTime(prev => prev === OrderBy.DESC ? OrderBy.ASC : OrderBy.DESC);
     }, 300);
-
+    const homeClick = () => {
+        if (!remove) return
+        remove();
+        resetOption();
+        resetKeyword();
+        resetErrorMessage();
+        queryClient.refetchQueries();
+    };
     const { register, handleSubmit, setFocus } = useForm();
     const onVaild = (data: FieldValues) => {
-        if (data.searchOption === "none") setFocus("searchOption");
-        if (!data.search) setFocus("search");
-        const { searchOption, search } = data;
-        setSearchOption(searchOption);
-        setSearchKeyword(search);
-        if (remove) {
+        const { option, search } = data;
+        if (option === SearchOption.none) setFocus("option");
+        if (!search || search.trim() === "") setFocus("search");
+        if (option !== SearchOption.none && search.trim() !== "") {
+            if (!remove) return
+            setSearchOption(option);
+            setSearchKeyword(search);
             remove();
+            resetErrorMessage();
+            queryClient.resetQueries();
         }
-        queryClient.resetQueries();
     };
     return (
         <Nav>
             <Col>
-                <Link to="/">
+                <Link to="/" onClick={homeClick} >
                     <Img src={isdark ? darkLogo : lightLogo} alt="logo_rabbit" />
                 </Link>
             </Col>
             <Item>
                 {pathname === "/" ?
                     <Form onSubmit={handleSubmit(onVaild)}>
-                        <select  {...register("searchOption")}>
+                        <select  {...register("option")}>
                             <option value={SearchOption.none}>선택</option>
                             <option value={SearchOption.Thread}>Thread</option>
                             <option value={SearchOption.Title}>Title</option>

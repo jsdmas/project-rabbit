@@ -10,7 +10,6 @@ export const fetchThreadList = async (offset = 0, orderCommend: OrderCommends, o
         response = data;
     } catch (error) {
         throw error;
-        HandleErrorHelper(error, "info");
     }
     return response;
 };

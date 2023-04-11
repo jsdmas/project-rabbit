@@ -47,3 +47,8 @@ export const searchKeywordState = atom<null | string>({
     key: "searchKeyword",
     default: null
 });
+
+export const errorMessageState = atom({
+    key: "errorMessageState",
+    default: ""
+});
