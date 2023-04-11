@@ -8,6 +8,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faHeart, faMessage } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import { IThreadList } from "../types/thread";
+import { memo } from "react";
 
 const Wrapper = styled.div`
     width: 100%;
@@ -105,4 +106,4 @@ const ThreadList = ({ title, content, created, img_name, img_url, like, modified
     );
 };
 
-export default ThreadList;
+export default memo(ThreadList);

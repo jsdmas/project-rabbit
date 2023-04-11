@@ -17,7 +17,7 @@ const Router = () => {
                 <Route path="/write" element={<Write />} />
                 <Route path="/thread/:threadid" element={<Thread />} />
                 <Route path="/thread/:threadid/edit" element={<EditThread />} />
-                <Route path="/*" element={<NotFound />} />
+                <Route path="*" element={<NotFound />} />
             </Routes>
         </BrowserRouter>
     );

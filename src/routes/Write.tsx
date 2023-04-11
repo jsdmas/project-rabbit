@@ -3,7 +3,7 @@ import RegexHelper from '../helper/RegexHelper';
 import BackPageIcon from '../components/BackPageIcon';
 import Header from '../components/Header';
 import { useForm } from "react-hook-form"
-import { createThread } from '../api';
+import { createThread } from '../api/threadApi';
 import { useNavigate } from 'react-router-dom';
 import { IpostData } from '../types/thread';
 

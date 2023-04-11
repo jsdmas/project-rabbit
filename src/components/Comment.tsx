@@ -1,17 +1,18 @@
 import { faHeart, faUser } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import styled from "styled-components"
-import { Link, useParams } from "react-router-dom"
+import { Link, useNavigate, useParams } from "react-router-dom"
 import { memo, useRef, useState } from "react"
 import { IcommentData, IpostCommentData, TTreadId } from "../types/thread"
 import CommentForm from "./CommentForm"
 import { useRecoilState } from "recoil"
 import { replyState } from "../atoms"
-import { deleteComment, editComment, commentIncrementLike } from "../api"
+import { deleteComment, editComment, commentIncrementLike } from "../api/threadApi"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import Swal from "sweetalert2"
 import { useForm } from "react-hook-form"
 import RegexHelper from "../helper/RegexHelper"
+import { HandleErrorHelper } from "../helper/HandleErrorHelper"
 
 const Grid = styled.div<{ inside?: string }>`
     display: grid;
@@ -106,10 +107,11 @@ const CommentTextarea = styled.textarea`
 
 const Comment = ({ inside, commentContent, commentCreated, commentLike, commentWriteUser, commentModified, commentWriteUserImgUrl, commentParentNum, commentId }: IcommentData) => {
     const { threadid } = useParams() as TTreadId;
+    const navigate = useNavigate();
     const queryClient = useQueryClient();
     const [commentEdit, setCommentEdit] = useState(false);
     const [replyId, setReplyId] = useRecoilState(replyState);
-    const { register, handleSubmit, formState: { errors }, setFocus } = useForm<IpostCommentData>();
+    const { register, handleSubmit, formState: { errors } } = useForm<IpostCommentData>();
     const buttonRef = useRef<HTMLButtonElement | null>(null);
     const onSuccess = () => queryClient.invalidateQueries(["thread", threadid]);
     const { mutate: editMutate } = useMutation((data: IpostCommentData) => editComment(data, commentId), { onSuccess });
@@ -129,6 +131,10 @@ const Comment = ({ inside, commentContent, commentCreated, commentLike, commentW
             allowOutsideClick: () => !Swal.isLoading()
         })
             .then((result) => result.isConfirmed ? Swal.fire({ title: "수정 성공!", icon: "success" }) : null)
+            .catch(error => {
+                navigate("/");
+                HandleErrorHelper(error);
+            });
     };
     const handleCommentDelete = () => {
         Swal.fire({
@@ -142,6 +148,10 @@ const Comment = ({ inside, commentContent, commentCreated, commentLike, commentW
             allowOutsideClick: () => !Swal.isLoading()
         })
             .then((result) => result.isConfirmed ? Swal.fire({ title: "삭제 성공!", icon: "success" }) : null)
+            .catch(error => {
+                navigate("/");
+                HandleErrorHelper(error);
+            });
     };
     const handleCommentLike = () => {
         const now = new Date();

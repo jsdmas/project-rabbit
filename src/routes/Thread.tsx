@@ -6,11 +6,14 @@ import styled from "styled-components";
 import { IcommentData, IResponse, TTreadId } from "../types/thread";
 import { faHeart, faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { fetchThread, patchThreadLike, deleteThread } from "../api";
+import { fetchThread, patchThreadLike, deleteThread } from "../api/threadApi";
 import BackPageIcon from "../components/BackPageIcon";
 import Comment from "../components/Comment";
 import Header from "../components/Header";
 import CommentForm from "../components/CommentForm";
+import Spinner from "../components/Spinner";
+import { HandleErrorHelper } from "../helper/HandleErrorHelper";
+import { error } from "console";
 
 
 const Wrapper = styled.div`
@@ -94,7 +97,14 @@ const Thread = () => {
     const { threadid } = useParams() as TTreadId;
     const queryClient = useQueryClient();
     const navigate = useNavigate();
-    const { data: response } = useQuery<IResponse>(["thread", threadid], () => fetchThread(threadid));
+    const { data: response, isLoading } = useQuery<IResponse>(["thread", threadid], () => fetchThread(threadid),
+        {
+            onError: (error) => {
+                navigate("/");
+                HandleErrorHelper(error);
+            }, retry: 3, retryDelay: 600
+        });
+
     const [threadItem] = response?.data ?? [];
     const { postContent, postCreated, postLike, postTitle, postWriteUser, postWriteUserImgUrl, postModified } = threadItem ?? {};
     const onSuccess = () => queryClient.invalidateQueries(["thread", threadid]);
@@ -113,6 +123,7 @@ const Thread = () => {
             });
         }
     };
+
     const handleThreadDelete = () => {
         Swal.fire({
             title: "게시글을 정말 삭제 하시겠습니까?",
@@ -127,44 +138,50 @@ const Thread = () => {
             allowOutsideClick: () => !Swal.isLoading()
         })
             .then((result) => result.isConfirmed ? Swal.fire({ title: "삭제 성공!", icon: "success" }) : null)
+            .catch(error => {
+                navigate("/");
+                HandleErrorHelper(error);
+            });
     };
     return (
         <>
             <Header />
-            <Wrapper>
-                <Head>
-                    <Col><BackPageIcon /></Col>
-                    <Col>{postWriteUserImgUrl ? "" : <FontAwesomeIcon icon={faUser} />} {postWriteUser ? postWriteUser : "anonymous"}</Col>
-                    <Col>{postModified ? `수정됨 : ${postModified?.slice(0, 10)} ${postModified?.slice(11, 19)}` : `posted by ${postCreated?.slice(0, 10)} ${postCreated?.slice(11, 19)}`}</Col>
-                </Head>
-                <Main>
-                    <TitleSection>
-                        <Col>{postTitle}</Col>
-                        <Col><Link to={`edit`}>수정</Link>&nbsp;|&nbsp;<Link to="" onClick={handleThreadDelete}>삭제</Link></Col>
-                    </TitleSection>
-                    {postContent}
-                    <LoveBox>
-                        <Col onClick={likeIncrement}>
-                            <FontAwesomeIcon icon={faHeart} />&nbsp;&nbsp;{postLike ? postLike : 0}
-                        </Col>
-                    </LoveBox>
-                </Main>
-                <CommentWrapper>
-                    <CommentForm />
-                    {response?.commentData?.map((parent: IcommentData) =>
-                        parent.commentParentNum === null ? (
-                            <CommentSection key={parent.commentId}>
-                                <Comment {...parent} />
-                                {response?.commentData
-                                    ?.filter(child => child.commentParentNum === parent.commentId)
-                                    .map(child => (
-                                        <Comment {...child} inside={"10vw"} key={child.commentId} />
-                                    ))}
-                            </CommentSection>
-                        ) : null
-                    )}
-                </CommentWrapper>
-            </Wrapper>
+            {isLoading ? <Spinner isLoading={isLoading} /> : (
+                <Wrapper>
+                    <Head>
+                        <Col><BackPageIcon /></Col>
+                        <Col>{postWriteUserImgUrl ? "" : <FontAwesomeIcon icon={faUser} />} {postWriteUser ? postWriteUser : "anonymous"}</Col>
+                        <Col>{postModified ? `수정됨 : ${postModified?.slice(0, 10)} ${postModified?.slice(11, 19)}` : `posted by ${postCreated?.slice(0, 10)} ${postCreated?.slice(11, 19)}`}</Col>
+                    </Head>
+                    <Main>
+                        <TitleSection>
+                            <Col>{postTitle}</Col>
+                            <Col><Link to={`edit`}>수정</Link>&nbsp;|&nbsp;<Link to="" onClick={handleThreadDelete}>삭제</Link></Col>
+                        </TitleSection>
+                        {postContent}
+                        <LoveBox>
+                            <Col onClick={likeIncrement}>
+                                <FontAwesomeIcon icon={faHeart} />&nbsp;&nbsp;{postLike ? postLike : 0}
+                            </Col>
+                        </LoveBox>
+                    </Main>
+                    <CommentWrapper>
+                        <CommentForm />
+                        {response?.commentData?.map((parent: IcommentData) =>
+                            parent.commentParentNum === null ? (
+                                <CommentSection key={parent.commentId}>
+                                    <Comment {...parent} />
+                                    {response?.commentData
+                                        ?.filter(child => child.commentParentNum === parent.commentId)
+                                        .map(child => (
+                                            <Comment {...child} inside={"10vw"} key={child.commentId} />
+                                        ))}
+                                </CommentSection>
+                            ) : null
+                        )}
+                    </CommentWrapper>
+                </Wrapper>
+            )}
         </>
     );
 };

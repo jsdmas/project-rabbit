@@ -1,8 +1,8 @@
-import { memo, useEffect, useRef, useState } from "react";
+import { memo, useEffect, useRef } from "react";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
-import { fetchThreadList } from "../api";
+import { fetchThreadList } from "../api/threadApi";
 import { orderbyState, orderCommendState, searchKeywordState, keywordOptionState, errorMessageState } from "../atoms";
 import Header from "../components/Header";
 import Post from "../components/ThreadList";
@@ -59,7 +59,7 @@ const Home = () => {
                     }
                 },
                 retry: 3,
-                retryDelay: 600
+                retryDelay: 600,
             });
     useEffect(() => {
         if (!observerTargetEl.current) return;
@@ -70,7 +70,9 @@ const Home = () => {
         }, { threshold: 0.5 });
         io.observe(observerTargetEl.current);
     }, [throttled]);
-    console.log(response);
+    if (!isLoading) {
+        console.log(response);
+    }
     return (
         <>
             <Header remove={remove} />

@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { useParams } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
-import { postComment } from "../api";
+import { postComment } from "../api/threadApi";
 import { replyState } from "../atoms";
 import RegexHelper from "../helper/RegexHelper";
 import { IpostCommentData, TTreadId } from "../types/thread";
