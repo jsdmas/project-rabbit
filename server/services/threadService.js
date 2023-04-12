@@ -140,6 +140,7 @@ class ThreadService {
 
     async deleteThread(params) {
         let dbcon = null;
+        let data = null;
         console.debug("Thread Delete");
         console.debug(params);
         try {
@@ -158,6 +159,7 @@ class ThreadService {
         } finally {
             if (dbcon) { dbcon.release(); }
         }
+        return data;
 
     }
 

@@ -10,7 +10,8 @@ import Swal from 'sweetalert2';
 import { useQuery } from '@tanstack/react-query';
 import { fetchMainTextThread } from "../api/threadApi";
 import Spinner from '../components/Spinner';
-import { HandleErrorHelper } from '../helper/HandleErrorHelper';
+import { HandleErrorHelper } from '../helper/ErrorHelper';
+import useError from '../hooks/useError';
 
 const Wrapper = styled.div`
     margin-top: 8vh;
@@ -81,13 +82,8 @@ const EditThread = () => {
     const navigate = useNavigate();
     const { threadid } = useParams() as TTreadId;
     const { register, handleSubmit, formState: { errors } } = useForm<IpostData>();
-    const { data: response, isLoading } = useQuery<IResponse>(["thread", threadid], () => fetchMainTextThread(threadid),
-        {
-            onError: (error) => {
-                navigate("/");
-                HandleErrorHelper(error);
-            }, retry: 3, retryDelay: 600
-        });
+    const { onError } = useError();
+    const { data: response, isLoading } = useQuery<IResponse>(["thread", threadid], () => fetchMainTextThread(threadid), { onError, retry: 3, retryDelay: 600 });
     const [threadItem] = response?.data ?? [];
     const { postTitle, postContent } = threadItem ?? {};
     const onVaild = async (postData: IpostData) => {
@@ -102,7 +98,7 @@ const EditThread = () => {
             },
             allowOutsideClick: () => !Swal.isLoading()
         })
-            .then((result) => result.isConfirmed ? Swal.fire({ title: "수정 성공!", icon: "success" }) : null)
+            .then((result) => result.isConfirmed ? Swal.fire({ title: "수정 성공!", icon: "success" }) : null).catch(() => onError);
     };
 
     return (

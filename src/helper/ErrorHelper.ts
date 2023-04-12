@@ -10,5 +10,5 @@ export const HandleErrorHelper = (error: unknown, icon: SweetAlertIcon = "error"
     } else {
         alert("형식을 알수없는 오류입니다.");
     }
-    return
+    return;
 }

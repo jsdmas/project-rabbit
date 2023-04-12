@@ -8,6 +8,7 @@ import { postComment } from "../api/threadApi";
 import { replyState } from "../atoms";
 import RegexHelper from "../helper/RegexHelper";
 import { IpostCommentData, TTreadId } from "../types/thread";
+import useError from "../hooks/useError";
 
 const Form = styled.form<{ fromReplyId?: number | null }>`
     display: grid;
@@ -38,9 +39,10 @@ const CommentForm = ({ commentParentNum }: { commentParentNum?: number }) => {
     const { threadid } = useParams() as TTreadId;
     const queryClient = useQueryClient();
     const setReply = useSetRecoilState(replyState);
+    const { onError } = useError();
     const { register, handleSubmit, formState: { errors }, reset } = useForm<IpostCommentData>();
     const buttonRef = useRef<HTMLButtonElement | null>(null);
-    const { mutate } = useMutation((data: IpostCommentData) => postComment(data, threadid, commentParentNum), { onSuccess: () => queryClient.invalidateQueries(["thread", threadid]) });
+    const { mutate } = useMutation((data: IpostCommentData) => postComment(data, threadid, commentParentNum), { onSuccess: () => queryClient.invalidateQueries(["thread", threadid]), onError });
     const commentSubmit = (data: IpostCommentData) => {
         mutate(data);
         setReply(null);

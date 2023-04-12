@@ -1,6 +1,5 @@
 import axios from "axios";
 import { OrderBy, OrderCommends, SearchOption } from "../atoms";
-import { HandleErrorHelper } from "../helper/HandleErrorHelper";
 import { IpostCommentData, IpostData } from "../types/thread";
 
 export const fetchThreadList = async (offset = 0, orderCommend: OrderCommends, orderby: OrderBy, searchKeyword: string | null = "", keywordoption?: SearchOption) => {
@@ -59,11 +58,14 @@ export const updateThread = async (postData: IpostData, threadid: string) => {
 };
 
 export const deleteThread = async (threadid: string) => {
+    let response = null;
     try {
-        await axios.delete(`/thread/${threadid}`, { data: { threadid } });
+        const { data } = await axios.delete(`/thread/${threadid}`, { data: { threadid } });
+        response = data;
     } catch (error) {
         throw error;
     }
+    return response;
 };
 
 export const patchThreadLike = async (threadid: string) => {
@@ -72,7 +74,7 @@ export const patchThreadLike = async (threadid: string) => {
         const { data } = await axios.patch(`/thread/${threadid}/like`);
         response = data;
     } catch (error) {
-        HandleErrorHelper(error);
+        throw error;
     }
     return response;
 };
@@ -83,7 +85,7 @@ export const postComment = async (commentContent: IpostCommentData, threadid: st
         const { data } = await axios.post(`/thread/${threadid}/comment`, { data: { commentContent, commentParentNum } })
         responseData = data;
     } catch (error) {
-        HandleErrorHelper(error);
+        throw error;
     }
     return responseData;
 };
@@ -116,7 +118,7 @@ export const commentIncrementLike = async (commentId: number) => {
         const { data } = await axios.patch(`/thread/comment-like`, { commentId });
         responseData = data;
     } catch (error) {
-        HandleErrorHelper(error);
+        throw error;
     }
     return responseData;
 };

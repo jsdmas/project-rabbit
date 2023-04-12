@@ -28,7 +28,20 @@ class RegexHelper {
     compareTo(origin: string, compare: string) {
         var src = origin.trim();
         var dsc = compare.trim();
-        return src !== dsc ? false : true;
+        return src === dsc ? true : false;
+    }
+
+    /**
+     * 이메일주소 형식인지 검사하기 위해 field()를 간접적으로 호출한다.
+     * @param  {string} content   입력내용
+     */
+    email(content: string) {
+        const regexExpr = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+        const src = typeof content == 'string' ? content.trim() : content;
+        if (!src || !regexExpr.test(src)) {
+            return false;
+        }
+        return true;
     }
 
 };

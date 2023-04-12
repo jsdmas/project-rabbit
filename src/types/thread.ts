@@ -1,4 +1,3 @@
-import { SearchOption } from "../atoms";
 
 export type TTreadId = {
     threadid: string

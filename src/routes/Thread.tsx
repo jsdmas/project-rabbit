@@ -12,8 +12,7 @@ import Comment from "../components/Comment";
 import Header from "../components/Header";
 import CommentForm from "../components/CommentForm";
 import Spinner from "../components/Spinner";
-import { HandleErrorHelper } from "../helper/HandleErrorHelper";
-import { error } from "console";
+import useError from "../hooks/useError";
 
 
 const Wrapper = styled.div`
@@ -97,19 +96,13 @@ const Thread = () => {
     const { threadid } = useParams() as TTreadId;
     const queryClient = useQueryClient();
     const navigate = useNavigate();
-    const { data: response, isLoading } = useQuery<IResponse>(["thread", threadid], () => fetchThread(threadid),
-        {
-            onError: (error) => {
-                navigate("/");
-                HandleErrorHelper(error);
-            }, retry: 3, retryDelay: 600
-        });
-
+    const { onError } = useError();
+    const { data: response, isLoading } = useQuery<IResponse>(["thread", threadid], () => fetchThread(threadid), { onError, retry: 3, retryDelay: 600 });
     const [threadItem] = response?.data ?? [];
     const { postContent, postCreated, postLike, postTitle, postWriteUser, postWriteUserImgUrl, postModified } = threadItem ?? {};
     const onSuccess = () => queryClient.invalidateQueries(["thread", threadid]);
-    const { mutate: threadlike } = useMutation(patchThreadLike, { onSuccess });
-    const { mutate: deleteMutate } = useMutation(deleteThread, { onSuccess });
+    const { mutate: threadlike } = useMutation(patchThreadLike, { onSuccess, onError });
+    const { mutate: deleteMutate } = useMutation(deleteThread, { onSuccess, onError });
     const likeIncrement = () => {
         const now = new Date();
         const incrementTime = new Date(localStorage.getItem("threadIncrementTime") || 0);
@@ -136,12 +129,7 @@ const Thread = () => {
                 navigate(-1);
             },
             allowOutsideClick: () => !Swal.isLoading()
-        })
-            .then((result) => result.isConfirmed ? Swal.fire({ title: "삭제 성공!", icon: "success" }) : null)
-            .catch(error => {
-                navigate("/");
-                HandleErrorHelper(error);
-            });
+        }).then((result) => result.value ? Swal.fire({ title: "삭제 성공!", icon: "success" }) : null).catch(() => onError);
     };
     return (
         <>

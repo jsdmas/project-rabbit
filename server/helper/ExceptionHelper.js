@@ -15,8 +15,8 @@ class Exception extends Error {
 };
 
 export class BadRequestException extends Exception {
-    constructor(msg = "잘못된 요청 입니다.") {
-        super(400, msg);
+    constructor(code = 400, msg = "잘못된 요청 입니다.") {
+        super(code, msg);
     }
 }
 

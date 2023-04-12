@@ -1,7 +1,7 @@
 import { faHeart, faUser } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import styled from "styled-components"
-import { Link, useNavigate, useParams } from "react-router-dom"
+import { Link, useParams } from "react-router-dom"
 import { memo, useRef, useState } from "react"
 import { IcommentData, IpostCommentData, TTreadId } from "../types/thread"
 import CommentForm from "./CommentForm"
@@ -12,7 +12,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query"
 import Swal from "sweetalert2"
 import { useForm } from "react-hook-form"
 import RegexHelper from "../helper/RegexHelper"
-import { HandleErrorHelper } from "../helper/HandleErrorHelper"
+import useError from "../hooks/useError"
 
 const Grid = styled.div<{ inside?: string }>`
     display: grid;
@@ -107,16 +107,22 @@ const CommentTextarea = styled.textarea`
 
 const Comment = ({ inside, commentContent, commentCreated, commentLike, commentWriteUser, commentModified, commentWriteUserImgUrl, commentParentNum, commentId }: IcommentData) => {
     const { threadid } = useParams() as TTreadId;
-    const navigate = useNavigate();
     const queryClient = useQueryClient();
     const [commentEdit, setCommentEdit] = useState(false);
     const [replyId, setReplyId] = useRecoilState(replyState);
     const { register, handleSubmit, formState: { errors } } = useForm<IpostCommentData>();
+    const { onError } = useError();
+    const onSuccess = () => queryClient.invalidateQueries(["thread", threadid])
     const buttonRef = useRef<HTMLButtonElement | null>(null);
-    const onSuccess = () => queryClient.invalidateQueries(["thread", threadid]);
-    const { mutate: editMutate } = useMutation((data: IpostCommentData) => editComment(data, commentId), { onSuccess });
-    const { mutate: deleteCommentMutate } = useMutation(deleteComment, { onSuccess });
-    const { mutate: likeMutate } = useMutation(commentIncrementLike, { onSuccess });
+    const onkeydown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+        if (event.key === "Enter" && buttonRef.current !== null) {
+            buttonRef.current.focus()
+        }
+    };
+
+    const { mutate: editMutate } = useMutation((data: IpostCommentData) => editComment(data, commentId), { onSuccess, onError });
+    const { mutate: deleteCommentMutate } = useMutation(deleteComment, { onSuccess, onError });
+    const { mutate: likeMutate } = useMutation(commentIncrementLike, { onSuccess, onError });
 
     const commentEditSubmit = (data: IpostCommentData) => {
         Swal.fire({
@@ -130,11 +136,7 @@ const Comment = ({ inside, commentContent, commentCreated, commentLike, commentW
             },
             allowOutsideClick: () => !Swal.isLoading()
         })
-            .then((result) => result.isConfirmed ? Swal.fire({ title: "수정 성공!", icon: "success" }) : null)
-            .catch(error => {
-                navigate("/");
-                HandleErrorHelper(error);
-            });
+            .then((result) => result.value ? Swal.fire({ title: "수정 성공!", icon: "success" }) : null).catch(() => onError);
     };
     const handleCommentDelete = () => {
         Swal.fire({
@@ -147,11 +149,7 @@ const Comment = ({ inside, commentContent, commentCreated, commentLike, commentW
             },
             allowOutsideClick: () => !Swal.isLoading()
         })
-            .then((result) => result.isConfirmed ? Swal.fire({ title: "삭제 성공!", icon: "success" }) : null)
-            .catch(error => {
-                navigate("/");
-                HandleErrorHelper(error);
-            });
+            .then((result) => result.value ? Swal.fire({ title: "삭제 성공!", icon: "success" }) : null).catch(() => onError);
     };
     const handleCommentLike = () => {
         const now = new Date();
@@ -164,12 +162,6 @@ const Comment = ({ inside, commentContent, commentCreated, commentLike, commentW
                 icon: "warning",
                 text: "댓글 좋아요는 10초마다 누를 수 있습니다.",
             });
-        }
-    };
-
-    const onkeydown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
-        if (event.key === "Enter" && buttonRef.current !== null) {
-            buttonRef.current.focus()
         }
     };
 

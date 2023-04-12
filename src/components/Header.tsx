@@ -11,13 +11,11 @@ import { useQueryClient } from "@tanstack/react-query";
 import { throttle } from "lodash";
 import { FieldValues, useForm } from "react-hook-form";
 
-interface IHeader {
-    remove?: () => void
-};
-
 const Nav = styled.nav`
     z-index: 99;
     position: fixed;
+    left: 50%;
+    transform: translate(-50%);
     top: 0;
     display: grid;
     grid-template-columns: 0.5fr 9fr 0.5fr;
@@ -133,7 +131,7 @@ const Li = styled.li`
     }
 `;
 
-const Header = ({ remove }: IHeader) => {
+const Header = ({ remove }: { remove?: () => void }) => {
     const queryClient = useQueryClient();
     const [isdark, setIsdark] = useRecoilState(darkState);
     const sortLike = useSetRecoilState(orderCommendState);
@@ -146,24 +144,18 @@ const Header = ({ remove }: IHeader) => {
     const [isMenu, setIsMenu] = useState(false);
     const { pathname } = useLocation();
     const sortLikeClick = throttle(() => {
-        if (!remove) return
-        remove();
-        queryClient.refetchQueries();
+        queryClient.clear();
         sortLike(prev => prev === OrderCommends["p.created"] ? OrderCommends["p.like"] : OrderCommends["p.created"]);
     }, 300);
     const sortTimeClick = throttle(() => {
-        if (!remove) return
-        remove();
-        queryClient.refetchQueries();
+        queryClient.clear();
         sortTime(prev => prev === OrderBy.DESC ? OrderBy.ASC : OrderBy.DESC);
     }, 300);
     const homeClick = () => {
-        if (!remove) return
-        remove();
+        queryClient.clear();
         resetOption();
         resetKeyword();
         resetErrorMessage();
-        queryClient.refetchQueries();
     };
     const { register, handleSubmit, setFocus, setValue } = useForm();
     const onVaild = (data: FieldValues) => {
@@ -171,7 +163,7 @@ const Header = ({ remove }: IHeader) => {
         if (option === SearchOption.none) setFocus("option");
         if (!search || search.trim() === "") setFocus("search");
         if (option !== SearchOption.none && search.trim() !== "") {
-            if (!remove) return
+            if (!remove) return;
             setSearchOption(option);
             setSearchKeyword(search);
             remove();

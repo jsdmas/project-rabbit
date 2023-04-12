@@ -15,7 +15,6 @@ const Wrapper = styled.div`
 `;
 
 const Head = styled.header`
-    place-self: center center;
     display: flex;
     justify-content: space-between;
     span{
