@@ -162,8 +162,7 @@ export const updateComment = async (req, res, next) => {
     try {
         data = await threadService.patchComment({ commentContent: comment, userId, commentId });
     } catch (error) {
-        console.log(error);
-        next(error);
+        return next(error);
     }
     return res.sendResult({ data });
 };

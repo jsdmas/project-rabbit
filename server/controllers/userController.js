@@ -1,13 +1,11 @@
-import { BadRequestException } from "../helper/ExceptionHelper";
 import RegexHelper from "../helper/RegexHelper";
 import userService from "../services/userService";
+import bcrypt from "bcrypt";
 
 export const createAcount = async (req, res, next) => {
     const { body: { data: { email, password, nickname } } } = req;
     let result = null;
-    console.log(email, password, nickname);
     try {
-        // 유효성 검사
         RegexHelper.value(email);
         RegexHelper.value(password);
         RegexHelper.value(nickname);
@@ -18,16 +16,20 @@ export const createAcount = async (req, res, next) => {
         RegexHelper.maxLength(nickname, 20, "nickname 을 확인해주세요");
         RegexHelper.email(email, "이메일을 정확하게 입력해주세요");
     } catch (error) {
-        next(error);
+        return next(error);
     }
 
-    // 비밀번호 해싱 구현 필요
+    const encryptedPW = await bcrypt.hash(password, 5);
 
     try {
-        result = await userService.createAcount({ email, password, nickname });
+        result = await userService.createAcount({ email, password: encryptedPW, nickname });
     } catch (error) {
-        next(error);
+        return next(error);
     }
 
     return res.sendResult({ result });
+};
+
+export const login = async (req, res, next) => {
+
 };

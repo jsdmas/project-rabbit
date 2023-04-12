@@ -6,7 +6,11 @@ import { IPostJoin } from '../types/register';
 import RegexHelper from '../helper/RegexHelper';
 import { postJoin } from '../api/userApi';
 import { useMutation } from '@tanstack/react-query';
+import { isAxiosError } from 'axios';
+import { useState } from 'react';
+import { IErrorTypes } from '../types/error';
 import useError from '../hooks/useError';
+import Spinner from '../components/Spinner';
 
 const Wrapper = styled.div`
     margin : 7vh auto;
@@ -77,8 +81,18 @@ const Button = styled.button`
 
 const Join = () => {
     const { register, handleSubmit, formState: { errors } } = useForm<IPostJoin>();
+    const [errorMessage, setErrorMessage] = useState("");
     const { onError } = useError();
-    const { mutate } = useMutation(postJoin, { onError, retry: 3, retryDelay: 600 });
+    const { mutate, isLoading } = useMutation(postJoin, {
+        onError: (error) => {
+            if (isAxiosError(error) && error.response) {
+                const { response: { data } } = error;
+                const { rtcode, rtmsg }: IErrorTypes = data;
+                rtcode === 409 ? setErrorMessage(rtmsg) : onError(error);
+            }
+        },
+        retry: 3, retryDelay: 600
+    });
     const onVaild = (data: IPostJoin) => {
         const { confirm, ...restData } = data;
         mutate(restData);
@@ -104,6 +118,7 @@ const Join = () => {
                         }
                     })} />
                     <span>{errors?.email?.message}</span>
+                    {errorMessage ? <span>{errorMessage}</span> : null}
                     <Input type="password" placeholder='password' {...register("password", {
                         required: "password를 입력해주세요.",
                         maxLength: {
@@ -134,7 +149,7 @@ const Join = () => {
                         }
                     })} />
                     <span>{errors?.nickname?.message}</span>
-                    <Button>완료</Button>
+                    {isLoading ? <Spinner isLoading={isLoading} /> : <Button>완료</Button>}
                 </Form>
             </Wrapper>
         </>

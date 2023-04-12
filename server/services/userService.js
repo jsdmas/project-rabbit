@@ -24,7 +24,7 @@ class UserService {
             [exists] = Object.values(emailResult[0]);
 
             if (Boolean(exists)) {
-                throw new BadRequestException(409, "이메일이 이미 존재합니다.");
+                throw new BadRequestException(409, "이미 사용중인 이메일입니다.");
             }
 
             sql = getStatement("userMapper", "createUser", params);

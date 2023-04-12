@@ -10,7 +10,6 @@ import Swal from 'sweetalert2';
 import { useQuery } from '@tanstack/react-query';
 import { fetchMainTextThread } from "../api/threadApi";
 import Spinner from '../components/Spinner';
-import { HandleErrorHelper } from '../helper/ErrorHelper';
 import useError from '../hooks/useError';
 
 const Wrapper = styled.div`
