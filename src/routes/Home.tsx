@@ -29,8 +29,8 @@ const ErrorMessage = styled.div`
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
+    color: ${props => props.theme.textColor};
 `;
-
 
 const Observer = styled.div`
     background-color: ${props => props.theme.bgColor};

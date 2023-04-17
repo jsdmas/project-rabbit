@@ -1,5 +1,5 @@
 import axios from "axios";
-import { IPostJoin } from "../types/register";
+import { ILogin, IPostJoin } from "../types/register";
 
 export const postJoin = async (data: IPostJoin) => {
     let response = null;
@@ -8,6 +8,17 @@ export const postJoin = async (data: IPostJoin) => {
         response = responseData;
     } catch (error) {
         throw error
+    }
+    return response;
+};
+
+export const login = async ({ email, password }: ILogin) => {
+    let response = null;
+    try {
+        const { data: responseData } = await axios.post("/login", { email, password });
+        response = responseData;
+    } catch (error) {
+        throw error;
     }
     return response;
 };

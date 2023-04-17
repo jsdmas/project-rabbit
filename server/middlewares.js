@@ -1,3 +1,4 @@
+import { ForbiddenException } from "./helper/ExceptionHelper";
 import logger from "./helper/LogHelper";
 import UtileHelper from "./helper/UtileHelper";
 
@@ -29,13 +30,17 @@ export const userAgentLogMiddleware = (req, res, next) => {
 /**
  * @description data & error 전송을 담당하는 확장함수
  */
-export const webHelperMiddleware = (_, res, next) => {
+export const webHelperMiddleware = (req, res, next) => {
 
     res._sendResult = (data, error = null) => {
+        console.group("req.session");
+        console.log(req.session);
+        console.groupEnd();
         const json = {
             rt: "OK",
             rtcode: 200,
-            rtmsg: "SUCCESS"
+            rtmsg: "SUCCESS",
+            isLogging: req.isAuthenticated(),
         };
 
         if (error) {
@@ -59,10 +64,12 @@ export const webHelperMiddleware = (_, res, next) => {
         res.status(json.rtcode || 200).send(json);
     };
 
+    /** 결과 값을 전송합니다. */
     res.sendResult = (data) => {
         res._sendResult(data);
     };
 
+    /** 결과 값을 에러로 전송합니다. */
     res.sendError = (error) => {
         logger.error(error.stack);
         res._sendResult(null, error);
@@ -71,4 +78,22 @@ export const webHelperMiddleware = (_, res, next) => {
     next();
 };
 
+export const isLoggedIn = (req, _, next) => {
+    // isAuthenticated는 passport 가 만들어준 메서드입니다.
+    console.log("req.isAuthenticated()" + req.isAuthenticated());
+    if (req.isAuthenticated()) {
+        next();
+    } else {
+        throw new ForbiddenException();
+    }
+};
+
+export const isNotLoggedIn = (req, res, next) => {
+    console.log("req.isAuthenticated()" + req.isAuthenticated());
+    if (!req.isAuthenticated()) {
+        next();
+    } else {
+        throw new ForbiddenException();
+    }
+};
 

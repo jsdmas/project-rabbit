@@ -9,9 +9,29 @@ class UserService {
 
     async createAcount(params) {
         let dbcon = null;
-        let data = null;
-        let exists = null;
+        let insertId = {};
         console.debug("createAcount");
+        console.debug(params);
+        try {
+            dbcon = await DBPool.getConnection();
+            let sql = getStatement("userMapper", "createUser", params);
+            let [result] = await dbcon.query(sql);
+            if (result.affectedRows === 0) {
+                throw new BadRequestException();
+            }
+            insertId = { user_id: result.insertId };
+        } catch (error) {
+            throw error
+        } finally {
+            if (dbcon) { dbcon.release(); }
+        }
+        return insertId;
+    }
+
+    async emailExists(params) {
+        let dbcon = null;
+        let exists = null;
+        console.debug("emailExists");
         console.debug(params);
         try {
             dbcon = await DBPool.getConnection();
@@ -20,24 +40,56 @@ class UserService {
             if (emailResult.affectedRows === 0) {
                 throw new BadRequestException();
             }
-
             [exists] = Object.values(emailResult[0]);
-
-            if (Boolean(exists)) {
-                throw new BadRequestException(409, "이미 사용중인 이메일입니다.");
-            }
-
-            sql = getStatement("userMapper", "createUser", params);
-            let [result] = await dbcon.query(sql);
-            if (result.affectedRows === 0) {
-                throw new BadRequestException();
-            }
-
         } catch (error) {
             throw error
         } finally {
             if (dbcon) { dbcon.release(); }
         }
+        return Boolean(exists);
+    }
+
+    async userExists(params) {
+        let dbcon = null;
+        let data = null;
+        console.debug("userExists");
+        console.debug(params);
+        try {
+            dbcon = await DBPool.getConnection();
+            let sql = getStatement("userMapper", "userExists", params);
+            let [result] = await dbcon.query(sql);
+            if (result.affectedRows === 0) {
+                throw new BadRequestException();
+            }
+            data = result[0];
+        } catch (error) {
+            throw error
+        } finally {
+            if (dbcon) { dbcon.release(); }
+        }
+
+        return data;
+    }
+
+    async userInfo(params) {
+        let dbcon = null;
+        let data = null;
+        console.debug("userInfo");
+        console.debug(params);
+        try {
+            dbcon = await DBPool.getConnection();
+            let sql = getStatement("userMapper", "userInfo", params);
+            let [result] = await dbcon.query(sql);
+            if (result.affectedRows === 0) {
+                throw new BadRequestException();
+            }
+            data = result;
+        } catch (error) {
+            throw error
+        } finally {
+            if (dbcon) { dbcon.release(); }
+        }
+
         return data;
     }
 

@@ -270,6 +270,7 @@ class ThreadService {
 
 }
 
+// 싱긅톤 생성자 변경하기
 const threadService = new ThreadService();
 
 export default threadService;

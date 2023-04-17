@@ -2,11 +2,15 @@ import express from "express";
 import userAgent from "express-useragent";
 import methodOverride from "method-override";
 import cors from "cors";
+import cookieParser from "cookie-parser";
 import session from "express-session";
+import passport from "passport";
+
 import logger from "./helper/LogHelper";
 import UtileHelper from "./helper/UtileHelper";
 import { envExist } from "./helper/EnvHelper";
 import { PageNotFoundException } from "./helper/ExceptionHelper";
+import { passportConfig } from "./helper/PassportHelper";
 import { userAgentLogMiddleware, webHelperMiddleware } from "./middlewares";
 import rootRouter from "./routers/rootRouter";
 import threadRouter from "./routers/threadRouter";
@@ -15,28 +19,32 @@ const MySQLStore = require("express-mysql-session")(session);
 const app = express();
 
 envExist();
+
 app.use(userAgent.express());
 app.use(userAgentLogMiddleware);
-// express로 post 요청을 할때 value를 전달하기 위해 사용 (bodyParser 와 같은 역할)
-// express v4.16부터 내장 라이브러리가 되었기 때문에 따로 bodyParser를 설치하지 않아도 됩니다.
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.text());
-// app.use(cors());
-// express로 put, delete를 사용하기위해 설정
+app.use(cors());
+
 app.use(methodOverride());
 app.use(webHelperMiddleware);
+
+app.use(cookieParser(process.env.COOKIE_ENCRYPT_KEY));
 app.use(session({
     secret: process.env.SESSION_ENCRYPT_KEY,
     resave: false,
     saveUninitialized: false,
+    cookie: {
+        maxAge: 1000 * 60 * 60 * 2,
+    },
     store: new MySQLStore({
         host: process.env.DATABASE_HOST,
         port: process.env.DATABASE_PORT,
         user: process.env.DATABASE_USERNAME,
         password: process.env.DATABASE_PASSWORD,
         database: process.env.DATABASE_SCHEMA,
-        createDatabaseTable: true,
+        createDatabaseTable: process.env.MYSQL_SESSION_CREATE_TABLE,
         schema: {
             tableName: process.env.SESSION_TABLE_NAME,
             columnNames: {
@@ -47,7 +55,9 @@ app.use(session({
         },
     })
 }));
-
+app.use(passport.initialize()); // 요청 객체에 passport 설정을 심음
+app.use(passport.session()); // rea.session 객체에 passport 정보를 추가해서 저장
+passportConfig();
 
 app.use("/", rootRouter);
 app.use("/thread", threadRouter);
@@ -55,9 +65,9 @@ app.use("/thread", threadRouter);
 app.use((err, _, res, __) => res.sendError(err));
 app.use("*", (_, res, __) => res.sendError(new PageNotFoundException()));
 
-const serverIp = UtileHelper.getIp();
 
 app.listen(process.env.PORT, () => {
+    const serverIp = UtileHelper.getIp();
     logger.debug("--------------------------------------------------");
     logger.debug("|              Start Express Server              |");
     logger.debug("--------------------------------------------------");

@@ -22,16 +22,17 @@
 
 1. 게시글 CRUD
    - 이미지 post 가능하게 하기 (로그인 구현 & 세션처리 하면서 같이 구현)
-   - search 검색기록 만들기 (localstorage)
-   - 커스텀 훅으로 중복코드 정리
+   - search 검색기록 만들기 (localstorage atom effect)
     
 2. user 관련
    - 로그인 기능 (자체 회원가입, 네이버, 카카오)
-   - 로그인 유저 session 백엔드로 보내주기
+   - 로그인 유저 session 처리
    - 로그인 유저별 삭제/수정 기능 만들기
    - 회원 profile
+   - 유저 회원 탈퇴시 3일뒤 계정 삭제하는 로직 만들기
 
 3. 개선
    - 404처리 페이지 & middleware 설정
    - 디자인 개선 
    - 반응형 디자인 
+   - meta 파일 적용 (react Helmet)

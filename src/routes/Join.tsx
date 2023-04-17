@@ -11,6 +11,8 @@ import { useState } from 'react';
 import { IErrorTypes } from '../types/error';
 import useError from '../hooks/useError';
 import Spinner from '../components/Spinner';
+import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 const Wrapper = styled.div`
     margin : 7vh auto;
@@ -80,10 +82,19 @@ const Button = styled.button`
 
 
 const Join = () => {
+    const navigate = useNavigate();
     const { register, handleSubmit, formState: { errors } } = useForm<IPostJoin>();
     const [errorMessage, setErrorMessage] = useState("");
     const { onError } = useError();
     const { mutate, isLoading } = useMutation(postJoin, {
+        onSuccess: () => {
+            navigate("/login")
+            Swal.fire({
+                title: "가입 성공!",
+                text: "로그인 해주세요!",
+                icon: "success",
+            })
+        },
         onError: (error) => {
             if (isAxiosError(error) && error.response) {
                 const { response: { data } } = error;

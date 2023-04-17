@@ -4,3 +4,8 @@ export interface IPostJoin {
     confirm?: string
     nickname: string
 };
+
+export interface ILogin {
+    email: string
+    password: string
+}

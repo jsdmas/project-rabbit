@@ -20,6 +20,12 @@ export class BadRequestException extends Exception {
     }
 }
 
+export class UnauthorizedException extends Exception {
+    constructor(msg = "가입되지 않은 회원입니다.") {
+        super(401, msg);
+    }
+}
+
 export class ForbiddenException extends Exception {
     constructor(msg = "접근 권한이 없습니다.") {
         super(403, msg);
