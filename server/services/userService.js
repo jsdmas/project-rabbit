@@ -71,6 +71,28 @@ class UserService {
         return data;
     }
 
+    async userExistsSNSId(params) {
+        let dbcon = null;
+        let data = null;
+        console.debug("userExistsSNSId");
+        console.debug(params);
+        try {
+            dbcon = await DBPool.getConnection();
+            let sql = getStatement("userMapper", "userExistsSNSId", params);
+            let [result] = await dbcon.query(sql);
+            if (result.affectedRows === 0) {
+                throw new BadRequestException();
+            }
+            data = result[0];
+        } catch (error) {
+            throw error
+        } finally {
+            if (dbcon) { dbcon.release(); }
+        }
+
+        return data;
+    }
+
     async userInfo(params) {
         let dbcon = null;
         let data = null;

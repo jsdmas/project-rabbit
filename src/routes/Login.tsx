@@ -146,7 +146,7 @@ const Login = () => {
                     {isLoading ? <Spinner isLoading={isLoading} /> : <Button>완료</Button>}
                 </Form>
                 <NaverOAuthLogin onClick={() => window.location.href = "http://localhost:8000/auth/naver"}><span>N</span>네이버 로그인</NaverOAuthLogin>
-                <KakaoOAuthLogin><FontAwesomeIcon icon={faComment} /> 카카오 로그인</KakaoOAuthLogin>
+                <KakaoOAuthLogin onClick={() => window.location.href = "http://localhost:8000/auth/kakao"}><FontAwesomeIcon icon={faComment} /> 카카오 로그인</KakaoOAuthLogin>
             </Wrapper>
         </>
     );

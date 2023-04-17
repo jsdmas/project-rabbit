@@ -18,6 +18,10 @@
         SELECT EXISTS (SELECT 1 FROM user WHERE email = #{email})
     </select>
 
+    <select id="userExistsSNSId" resultType="boolean" parameterType="int">
+        SELECT user_id FROM user WHERE sns_id = #{sns_id}
+    </select>
+
     <select id="userExists">
         SELECT user_id, password FROM user WHERE email = #{email}
     </select>

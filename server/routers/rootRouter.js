@@ -15,7 +15,10 @@ rootRouter.post("/join", isNotLoggedIn, createAcount);
 rootRouter.post("/login", isNotLoggedIn, login);
 // naver
 rootRouter.get("/auth/naver", isNotLoggedIn, passport.authenticate('naver'));
-rootRouter.get("/auth/naver/callback", isNotLoggedIn, passport.authenticate('naver', { successRedirect: "http://localhost:3000" }));
+rootRouter.get("/auth/naver/callback", isNotLoggedIn, passport.authenticate('naver', { successRedirect: "http://localhost:3000", failureRedirect: "http://localhost:3000" }));
+// kakao
+rootRouter.get("/auth/kakao", isNotLoggedIn, passport.authenticate('kakao'));
+rootRouter.get('/auth/kakao/callback', isNotLoggedIn, passport.authenticate('kakao', { successRedirect: "http://localhost:3000", failureRedirect: "http://localhost:3000" }));
 
 // 로그아웃
 rootRouter.post("/logout", isLoggedIn, logout);

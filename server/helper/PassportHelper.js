@@ -1,6 +1,7 @@
 import passport from "passport";
 import { Strategy } from "passport-local";
 import { Strategy as NaverStrategy } from "passport-naver";
+import { Strategy as KakaoStrategy } from "passport-kakao";
 import bcrypt from "bcrypt";
 import userService from "../services/userService";
 import { UnauthorizedException } from "./ExceptionHelper";
@@ -26,8 +27,9 @@ export const passportConfig = () => {
             .catch(error => done(error));
     });
 
-    naverStrategy();
     localStrategy();
+    naverStrategy();
+    kakaoStrategy();
 };
 
 const localStrategy = () => {
@@ -59,28 +61,64 @@ const localStrategy = () => {
 
 const naverStrategy = () => {
     passport.use(
-        new NaverStrategy({
-            clientID: process.env.NAVER_CLIENT_ID,
-            clientSecret: process.env.NAVER_CLIENT_SECRET,
-            callbackURL: process.env.NAVER_CALLBACK_URL,
-        }, async (accessToken, refreshToken, profile, done) => {
-            console.log(profile._json);
-            const { _json: { nickname, email, profile_image } } = profile;
-            try {
-                const userExists = await userService.userExists({ email });
-                // 이미 가입된 네이버 프로필이면 성공
-                if (userExists) {
-                    done(null, userExists);
-                } else {
-                    // 가입되지 않는 유저면 회원가입 시키고 로그인을 시킨다
-                    const newUser = await userService.createAcount({ email, nickname, img_url: profile_image });
-                    done(null, newUser);
+        new NaverStrategy(
+            {
+                clientID: process.env.NAVER_CLIENT_ID,
+                clientSecret: process.env.NAVER_CLIENT_SECRET,
+                callbackURL: process.env.NAVER_CALLBACK_URL,
+            }, async (accessToken, refreshToken, profile, done) => {
+                console.log(profile._json);
+                const { _json: { nickname, email, profile_image } } = profile;
+                try {
+                    const userExists = await userService.userExists({ email });
+                    // 이미 가입된 네이버 프로필이면 성공
+                    if (userExists) {
+                        done(null, userExists);
+                    } else {
+                        // 가입되지 않는 유저면 회원가입 시키고 로그인을 시킨다
+                        const newUser = await userService.createAcount({ email, nickname, img_url: profile_image });
+                        done(null, newUser);
+                    }
+                } catch (error) {
+                    console.error(error);
+                    done(error);
                 }
-            } catch (error) {
-                console.error(error);
-                done(error);
             }
-        }
         )
+    );
+};
+
+const kakaoStrategy = () => {
+    passport.use(
+        new KakaoStrategy(
+            {
+                clientID: process.env.KAKAO_ID, // 카카오 로그인에서 발급받은 REST API 키
+                callbackURL: process.env.KAKAO_CALLBACK_URL, // 카카오 로그인 Redirect URI 경로
+            },
+            /*
+             * clientID에 카카오 앱 아이디 추가
+             * callbackURL: 카카오 로그인 후 카카오가 결과를 전송해줄 URL
+             * accessToken, refreshToken: 로그인 성공 후 카카오가 보내준 토큰
+             * profile: 카카오가 보내준 유저 정보. profile의 정보를 바탕으로 회원가입
+             */
+            async (accessToken, refreshToken, profile, done) => {
+                console.log(profile);
+                const { _json: { properties: { nickname }, id, kakao_account_email = "이메일 미등록" } } = profile;
+                try {
+                    // sns id가 기존유저가 있는지 비교
+                    const userExists = await userService.userExistsSNSId({ sns_id: id });
+                    // 이미 가입된 카카오 프로필이면 성공
+                    if (userExists) {
+                        done(null, userExists);
+                    } else {
+                        const newUser = await userService.createAcount({ email: kakao_account_email, nickname });
+                        done(null, newUser);
+                    }
+                } catch (error) {
+                    console.error(error);
+                    done(error);
+                }
+            }
+        ),
     );
 };
