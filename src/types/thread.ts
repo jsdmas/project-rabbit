@@ -20,6 +20,7 @@ export interface IThreadList {
 
 export interface IThreadData {
     postId: number
+    userId: number
     postTitle: string
     postWriteUser: string
     postContent: string
@@ -42,6 +43,7 @@ export interface IResponse {
 
 export interface IcommentData {
     commentId: number
+    commentUserId: number
     commentContent: string
     commentCreated: string
     commentLike: number
@@ -53,11 +55,13 @@ export interface IcommentData {
 };
 
 export interface IpostCommentData {
+    commentUserId?: number
     commentContent: string
     commentWriteUser?: string
 };
 
 export interface IpostData {
+    userId: number
     postTitle: string
     postContent: string
     postImgUrl?: string

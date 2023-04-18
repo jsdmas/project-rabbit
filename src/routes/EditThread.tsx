@@ -7,7 +7,7 @@ import { updateThread } from '../api/threadApi';
 import { useNavigate, useParams } from 'react-router-dom';
 import { IpostData, IResponse, TTreadId } from '../types/thread';
 import Swal from 'sweetalert2';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { fetchMainTextThread } from "../api/threadApi";
 import Spinner from '../components/Spinner';
 import useError from '../hooks/useError';
@@ -77,14 +77,19 @@ const ImgInput = styled.input`
 visibility: hidden;
 `;
 
+const UserIdInput = styled.input`
+display: none;
+`;
+
 const EditThread = () => {
     const navigate = useNavigate();
     const { threadid } = useParams() as TTreadId;
     const { register, handleSubmit, formState: { errors } } = useForm<IpostData>();
     const { onError } = useError();
     const { data: response, isLoading } = useQuery<IResponse>(["thread", threadid], () => fetchMainTextThread(threadid), { onError, retry: 3, retryDelay: 600 });
+    const { mutate: editThread } = useMutation((postData: IpostData) => updateThread(postData, threadid), { onError: (error) => onError(error) });
     const [threadItem] = response?.data ?? [];
-    const { postTitle, postContent } = threadItem ?? {};
+    const { postTitle, postContent, userId } = threadItem ?? {};
     const onVaild = async (postData: IpostData) => {
         Swal.fire({
             title: "게시글을 정말 수정 하시겠습니까?",
@@ -92,14 +97,15 @@ const EditThread = () => {
             showCancelButton: true,
             showLoaderOnConfirm: true,
             preConfirm: () => {
-                updateThread(postData, threadid);
+                editThread(postData);
                 navigate(-1);
             },
             allowOutsideClick: () => !Swal.isLoading()
         })
-            .then((result) => result.isConfirmed ? Swal.fire({ title: "수정 성공!", icon: "success" }) : null).catch(() => onError);
+            .then((result) => result.isConfirmed ? Swal.fire({ title: "수정 성공!", icon: "success" }) : null)
     };
-
+    console.log("edit response");
+    console.log(response);
     return (
         <>
             <Header />
@@ -110,6 +116,7 @@ const EditThread = () => {
                         <span>EditThread</span>
                     </Head>
                     <Form onSubmit={handleSubmit(onVaild)}>
+                        <UserIdInput {...register("userId")} defaultValue={userId} />
                         <TitleInput {...register("postTitle", {
                             required: "제목은 반드시 적어야 합니다.",
                             maxLength: {

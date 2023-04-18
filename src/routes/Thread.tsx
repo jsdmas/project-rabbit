@@ -99,10 +99,10 @@ const Thread = () => {
     const { onError } = useError();
     const { data: response, isLoading } = useQuery<IResponse>(["thread", threadid], () => fetchThread(threadid), { onError, retry: 3, retryDelay: 600 });
     const [threadItem] = response?.data ?? [];
-    const { postContent, postCreated, postLike, postTitle, postWriteUser, postWriteUserImgUrl, postModified } = threadItem ?? {};
+    const { postContent, postCreated, postLike, postTitle, postWriteUser, postWriteUserImgUrl, postModified, userId } = threadItem ?? {};
     const onSuccess = () => queryClient.invalidateQueries(["thread", threadid]);
     const { mutate: threadlike } = useMutation(patchThreadLike, { onSuccess, onError });
-    const { mutate: deleteMutate } = useMutation(deleteThread, { onSuccess, onError });
+    const { mutate: deleteMutate } = useMutation((threadid: string) => deleteThread(userId, threadid), { onSuccess, onError });
     const likeIncrement = () => {
         const now = new Date();
         const incrementTime = new Date(localStorage.getItem("threadIncrementTime") || 0);
@@ -129,7 +129,7 @@ const Thread = () => {
                 navigate(-1);
             },
             allowOutsideClick: () => !Swal.isLoading()
-        }).then((result) => result.value ? Swal.fire({ title: "삭제 성공!", icon: "success" }) : null).catch(() => onError);
+        }).then((result) => result.value ? Swal.fire({ title: "삭제 성공!", icon: "success" }) : null)
     };
     return (
         <>

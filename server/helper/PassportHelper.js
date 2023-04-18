@@ -12,9 +12,8 @@ import { UnauthorizedException } from "./ExceptionHelper";
 export const passportConfig = () => {
     // 직렬화 (Serialization) : 객체를 직렬화하여 전송 가능한 형태로 만든다.
     passport.serializeUser((user, done) => {
-        console.log("user");
-        console.log(user);
         // req.login(user, ...) 가 실행되면 직렬화 실행.
+        console.log(user);
         done(null, user.user_id);
     });
 
@@ -22,8 +21,13 @@ export const passportConfig = () => {
     passport.deserializeUser(async (user_id, done) => {
         // serializeUser 가 done 하거나 passport.session()이 실행되면 실행된다.
         // 즉, 서버 요청이 올때마다 항상 실행하여 로그인 유저 정보를 불러와 이용한다.
+        console.log(user_id);
         await userService.userInfo({ user_id })
-            .then(result => done(null, result))
+            .then(result => {
+                console.log("deserializeUser")
+                console.log(result)
+                done(null, result)
+            })
             .catch(error => done(error));
     });
 
@@ -95,12 +99,6 @@ const kakaoStrategy = () => {
                 clientID: process.env.KAKAO_ID, // 카카오 로그인에서 발급받은 REST API 키
                 callbackURL: process.env.KAKAO_CALLBACK_URL, // 카카오 로그인 Redirect URI 경로
             },
-            /*
-             * clientID에 카카오 앱 아이디 추가
-             * callbackURL: 카카오 로그인 후 카카오가 결과를 전송해줄 URL
-             * accessToken, refreshToken: 로그인 성공 후 카카오가 보내준 토큰
-             * profile: 카카오가 보내준 유저 정보. profile의 정보를 바탕으로 회원가입
-             */
             async (accessToken, refreshToken, profile, done) => {
                 console.log(profile);
                 const { _json: { properties: { nickname }, id, kakao_account_email = "이메일 미등록" } } = profile;
@@ -108,10 +106,12 @@ const kakaoStrategy = () => {
                     // sns id가 기존유저가 있는지 비교
                     const userExists = await userService.userExistsSNSId({ sns_id: id });
                     // 이미 가입된 카카오 프로필이면 성공
+                    console.log("userExists passport값");
+                    console.log(userExists);
                     if (userExists) {
                         done(null, userExists);
                     } else {
-                        const newUser = await userService.createAcount({ email: kakao_account_email, nickname });
+                        const newUser = await userService.createAcount({ email: kakao_account_email, nickname, sns_id: id });
                         done(null, newUser);
                     }
                 } catch (error) {

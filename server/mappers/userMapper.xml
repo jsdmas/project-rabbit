@@ -7,9 +7,10 @@
                 INSERT INTO user (email, password, nickname, activated <if test="img_url != null">, img_url</if>)
                 VALUES (#{email}, #{password}, #{nickname}, 1 <if test="img_url != null">, #{img_url}</if>)
             </when>
+            <!-- sns 로그인 -->
             <otherwise>
-                INSERT INTO user (email, nickname, activated <if test="img_url != null">, img_url</if>)
-                VALUES (#{email}, #{nickname}, 1 <if test="img_url != null">, #{img_url}</if>)
+                INSERT INTO user (email, nickname, activated <if test="img_url != null">, img_url</if> <if test="sns_id != null">, sns_id</if>)
+                VALUES (#{email}, #{nickname}, 1 <if test="img_url != null">, #{img_url}</if> <if test="sns_id != null">, #{sns_id}</if>)
             </otherwise>
         </choose>
     </insert>
@@ -18,7 +19,7 @@
         SELECT EXISTS (SELECT 1 FROM user WHERE email = #{email})
     </select>
 
-    <select id="userExistsSNSId" resultType="boolean" parameterType="int">
+    <select id="userExistsSNSId" parameterType="int">
         SELECT user_id FROM user WHERE sns_id = #{sns_id}
     </select>
 

@@ -39,7 +39,7 @@ export const fetchMainTextThread = async (threadid: string) => {
 export const createThread = async (postData: IpostData) => {
     let response = null;
     try {
-        const { data } = await axios.post("/write", postData);
+        const { data } = await axios.post("/write", postData, { withCredentials: true });
         response = data;
     } catch (error) {
         throw error;
@@ -50,7 +50,7 @@ export const createThread = async (postData: IpostData) => {
 export const updateThread = async (postData: IpostData, threadid: string) => {
     let response = null;
     try {
-        const { data } = await axios.patch(`/thread/${threadid}`, { data: { postData, threadid } });
+        const { data } = await axios.patch(`/thread/${threadid}`, { data: { postData, threadid } }, { withCredentials: true });
         response = data;
     } catch (error) {
         throw error;
@@ -58,10 +58,10 @@ export const updateThread = async (postData: IpostData, threadid: string) => {
     return response;
 };
 
-export const deleteThread = async (threadid: string) => {
+export const deleteThread = async (userId: number, threadid: string) => {
     let response = null;
     try {
-        const { data } = await axios.delete(`/thread/${threadid}`, { data: { threadid } });
+        const { data } = await axios.delete(`/thread/${threadid}`, { data: { threadid, userId }, withCredentials: true });
         response = data;
     } catch (error) {
         throw error;
@@ -83,7 +83,7 @@ export const patchThreadLike = async (threadid: string) => {
 export const postComment = async (commentContent: IpostCommentData, threadid: string, commentParentNum?: number) => {
     let responseData = null;
     try {
-        const { data } = await axios.post(`/thread/${threadid}/comment`, { data: { commentContent, commentParentNum } })
+        const { data } = await axios.post(`/thread/${threadid}/comment`, { data: { commentContent, commentParentNum } }, { withCredentials: true })
         responseData = data;
     } catch (error) {
         throw error;
@@ -91,10 +91,10 @@ export const postComment = async (commentContent: IpostCommentData, threadid: st
     return responseData;
 };
 
-export const editComment = async (commentContent: IpostCommentData, commentId: number) => {
+export const editComment = async (commentValue: IpostCommentData, commentId: number) => {
     let responseData = null;
     try {
-        const response = await axios.patch(`/thread/comment`, { data: { commentContent, commentId } })
+        const response = await axios.patch(`/thread/comment`, { data: { commentValue, commentId } }, { withCredentials: true })
         responseData = response.data;
     } catch (error) {
         throw error;
@@ -102,10 +102,10 @@ export const editComment = async (commentContent: IpostCommentData, commentId: n
     return responseData;
 };
 
-export const deleteComment = async (commentId: number) => {
+export const deleteComment = async (commentId: number, commentUserId: number) => {
     let responseData = null;
     try {
-        const { data } = await axios.delete(`/thread/comment`, { data: { commentId } });
+        const { data } = await axios.delete(`/thread/comment`, { data: { commentId, commentUserId }, withCredentials: true });
         responseData = data;
     } catch (error) {
         throw error;

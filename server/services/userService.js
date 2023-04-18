@@ -83,6 +83,7 @@ class UserService {
             if (result.affectedRows === 0) {
                 throw new BadRequestException();
             }
+
             data = result[0];
         } catch (error) {
             throw error
@@ -105,7 +106,7 @@ class UserService {
             if (result.affectedRows === 0) {
                 throw new BadRequestException();
             }
-            data = result;
+            data = result[0];
         } catch (error) {
             throw error
         } finally {

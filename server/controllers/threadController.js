@@ -1,3 +1,4 @@
+import { ForbiddenException } from "../helper/ExceptionHelper";
 import RegexHelper from "../helper/RegexHelper";
 import threadService from "../services/threadService";
 
@@ -45,8 +46,8 @@ export const getThreadMainText = async (req, res, next) => {
 };
 
 export const createThread = async (req, res, next) => {
-    const { params: { threadid }, body: { postTitle, postContent, userId = null } } = req;
-
+    const { params: { threadid }, body: { postTitle, postContent } } = req;
+    const userId = req?.user ? req?.user?.userId : null;
     try {
         RegexHelper.value(postTitle, "제목을 올바르게 적어주세요");
         RegexHelper.value(postContent, "본문을 올바르게 적어주세요");
@@ -69,7 +70,14 @@ export const createThread = async (req, res, next) => {
 
 export const editThread = async (req, res, next) => {
     const { body: { data: { postData: { postTitle, postContent, userId = null }, threadid } } } = req;
+
     try {
+        if (userId) {
+            // 회원가입한 유저가 작성한 게시물이라면 작동
+            if (userId != req?.user?.userId) {
+                throw new ForbiddenException();
+            }
+        }
         RegexHelper.value(postTitle, "제목을 올바르게 적어주세요");
         RegexHelper.value(postContent, "본문을 올바르게 적어주세요");
         RegexHelper.minLength(postTitle, 1, "최소 1글자 이상적어야 합니다.");
@@ -102,18 +110,25 @@ export const likethread = async (req, res, next) => {
 };
 
 export const threadDelete = async (req, res, next) => {
-    const { params: { threadid } } = req;
+    const { params: { threadid }, body: { userId = null } } = req;
+
     let data = null;
     try {
+        if (userId) {
+            if (userId != req?.user?.userId) {
+                throw new ForbiddenException();
+            }
+        }
         data = await threadService.deleteThread({ threadid });
     } catch (error) {
-        next(error);
+        return next(error);
     }
     return res.sendResult({ data });
 };
 
 export const createComment = async (req, res, next) => {
-    const { params: { threadid }, body: { data: { commentParentNum = null, commentContent, userId = null } } } = req;
+    const { params: { threadid }, body: { data: { commentParentNum = null, commentContent } } } = req;
+    const userId = req?.user ? req?.user?.userId : null;
     const comment = commentContent.commentContent;
 
     try {
@@ -134,11 +149,19 @@ export const createComment = async (req, res, next) => {
 };
 
 export const threadDeleteComment = async (req, res, next) => {
-    const { body: { commentId } } = req;
+    const { body: { commentId, commentUserId } } = req;
     console.debug("threadDeleteComment");
     console.debug(commentId);
+    console.debug("commentUserId");
+    console.debug(commentUserId);
+
     let data = null;
     try {
+        if (commentUserId) {
+            if (commentUserId != req?.user?.userId) {
+                throw new ForbiddenException();
+            }
+        }
         data = await threadService.deleteComment({ commentId });
     } catch (error) {
         return next(error);
@@ -147,11 +170,13 @@ export const threadDeleteComment = async (req, res, next) => {
 };
 
 export const updateComment = async (req, res, next) => {
-    const { body: { data: { commentId, commentContent, userId = null } } } = req;
-    const comment = commentContent.commentContent;
-    console.log(req.body);
-
+    const { body: { data: { commentId, commentValue: { commentUserId, commentContent } } } } = req;
     try {
+        if (commentUserId) {
+            if (commentUserId != req?.user?.userId) {
+                throw new ForbiddenException();
+            }
+        }
         RegexHelper.value(commentContent, "내용을 올바르게 적어주세요");
         RegexHelper.minLength(commentContent, 1, "내용은 1글자 이상적어야 합니다.");
         RegexHelper.maxLength(commentContent, 100, "내용은 최대 100글자입니다.");
@@ -160,7 +185,7 @@ export const updateComment = async (req, res, next) => {
     }
     let data = null;
     try {
-        data = await threadService.patchComment({ commentContent: comment, userId, commentId });
+        data = await threadService.patchComment({ commentContent, userId: commentUserId, commentId });
     } catch (error) {
         return next(error);
     }

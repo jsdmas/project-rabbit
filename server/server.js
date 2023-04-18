@@ -5,7 +5,6 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import session from "express-session";
 import passport from "passport";
-
 import logger from "./helper/LogHelper";
 import UtileHelper from "./helper/UtileHelper";
 import { envExist } from "./helper/EnvHelper";
@@ -22,6 +21,7 @@ envExist();
 
 app.use(userAgent.express());
 app.use(userAgentLogMiddleware);
+// 클라이언트에서 application/x-www-form-urlencoded 데이터를 보냈을때 파싱해서 body 객체에 넣어줌
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.text());

@@ -1,6 +1,5 @@
 # 아직 미완성입니다
 
-
 # 주요기능
 
 ![](https://user-images.githubusercontent.com/105098581/230824846-92a0fbee-27bc-4230-bb5c-35b58b3a0db6.png)
@@ -36,3 +35,8 @@
    - 디자인 개선 
    - 반응형 디자인 
    - meta 파일 적용 (react Helmet)
+
+
+swal usecallback 묶기
+프론트로 보내줄거 : 로그인 여부, user_id
+백엔드로 수정, 삭제시 비교할거 : 게시글, 게시물 user_id & 로그인중인 client의 user_id

@@ -103,25 +103,26 @@ const CommentTextarea = styled.textarea`
     border: 1px solid ${props => props.theme.accentColor};
     border-radius: 5px;
 `;
+const CommentUserIdInput = styled.input`
+display: none;
+`;
 
-
-const Comment = ({ inside, commentContent, commentCreated, commentLike, commentWriteUser, commentModified, commentWriteUserImgUrl, commentParentNum, commentId }: IcommentData) => {
+const Comment = ({ inside, commentContent, commentCreated, commentLike, commentWriteUser, commentModified, commentWriteUserImgUrl, commentParentNum, commentId, commentUserId }: IcommentData) => {
     const { threadid } = useParams() as TTreadId;
     const queryClient = useQueryClient();
     const [commentEdit, setCommentEdit] = useState(false);
     const [replyId, setReplyId] = useRecoilState(replyState);
     const { register, handleSubmit, formState: { errors } } = useForm<IpostCommentData>();
     const { onError } = useError();
-    const onSuccess = () => queryClient.invalidateQueries(["thread", threadid])
+    const onSuccess = () => queryClient.invalidateQueries(["thread", threadid]);
     const buttonRef = useRef<HTMLButtonElement | null>(null);
     const onkeydown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
         if (event.key === "Enter" && buttonRef.current !== null) {
             buttonRef.current.focus()
         }
     };
-
     const { mutate: editMutate } = useMutation((data: IpostCommentData) => editComment(data, commentId), { onSuccess, onError });
-    const { mutate: deleteCommentMutate } = useMutation(deleteComment, { onSuccess, onError });
+    const { mutate: deleteCommentMutate } = useMutation((commentId: number) => deleteComment(commentId, commentUserId), { onSuccess, onError });
     const { mutate: likeMutate } = useMutation(commentIncrementLike, { onSuccess, onError });
 
     const commentEditSubmit = (data: IpostCommentData) => {
@@ -136,7 +137,7 @@ const Comment = ({ inside, commentContent, commentCreated, commentLike, commentW
             },
             allowOutsideClick: () => !Swal.isLoading()
         })
-            .then((result) => result.value ? Swal.fire({ title: "수정 성공!", icon: "success" }) : null).catch(() => onError);
+            .then((result) => result.value ? Swal.fire({ title: "수정 성공!", icon: "success" }) : null)
     };
     const handleCommentDelete = () => {
         Swal.fire({
@@ -149,7 +150,7 @@ const Comment = ({ inside, commentContent, commentCreated, commentLike, commentW
             },
             allowOutsideClick: () => !Swal.isLoading()
         })
-            .then((result) => result.value ? Swal.fire({ title: "삭제 성공!", icon: "success" }) : null).catch(() => onError);
+            .then((result) => result.value ? Swal.fire({ title: "삭제 성공!", icon: "success" }) : null)
     };
     const handleCommentLike = () => {
         const now = new Date();
@@ -174,7 +175,7 @@ const Comment = ({ inside, commentContent, commentCreated, commentLike, commentW
                 </UserImg>
                 <UserInfo>
                     <UserInfoCol>
-                        {commentWriteUser ? "" : "anonymous"}
+                        {commentWriteUser ? commentWriteUser : "anonymous"}
                     </UserInfoCol>
                     <UserInfoCol>
                         {commentModified ? `수정:${commentModified.slice(0, 10)}` : commentCreated?.slice(0, 10)}
@@ -188,6 +189,7 @@ const Comment = ({ inside, commentContent, commentCreated, commentLike, commentW
                     </UserInfoCol>
                     {!commentEdit ? (<UserComment commentEdit={commentEdit}>{commentContent}</UserComment>) : (
                         <PatchCommentForm commentEdit={commentEdit} onSubmit={handleSubmit(commentEditSubmit)}>
+                            <CommentUserIdInput {...register("commentUserId")} defaultValue={commentUserId} />
                             <CommentTextarea defaultValue={commentContent} onKeyDown={onkeydown}
                                 {...register("commentContent",
                                     {

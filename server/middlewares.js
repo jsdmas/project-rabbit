@@ -33,14 +33,10 @@ export const userAgentLogMiddleware = (req, res, next) => {
 export const webHelperMiddleware = (req, res, next) => {
 
     res._sendResult = (data, error = null) => {
-        console.group("req.session");
-        console.log(req.session);
-        console.groupEnd();
         const json = {
             rt: "OK",
             rtcode: 200,
             rtmsg: "SUCCESS",
-            isLogging: req.isAuthenticated(),
         };
 
         if (error) {

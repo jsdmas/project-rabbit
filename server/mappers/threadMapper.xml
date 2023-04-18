@@ -28,7 +28,7 @@
     <!-- thread 본문 -->
     <select id="getThread" parameterType="int">
         SELECT post.post_id AS postId, post.title AS postTitle, post.content AS postContent, post.img_url AS postImg, post.img_name AS postImgName, post.created AS postCreated, post.modified AS postModified, post.like AS postLike,
-        user.nickname AS postWriteUser, user.img_url AS  postWriteUserImgUrl
+        user.nickname AS postWriteUser, user.img_url AS  postWriteUserImgUrl, user.user_id AS userId
         FROM post
         LEFT OUTER JOIN user ON post.user_id = user.user_id
         <where>
@@ -40,6 +40,7 @@
     <select id="getThreadComment" parameterType="int">
         SELECT comment.comment_id AS commentId, comment.parent_num AS commentParentNum, comment.content AS commentContent,
         comment.created AS commentCreated, comment.modified AS commentModified, comment.like AS commentLike,
+        comment.user_id AS commentUserId,
         user.nickname AS commentWriteUser, user.img_url AS commentWriteUserImgUrl
         FROM comment
         LEFT OUTER JOIN user ON comment.user_id = user.user_id
