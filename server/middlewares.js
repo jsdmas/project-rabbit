@@ -76,20 +76,18 @@ export const webHelperMiddleware = (req, res, next) => {
 
 export const isLoggedIn = (req, _, next) => {
     // isAuthenticated는 passport 가 만들어준 메서드입니다.
-    console.log("req.isAuthenticated()" + req.isAuthenticated());
     if (req.isAuthenticated()) {
         next();
     } else {
-        throw new ForbiddenException();
+        next(new ForbiddenException());
     }
 };
 
-export const isNotLoggedIn = (req, res, next) => {
-    console.log("req.isAuthenticated()" + req.isAuthenticated());
+export const isNotLoggedIn = (req, _, next) => {
     if (!req.isAuthenticated()) {
         next();
     } else {
-        throw new ForbiddenException();
+        next(new ForbiddenException());
     }
 };
 

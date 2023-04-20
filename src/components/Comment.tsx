@@ -41,6 +41,11 @@ const UserImg = styled.div`
     display: flex;
     flex-direction: column;
     gap: 10px;
+    img{
+        width: 40%;
+        height: 40px;
+        border-radius: 50%;
+    }
 `;
 
 const UserInfo = styled.div`
@@ -96,6 +101,7 @@ const PatchCommentForm = styled.form<{ commentEdit: boolean }>`
         color:${props => props.theme.accentColor};
     }
 `;
+
 const CommentTextarea = styled.textarea`
     height: 6vh;
     width: 90%;
@@ -103,8 +109,9 @@ const CommentTextarea = styled.textarea`
     border: 1px solid ${props => props.theme.accentColor};
     border-radius: 5px;
 `;
+
 const CommentUserIdInput = styled.input`
-display: none;
+    display: none;
 `;
 
 const Comment = ({ inside, commentContent, commentCreated, commentLike, commentWriteUser, commentModified, commentWriteUserImgUrl, commentParentNum, commentId, commentUserId }: IcommentData) => {
@@ -115,12 +122,14 @@ const Comment = ({ inside, commentContent, commentCreated, commentLike, commentW
     const { register, handleSubmit, formState: { errors } } = useForm<IpostCommentData>();
     const { onError } = useError();
     const onSuccess = () => queryClient.invalidateQueries(["thread", threadid]);
+
     const buttonRef = useRef<HTMLButtonElement | null>(null);
     const onkeydown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
         if (event.key === "Enter" && buttonRef.current !== null) {
             buttonRef.current.focus()
         }
     };
+
     const { mutate: editMutate } = useMutation((data: IpostCommentData) => editComment(data, commentId), { onSuccess, onError });
     const { mutate: deleteCommentMutate } = useMutation((commentId: number) => deleteComment(commentId, commentUserId), { onSuccess, onError });
     const { mutate: likeMutate } = useMutation(commentIncrementLike, { onSuccess, onError });
@@ -170,7 +179,7 @@ const Comment = ({ inside, commentContent, commentCreated, commentLike, commentW
         <Grid inside={inside}>
             <User>
                 <UserImg>
-                    {commentWriteUserImgUrl ? "" : <FontAwesomeIcon icon={faUser} />}
+                    {commentWriteUserImgUrl ? <img alt={commentWriteUserImgUrl} src={commentWriteUserImgUrl} /> : <FontAwesomeIcon icon={faUser} />}
                     {!commentParentNum ? (<ReplyButton onClick={() => commentId === replyId ? setReplyId(null) : setReplyId(commentId)} type="button">답글</ReplyButton>) : null}
                 </UserImg>
                 <UserInfo>

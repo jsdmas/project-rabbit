@@ -1,8 +1,3 @@
-/**
- * @구현필요  - user img 불러오기
- *          - 게시글 링크 걸기, 이미지 처리
- */
-
 import styled from "styled-components"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faHeart, faMessage } from "@fortawesome/free-solid-svg-icons";
@@ -35,6 +30,11 @@ const UserInfo = styled.div`
     grid-template-columns: 0.5fr 2fr 3fr;
     place-items: center start;
     color: ${props => props.theme.textColor};
+    img:first-child{
+        width: 70%;
+        border-radius: 50%;
+        padding-right: 10px;
+    }
     span:last-child{
         place-self: center end;
         font-size: 8px;
@@ -86,7 +86,7 @@ const ThreadList = ({ title, content, created, img_name, img_url, like, modified
     return (
         <Wrapper>
             <UserInfo>
-                <Col>{userimg ? "" : <FontAwesomeIcon icon={faUser} />}</Col>
+                <Col>{userimg ? <img alt={userimg} src={userimg} /> : <FontAwesomeIcon icon={faUser} />}</Col>
                 <Col>{nickname ? nickname : "anonymous"}</Col>
                 <Col>posted by {created.slice(0, 10)}&nbsp;&nbsp;{created.slice(11, 19)}</Col>
             </UserInfo>

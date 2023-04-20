@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="userMapper">
+    <!-- 유저 생성 -->
     <insert id="createUser">
         <choose>
             <when test="password != null">
@@ -15,19 +16,42 @@
         </choose>
     </insert>
 
+    <!-- email가입 여부 검증 -->
     <select id="isEmailExists" resultType="boolean">
         SELECT EXISTS (SELECT 1 FROM user WHERE email = #{email})
     </select>
 
+    <!-- sns가입 여부 검증 -->
     <select id="userExistsSNSId" parameterType="int">
         SELECT user_id FROM user WHERE sns_id = #{sns_id}
     </select>
 
+    <!-- 유저 검증 -->
     <select id="userExists">
         SELECT user_id, password FROM user WHERE email = #{email}
     </select>
 
+    <!-- 유저 정보 -->
     <select id="userInfo" parameterType="int">
-        SELECT user_id AS userId, nickname, img_url, img_name FROM user WHERE user_id = #{user_id}
+        SELECT user_id AS userId, nickname, img_url, img_name, description, sns_id AS snsId FROM user WHERE user_id = #{user_id}
     </select>
+
+    <!-- 유저의 post, comment 개수 -->
+    <select id="activityCount" parameterType="int">
+        SELECT
+        (SELECT COUNT(*) FROM post WHERE user_id = #{user_id}) AS postCount,
+        (SELECT COUNT(*) FROM comment WHERE user_id = #{user_id}) AS commentCount
+    </select>
+
+    <!-- 자기소개 수정 -->
+    <update id="patchUserDescription">
+        UPDATE user
+        SET description = #{userDescription}
+        WHERE user_id = #{user_id}
+    </update>
+
+    <!-- 유저 삭제 -->
+    <delete id="killUser">
+        DELETE FROM user WHERE user_id = #{user_id};
+    </delete>
 </mapper>

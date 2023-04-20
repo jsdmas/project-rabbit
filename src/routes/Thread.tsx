@@ -24,6 +24,15 @@ const Wrapper = styled.div`
 const Head = styled.div`
     display: grid;
     grid-template-columns: 1fr 1.2fr 3fr;
+    img{
+        width: 30%;
+        height: 50%;
+        border-radius: 50%;
+        padding-right: 10px;
+    }
+    svg{
+        padding-right: 10px;
+    }
     div:last-child{
         opacity: 0.5;
         font-size: 0.7em;
@@ -31,7 +40,9 @@ const Head = styled.div`
     }
     div:nth-child(2){
         font-size: 0.8em;
-        place-self: center end;
+        display: flex;
+        align-items: center;
+        justify-content: end;
     }
 `;
 
@@ -138,7 +149,7 @@ const Thread = () => {
                 <Wrapper>
                     <Head>
                         <Col><BackPageIcon /></Col>
-                        <Col>{postWriteUserImgUrl ? "" : <FontAwesomeIcon icon={faUser} />} {postWriteUser ? postWriteUser : "anonymous"}</Col>
+                        <Col>{postWriteUserImgUrl ? <img alt={postWriteUserImgUrl} src={postWriteUserImgUrl} /> : <FontAwesomeIcon icon={faUser} />} {postWriteUser ? postWriteUser : "anonymous"}</Col>
                         <Col>{postModified ? `수정됨 : ${postModified?.slice(0, 10)} ${postModified?.slice(11, 19)}` : `posted by ${postCreated?.slice(0, 10)} ${postCreated?.slice(11, 19)}`}</Col>
                     </Head>
                     <Main>

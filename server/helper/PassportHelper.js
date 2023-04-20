@@ -24,9 +24,10 @@ export const passportConfig = () => {
         console.log(user_id);
         await userService.userInfo({ user_id })
             .then(result => {
+                const { description, ...information } = result;
                 console.log("deserializeUser")
-                console.log(result)
-                done(null, result)
+                console.log(information)
+                done(null, information)
             })
             .catch(error => done(error));
     });
@@ -72,7 +73,7 @@ const naverStrategy = () => {
                 callbackURL: process.env.NAVER_CALLBACK_URL,
             }, async (accessToken, refreshToken, profile, done) => {
                 console.log(profile._json);
-                const { _json: { nickname, email, profile_image } } = profile;
+                const { _json: { nickname, email, profile_image, id } } = profile;
                 try {
                     const userExists = await userService.userExists({ email });
                     // 이미 가입된 네이버 프로필이면 성공
@@ -80,7 +81,7 @@ const naverStrategy = () => {
                         done(null, userExists);
                     } else {
                         // 가입되지 않는 유저면 회원가입 시키고 로그인을 시킨다
-                        const newUser = await userService.createAcount({ email, nickname, img_url: profile_image });
+                        const newUser = await userService.createAcount({ email, nickname, img_url: profile_image, sns_id: id });
                         done(null, newUser);
                     }
                 } catch (error) {

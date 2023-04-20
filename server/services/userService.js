@@ -116,6 +116,72 @@ class UserService {
         return data;
     }
 
+    async userActivityCount(params) {
+        let dbcon = null;
+        let data = null;
+        console.debug("userActivityCount");
+        console.debug(params);
+        try {
+            dbcon = await DBPool.getConnection();
+            let sql = getStatement("userMapper", "activityCount", params);
+            let [result] = await dbcon.query(sql);
+            if (result.affectedRows === 0) {
+                throw new BadRequestException();
+            }
+            data = result[0];
+        } catch (error) {
+            throw error
+        } finally {
+            if (dbcon) { dbcon.release(); }
+        }
+
+        return data;
+    }
+
+    async patchUserDescription(params) {
+        let dbcon = null;
+        let data = null;
+        console.debug("patchUserDescription");
+        console.debug(params);
+        try {
+            dbcon = await DBPool.getConnection();
+            let sql = getStatement("userMapper", "patchUserDescription", params);
+            let [result] = await dbcon.query(sql);
+            if (result.affectedRows === 0) {
+                throw new BadRequestException();
+            }
+            data = result[0];
+        } catch (error) {
+            throw error
+        } finally {
+            if (dbcon) { dbcon.release(); }
+        }
+
+        return data;
+    }
+
+    async killUser(params) {
+        let dbcon = null;
+        let data = null;
+        console.debug("killUser");
+        console.debug(params);
+        try {
+            dbcon = await DBPool.getConnection();
+            let sql = getStatement("userMapper", "killUser", params);
+            let [result] = await dbcon.query(sql);
+            if (result.affectedRows === 0) {
+                throw new BadRequestException();
+            }
+            data = result[0];
+        } catch (error) {
+            throw error
+        } finally {
+            if (dbcon) { dbcon.release(); }
+        }
+
+        return data;
+    }
+
 };
 
 const userService = new UserService();

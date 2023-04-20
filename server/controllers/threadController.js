@@ -73,7 +73,7 @@ export const editThread = async (req, res, next) => {
 
     try {
         if (userId) {
-            // 회원가입한 유저가 작성한 게시물이라면 작동
+            // 유저가 작성한 thread이고, 로그인중인 유저의 id와 일치하면 통과, 아니면 오류
             if (userId != req?.user?.userId) {
                 throw new ForbiddenException();
             }

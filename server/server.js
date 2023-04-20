@@ -5,6 +5,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import session from "express-session";
 import passport from "passport";
+import serveFavicon from "serve-favicon";
 import logger from "./helper/LogHelper";
 import UtileHelper from "./helper/UtileHelper";
 import { envExist } from "./helper/EnvHelper";
@@ -13,6 +14,7 @@ import { passportConfig } from "./helper/PassportHelper";
 import { userAgentLogMiddleware, webHelperMiddleware } from "./middlewares";
 import rootRouter from "./routers/rootRouter";
 import threadRouter from "./routers/threadRouter";
+import authRouter from "./routers/authRouter";
 const MySQLStore = require("express-mysql-session")(session);
 
 const app = express();
@@ -26,7 +28,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.text());
 app.use(cors());
-
+app.use(serveFavicon(process.env.FAVICON_PATH))
 app.use(methodOverride());
 app.use(webHelperMiddleware);
 
@@ -60,6 +62,7 @@ app.use(passport.session()); // rea.session 객체에 passport 정보를 추가�
 passportConfig();
 
 app.use("/", rootRouter);
+app.use("/auth", authRouter);
 app.use("/thread", threadRouter);
 
 app.use((err, _, res, __) => res.sendError(err));

@@ -1,6 +1,5 @@
 import { atom } from "recoil";
 
-// 하드코딩의 실수를 줄이기위해 enum 사용
 export enum OrderCommends {
     "p.created" = "p.created",
     "p.like" = "p.like"

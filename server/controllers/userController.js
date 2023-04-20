@@ -74,3 +74,50 @@ export const logout = async (req, res, _) => {
     await req.session.destroy();
     return res.sendResult({ logout: "SUCESS" });
 };
+
+export const loginStatus = (req, res) => {
+    const loginState = req.isAuthenticated();
+    if (req.user) {
+        const loginUserId = req?.user?.userId;
+        const loginUserSnsId = req?.user?.snsId;
+        return res.sendResult({ loginState, loginUserId, loginUserSnsId });
+    }
+    return res.sendResult({ loginState });
+};
+
+export const getUserProfile = async (req, res, next) => {
+    const { params: { loginUserId } } = req;
+    let data = null;
+    let activityCount = null;
+    try {
+        data = await userService.userInfo({ user_id: loginUserId });
+        activityCount = await userService.userActivityCount({ user_id: loginUserId });
+    } catch (error) {
+        next(error);
+    }
+    return res.sendResult({ data, activityCount });
+};
+
+export const patchDescription = async (req, res, next) => {
+    const { params: { loginUserId } } = req;
+    const { body: { userDescription } } = req;
+    let data = null;
+    try {
+        RegexHelper.maxLength(userDescription, 50000);
+        data = await userService.patchUserDescription({ user_id: loginUserId, userDescription });
+    } catch (error) {
+        next(error);
+    }
+    return res.sendResult({ data });
+};
+
+export const deleteUser = async (req, res, next) => {
+    const { params: { loginUserId } } = req;
+    let data = null;
+    try {
+        data = await userService.killUser({ user_id: loginUserId });
+    } catch (error) {
+        next(error);
+    }
+    return res.sendResult({ data });
+};

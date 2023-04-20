@@ -10,6 +10,7 @@ import { darkState, OrderBy, orderbyState, OrderCommends, orderCommendState, key
 import { useQueryClient } from "@tanstack/react-query";
 import { throttle } from "lodash";
 import { FieldValues, useForm } from "react-hook-form";
+import useLoginInfo from "../hooks/useLoginInfo";
 
 const Nav = styled.nav`
     z-index: 99;
@@ -133,16 +134,25 @@ const Li = styled.li`
 
 const Header = ({ remove }: { remove?: () => void }) => {
     const queryClient = useQueryClient();
-    const [isdark, setIsdark] = useRecoilState(darkState);
+    const { pathname } = useLocation();
+    //? 유저 로그인 정보
+    const [userLoading, userState] = useLoginInfo();
+    //? 검색 option  State
     const sortLike = useSetRecoilState(orderCommendState);
     const sortTime = useSetRecoilState(orderbyState);
     const setSearchOption = useSetRecoilState(keywordOptionState);
     const setSearchKeyword = useSetRecoilState(searchKeywordState);
+
+    //? 검색 option reset
     const resetOption = useResetRecoilState(keywordOptionState);
     const resetKeyword = useResetRecoilState(searchKeywordState);
     const resetErrorMessage = useResetRecoilState(errorMessageState);
+
+    //? 다크모드, 메뉴 상태 
+    const [isdark, setIsdark] = useRecoilState(darkState);
     const [isMenu, setIsMenu] = useState(false);
-    const { pathname } = useLocation();
+
+    //? 검색조건 함수
     const sortLikeClick = throttle(() => {
         queryClient.clear();
         sortLike(prev => prev === OrderCommends["p.created"] ? OrderCommends["p.like"] : OrderCommends["p.created"]);
@@ -151,6 +161,8 @@ const Header = ({ remove }: { remove?: () => void }) => {
         queryClient.clear();
         sortTime(prev => prev === OrderBy.DESC ? OrderBy.ASC : OrderBy.DESC);
     }, 300);
+
+    // 로고 클릭 함수
     const homeClick = () => {
         queryClient.clear();
         resetOption();
@@ -202,6 +214,7 @@ const Header = ({ remove }: { remove?: () => void }) => {
                 <Ul>
                     <Li><Link to="/login">login</Link></Li>
                     <Li><Link to="/join">Join</Link></Li>
+                    <Li><Link to={`/user/${userState?.loginUserId}`}>my-profile</Link></Li>
                     <Li><Link to="/write">글쓰기</Link></Li>
                     {pathname === "/" ? <Li onClick={sortTimeClick}>시간 순 정렬</Li> : null}
                     {pathname === "/" ? <Li onClick={sortLikeClick}>좋아요 순 정렬</Li> : null}
