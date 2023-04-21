@@ -7,12 +7,13 @@ import RegexHelper from '../helper/RegexHelper';
 import { postJoin } from '../api/userApi';
 import { useMutation } from '@tanstack/react-query';
 import { isAxiosError } from 'axios';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { IErrorTypes } from '../types/error';
 import useError from '../hooks/useError';
 import Spinner from '../components/Spinner';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import useLoginInfo from '../hooks/useLoginInfo';
 
 const Wrapper = styled.div`
     margin : 7vh auto;
@@ -83,6 +84,7 @@ const Button = styled.button`
 
 const Join = () => {
     const navigate = useNavigate();
+    const [userInfoLoading, { loginState }] = useLoginInfo();
     const { register, handleSubmit, formState: { errors } } = useForm<IPostJoin>();
     const [errorMessage, setErrorMessage] = useState("");
     const { onError } = useError();
@@ -99,7 +101,7 @@ const Join = () => {
             if (isAxiosError(error) && error.response) {
                 const { response: { data } } = error;
                 const { rtcode, rtmsg }: IErrorTypes = data;
-                rtcode === 409 ? setErrorMessage(rtmsg) : onError(error);
+                rtcode === 401 ? setErrorMessage(rtmsg) : onError(error);
             }
         },
         retry: 3, retryDelay: 600
@@ -108,61 +110,66 @@ const Join = () => {
         const { confirm, ...restData } = data;
         mutate(restData);
     };
+    // 로그인 여부
+    useEffect(() => { if (!userInfoLoading && loginState) navigate("/") }, [userInfoLoading, loginState, navigate]);
     return (
         <>
-            <Header />
-            <Wrapper>
-                <Head>
-                    <BackPageIcon />
-                    <h1>회원가입</h1>
-                </Head>
-                <Form onSubmit={handleSubmit(onVaild)}>
-                    <Input type="email" placeholder='email' {...register("email", {
-                        required: "email은 필수입니다.",
-                        maxLength: {
-                            value: 50,
-                            message: "최대 50자까지 가능합니다."
-                        },
-                        validate: {
-                            RegexValue: (value) => RegexHelper.value(value) ? true : "양식을 올바르게 적어주세요.",
-                            RegexEmail: (value) => RegexHelper.email(value) ? true : "이메일 형식을 올바르게 적어주세요.",
-                        }
-                    })} />
-                    <span>{errors?.email?.message}</span>
-                    {errorMessage ? <span>{errorMessage}</span> : null}
-                    <Input type="password" placeholder='password' {...register("password", {
-                        required: "password를 입력해주세요.",
-                        maxLength: {
-                            value: 255,
-                            message: "최대 255자까지 가능합니다."
-                        },
-                        validate: {
-                            RegexValue: (value) => RegexHelper.value(value) ? true : "양식을 올바르게 적어주세요",
-
-                        }
-                    })} />
-                    <span>{errors?.password?.message}</span>
-                    <Input type="password" placeholder='비밀번호 확인' {...register("confirm", {
-                        required: "password를 입력해주세요.",
-                        validate: {
-                            RegexCompare: (passwordConfirm = "", formValues) => RegexHelper.compareTo(passwordConfirm, formValues.password) ? true : "비밀번호를 확인해주세요",
-                        }
-                    })} />
-                    <span>{errors?.confirm?.message}</span>
-                    <Input placeholder='nickname' {...register("nickname", {
-                        required: "nickname은 필수입니다.",
-                        maxLength: {
-                            value: 20,
-                            message: "최대 20자까지 가능합니다."
-                        },
-                        validate: {
-                            RegexValue: (value) => RegexHelper.value(value) ? true : "양식을 올바르게 적어주세요",
-                        }
-                    })} />
-                    <span>{errors?.nickname?.message}</span>
-                    {isLoading ? <Spinner isLoading={isLoading} /> : <Button>완료</Button>}
-                </Form>
-            </Wrapper>
+            {userInfoLoading ? <Spinner isLoading={userInfoLoading} /> : (
+                <>
+                    <Header />
+                    <Wrapper>
+                        <Head>
+                            <BackPageIcon />
+                            <h1>회원가입</h1>
+                        </Head>
+                        <Form onSubmit={handleSubmit(onVaild)}>
+                            <Input type="email" placeholder='email' {...register("email", {
+                                required: "email은 필수입니다.",
+                                maxLength: {
+                                    value: 50,
+                                    message: "최대 50자까지 가능합니다."
+                                },
+                                validate: {
+                                    RegexValue: (value) => RegexHelper.value(value) ? true : "양식을 올바르게 적어주세요.",
+                                    RegexEmail: (value) => RegexHelper.email(value) ? true : "이메일 형식을 올바르게 적어주세요.",
+                                }
+                            })} />
+                            <span>{errors?.email?.message}</span>
+                            {errorMessage ? <span>{errorMessage}</span> : null}
+                            <Input type="password" placeholder='password' {...register("password", {
+                                required: "password를 입력해주세요.",
+                                maxLength: {
+                                    value: 255,
+                                    message: "최대 255자까지 가능합니다."
+                                },
+                                validate: {
+                                    RegexValue: (value) => RegexHelper.value(value) ? true : "양식을 올바르게 적어주세요",
+                                }
+                            })} />
+                            <span>{errors?.password?.message}</span>
+                            <Input type="password" placeholder='비밀번호 확인' {...register("confirm", {
+                                required: "password를 입력해주세요.",
+                                validate: {
+                                    RegexCompare: (passwordConfirm = "", formValues) => RegexHelper.compareTo(passwordConfirm, formValues.password) ? true : "비밀번호를 확인해주세요",
+                                }
+                            })} />
+                            <span>{errors?.confirm?.message}</span>
+                            <Input placeholder='nickname' {...register("nickname", {
+                                required: "nickname은 필수입니다.",
+                                maxLength: {
+                                    value: 20,
+                                    message: "최대 20자까지 가능합니다."
+                                },
+                                validate: {
+                                    RegexValue: (value) => RegexHelper.value(value) ? true : "양식을 올바르게 적어주세요",
+                                }
+                            })} />
+                            <span>{errors?.nickname?.message}</span>
+                            {isLoading ? <Spinner isLoading={isLoading} /> : <Button>완료</Button>}
+                        </Form>
+                    </Wrapper>
+                </>
+            )}
         </>
     );
 };

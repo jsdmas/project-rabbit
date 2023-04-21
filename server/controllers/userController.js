@@ -2,7 +2,7 @@ import passport from "passport";
 import RegexHelper from "../helper/RegexHelper";
 import userService from "../services/userService";
 import bcrypt from "bcrypt";
-import { BadRequestException } from "../helper/ExceptionHelper";
+import { UnauthorizedException } from "../helper/ExceptionHelper";
 
 export const createAcount = async (req, res, next) => {
     const { body: { data: { email, password, nickname } } } = req;
@@ -10,7 +10,7 @@ export const createAcount = async (req, res, next) => {
     try {
         const emailExists = await userService.emailExists({ email });
         if (emailExists) {
-            throw new BadRequestException(409, "이미 사용중인 이메일입니다.");
+            throw new UnauthorizedException("이미 사용중인 이메일입니다.");
         }
 
         RegexHelper.value(email);
@@ -69,9 +69,14 @@ export const login = async (req, res, next) => {
     })(req, res, next);
 };
 
-export const logout = async (req, res, _) => {
-    req.logout();
-    await req.session.destroy();
+export const logout = async (req, res, next) => {
+    req.logout((error) => {
+        if (error) {
+            return next(error);
+        }
+    });
+    req.session.destroy();
+    res.clearCookie('connect.sid');
     return res.sendResult({ logout: "SUCESS" });
 };
 
@@ -106,7 +111,7 @@ export const patchDescription = async (req, res, next) => {
         RegexHelper.maxLength(userDescription, 50000);
         data = await userService.patchUserDescription({ user_id: loginUserId, userDescription });
     } catch (error) {
-        next(error);
+        return next(error);
     }
     return res.sendResult({ data });
 };
@@ -116,8 +121,40 @@ export const deleteUser = async (req, res, next) => {
     let data = null;
     try {
         data = await userService.killUser({ user_id: loginUserId });
+        req.session.destroy();
+        res.clearCookie('connect.sid');
     } catch (error) {
-        next(error);
+        return next(error);
+    }
+    return res.sendResult({ data });
+};
+
+export const changePassword = async (req, res, next) => {
+    const { body: { changePW, currentPW, loginUserId } } = req;
+    let data = null;
+    let oldPassword = null;
+    try {
+        oldPassword = await userService.getPassword({ user_id: loginUserId });
+        const ok = await bcrypt.compare(currentPW, oldPassword);
+        if (!ok) {
+            throw new UnauthorizedException("기존 비밀번호와 일치하지 않습니다.");
+        }
+        const newPassword = await bcrypt.hash(changePW, 5);
+        await userService.changeOfPassword({ newPassword, user_id: loginUserId });
+    } catch (error) {
+        return next(error);
+    }
+    return res.sendResult({ data });
+};
+
+export const changePhoto = async (req, res, next) => {
+
+
+    let data = null;
+    try {
+
+    } catch (error) {
+        return next(error);
     }
     return res.sendResult({ data });
 };

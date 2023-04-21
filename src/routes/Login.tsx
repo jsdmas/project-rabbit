@@ -8,11 +8,12 @@ import { ILogin } from "../types/register";
 import Spinner from "../components/Spinner";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faComment } from "@fortawesome/free-solid-svg-icons";
-import { memo } from "react";
+import { memo, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { isAxiosError } from "axios";
 import { IErrorTypes } from "../types/error";
+import useLoginInfo from "../hooks/useLoginInfo";
 
 const Wrapper = styled.div`
     margin : 7vh auto;
@@ -117,6 +118,7 @@ const KakaoOAuthLogin = styled(NaverOAuthLogin)`
 
 const Login = () => {
     const navigate = useNavigate();
+    const [userInfoLoading, { loginState }] = useLoginInfo();
     const { isLoading, mutate } = useMutation(login, {
         onSuccess: () => navigate("/"),
         onError: (error) => {
@@ -132,22 +134,28 @@ const Login = () => {
     const onVaild = ({ email, password }: ILogin) => {
         mutate({ email, password });
     }
+    // 로그인 여부
+    useEffect(() => { if (!userInfoLoading && loginState) navigate("/") }, [userInfoLoading, loginState, navigate]);
     return (
         <>
-            <Header />
-            <Wrapper>
-                <Head>
-                    <BackPageIcon />
-                    <h1>로그인</h1>
-                </Head>
-                <Form onSubmit={handleSubmit(onVaild)}>
-                    <Input type="email" placeholder='email' {...register("email")} />
-                    <Input type="password" placeholder='password' {...register("password")} />
-                    {isLoading ? <Spinner isLoading={isLoading} /> : <Button>완료</Button>}
-                </Form>
-                <NaverOAuthLogin onClick={() => window.location.href = "http://localhost:8000/auth/naver"}><span>N</span>네이버 로그인</NaverOAuthLogin>
-                <KakaoOAuthLogin onClick={() => window.location.href = "http://localhost:8000/auth/kakao"}><FontAwesomeIcon icon={faComment} /> 카카오 로그인</KakaoOAuthLogin>
-            </Wrapper>
+            {userInfoLoading ? <Spinner isLoading={userInfoLoading} /> : (
+                <>
+                    <Header />
+                    <Wrapper>
+                        <Head>
+                            <BackPageIcon />
+                            <h1>로그인</h1>
+                        </Head>
+                        <Form onSubmit={handleSubmit(onVaild)}>
+                            <Input type="email" placeholder='email' {...register("email")} />
+                            <Input type="password" placeholder='password' {...register("password")} />
+                            {isLoading ? <Spinner isLoading={isLoading} /> : <Button>완료</Button>}
+                        </Form>
+                        <NaverOAuthLogin onClick={() => window.location.href = "http://localhost:8000/auth/naver"}><span>N</span>네이버 로그인</NaverOAuthLogin>
+                        <KakaoOAuthLogin onClick={() => window.location.href = "http://localhost:8000/auth/kakao"}><FontAwesomeIcon icon={faComment} /> 카카오 로그인</KakaoOAuthLogin>
+                    </Wrapper>
+                </>
+            )}
         </>
     );
 };

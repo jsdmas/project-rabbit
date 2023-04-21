@@ -46,6 +46,5 @@ class RegexHelper {
 
 };
 
-
 export default RegexHelper.getInstance();
 

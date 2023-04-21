@@ -4,13 +4,15 @@ import lightLogo from "../assets/logo_light.png";
 import darkLogo from "../assets/logo_dark.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faMagnifyingGlass, faMoon, faSun } from "@fortawesome/free-solid-svg-icons";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useRecoilState, useResetRecoilState, useSetRecoilState } from "recoil";
 import { darkState, OrderBy, orderbyState, OrderCommends, orderCommendState, keywordOptionState, searchKeywordState, SearchOption, errorMessageState } from "../atoms";
 import { useQueryClient } from "@tanstack/react-query";
 import { throttle } from "lodash";
 import { FieldValues, useForm } from "react-hook-form";
 import useLoginInfo from "../hooks/useLoginInfo";
+import Spinner from "./Spinner";
+import { logout } from "../api/userApi";
 
 const Nav = styled.nav`
     z-index: 99;
@@ -135,8 +137,11 @@ const Li = styled.li`
 const Header = ({ remove }: { remove?: () => void }) => {
     const queryClient = useQueryClient();
     const { pathname } = useLocation();
+    const navigate = useNavigate();
+
     //? 유저 로그인 정보
-    const [userLoading, userState] = useLoginInfo();
+    const [isuserLoading, { loginState, loginUserId }] = useLoginInfo();
+
     //? 검색 option  State
     const sortLike = useSetRecoilState(orderCommendState);
     const sortTime = useSetRecoilState(orderbyState);
@@ -162,7 +167,7 @@ const Header = ({ remove }: { remove?: () => void }) => {
         sortTime(prev => prev === OrderBy.DESC ? OrderBy.ASC : OrderBy.DESC);
     }, 300);
 
-    // 로고 클릭 함수
+    //? 로고 클릭 함수
     const homeClick = () => {
         queryClient.clear();
         resetOption();
@@ -211,15 +216,18 @@ const Header = ({ remove }: { remove?: () => void }) => {
                 <FontAwesomeIcon icon={faBars} onClick={() => setIsMenu(prev => !prev)} cursor="pointer" />
             </Col>
             <Menu isMenu={isMenu} >
-                <Ul>
-                    <Li><Link to="/login">login</Link></Li>
-                    <Li><Link to="/join">Join</Link></Li>
-                    <Li><Link to={`/user/${userState?.loginUserId}`}>my-profile</Link></Li>
-                    <Li><Link to="/write">글쓰기</Link></Li>
-                    {pathname === "/" ? <Li onClick={sortTimeClick}>시간 순 정렬</Li> : null}
-                    {pathname === "/" ? <Li onClick={sortLikeClick}>좋아요 순 정렬</Li> : null}
-                    <Li onClick={() => setIsdark(prev => !prev)}><FontAwesomeIcon icon={isdark ? faMoon : faSun} /></Li>
-                </Ul>
+                {isuserLoading ? null : (
+                    <Ul>
+                        {loginState ? null : <Li><Link to="/login">login</Link></Li>}
+                        {loginState ? null : <Li><Link to="/join">Join</Link></Li>}
+                        {loginState ? <Li><Link to="" onClick={() => logout().then(() => navigate(0))}>logout</Link></Li> : null}
+                        {loginState ? <Li><Link to={`/user/${loginUserId}`}>my-profile</Link></Li> : null}
+                        <Li><Link to="/write">글쓰기</Link></Li>
+                        {pathname === "/" ? <Li onClick={sortTimeClick}>시간 순 정렬</Li> : null}
+                        {pathname === "/" ? <Li onClick={sortLikeClick}>좋아요 순 정렬</Li> : null}
+                        <Li onClick={() => setIsdark(prev => !prev)}><FontAwesomeIcon icon={isdark ? faMoon : faSun} /></Li>
+                    </Ul>
+                )}
             </Menu>
         </Nav>
     );

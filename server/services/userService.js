@@ -182,6 +182,48 @@ class UserService {
         return data;
     }
 
+    async getPassword(params) {
+        let dbcon = null;
+        let data = null;
+        console.debug("getPassword");
+        console.debug(params);
+        try {
+            dbcon = await DBPool.getConnection();
+            let sql = getStatement("userMapper", "getPassword", params);
+            let [result] = await dbcon.query(sql);
+            if (result.affectedRows === 0) {
+                throw new BadRequestException();
+            }
+            [data] = Object.values(result[0]);
+        } catch (error) {
+            throw error
+        } finally {
+            if (dbcon) { dbcon.release(); }
+        }
+        return data;
+    }
+
+    async changeOfPassword(params) {
+        let dbcon = null;
+        let data = null;
+        console.debug("changeOfPassword");
+        console.debug(params);
+        try {
+            dbcon = await DBPool.getConnection();
+            let sql = getStatement("userMapper", "changeOfPassword", params);
+            let [result] = await dbcon.query(sql);
+            if (result.affectedRows === 0) {
+                throw new BadRequestException();
+            }
+            data = result[0];
+        } catch (error) {
+            throw error
+        } finally {
+            if (dbcon) { dbcon.release(); }
+        }
+        return data;
+    }
+
 };
 
 const userService = new UserService();

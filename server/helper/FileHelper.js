@@ -1,5 +1,6 @@
 import { existsSync, mkdirSync, chmodSync } from "fs";
 import { join } from "path";
+import multer from "multer";
 
 class FileHelper {
     static #current = null;
@@ -48,6 +49,43 @@ class FileHelper {
             }
         });
     }
+
+    /**
+     * @return 싱글업로드 객체
+     */
+    avatarMulter() {
+        return multer({ dest: process.env.UPLOAD_DIR, limits: 1000 * 1000 }); // 1MB
+    }
+
+    /**
+     * 에러가 존재한다면 에러 코드와 메시지를 설정하며 throw 시킨다.
+     * @param {multer.MulterError} err
+     */
+    checkUploadError(err) {
+        /** 에러 객체가 존재한다면? */
+        if (err) {
+            if (err instanceof multer.MulterError) {
+                switch (err.code) {
+                    case "LIMIT_FIELD_COUNT":
+                        err.code = 500;
+                        err.message = "업로드 가능한 파일 수를 초과했습니다.";
+                        break;
+                    case "LIMIT_FILE_SIZE":
+                        err.code = 500;
+                        err.message = "업로드 가능한 파일 용량을 초과했습니다.";
+                        break;
+                    default:
+                        err.code = 500;
+                        err.message = "알 수 없는 에러가 발생했습니다.";
+                        break;
+                }
+            }
+            // 에러를 발생시켜 백엔드에 전달.
+            throw err;
+        }
+    }
+
+
 }
 
 export default FileHelper.getInstance();

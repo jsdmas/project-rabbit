@@ -1,7 +1,8 @@
 import express from "express";
 import { getThreadList, createThread } from "../controllers/threadController";
-import { createAcount, deleteUser, getUserProfile, logout, patchDescription } from "../controllers/userController";
+import { changePassword, changePhoto, createAcount, deleteUser, getUserProfile, logout, patchDescription } from "../controllers/userController";
 import { isLoggedIn, isNotLoggedIn } from "../middlewares";
+import FileHelper from "../helper/FileHelper";
 
 const rootRouter = express.Router();
 // home
@@ -13,6 +14,8 @@ rootRouter.post("/join", isNotLoggedIn, createAcount);
 // 로그아웃
 rootRouter.post("/logout", isLoggedIn, logout);
 // user-profile
-rootRouter.route("/profile/:loginUserId(\\d+)").get(getUserProfile).patch(patchDescription).delete(deleteUser);
+rootRouter.route("/profile/:loginUserId(\\d+)").get(getUserProfile).patch(isLoggedIn, patchDescription).delete(isLoggedIn, deleteUser);
+rootRouter.patch("/change-password", isLoggedIn, changePassword);
+rootRouter.patch("/change-photo", isLoggedIn, FileHelper.avatarMulter.single("userImageFile"), changePhoto);
 
 export default rootRouter;

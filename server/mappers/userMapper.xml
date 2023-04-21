@@ -54,4 +54,16 @@
     <delete id="killUser">
         DELETE FROM user WHERE user_id = #{user_id};
     </delete>
+
+    <!-- 유저의 비밀번호 얻기 -->
+    <select id="getPassword">
+        SELECT password FROM user WHERE user_id = #{user_id};
+    </select>
+
+    <!-- 비밀번호 변경 -->
+    <update id="changeOfPassword">
+        UPDATE user
+        SET password = #{newPassword}
+        WHERE user_id = #{user_id}
+    </update>
 </mapper>
