@@ -122,13 +122,42 @@ const ErrorMessage = styled.span`
 `;
 
 const SettingMenu = styled.div`
-
+    position: absolute;
+    top: 15%;
+    right: 0;
+    background-color: ${props => props.theme.postColor};
+    height: 15%;
+    width: 30%;
+    border-radius: 5px;
 `;
 
 const Ul = styled.ul`
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    
 `;
 
 const Li = styled.li`
+    label{
+        color:${props => props.theme.accentColor};
+        cursor: pointer;
+        &:hover{
+            color:${props => props.theme.buttonColor};
+        }
+    }
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-bottom: 1px solid ${props => props.theme.accentColor};
+    &:last-child{
+        border-bottom:none;
+    }
 `;
 
 const FileInput = styled.input`
@@ -136,7 +165,7 @@ const FileInput = styled.input`
 `;
 
 const UserProfile = () => {
-    const [userLoading, { loginUserId, loginUserSnsId }] = useLoginInfo();
+    const [_, { loginUserId, loginUserSnsId }] = useLoginInfo();
     const { userid } = useParams();
     const { onError } = useError();
     const queryClient = useQueryClient();
@@ -147,7 +176,7 @@ const UserProfile = () => {
 
     // userInfo 데이터
     const { isLoading, data: response } = useQuery(["userProfile", userid], () => getUserProfile(userid), { onError, retry: 3, retryDelay: 600 });
-    const { userId: profileUser, img_url, img_name, description, nickname, snsId }: Iprofile = response?.data ?? {};
+    const { img_url, img_name, description, nickname }: Iprofile = response?.data ?? {};
     const { postCount, commentCount }: IActivityCount = response?.activityCount ?? {};
 
     // 회원탈퇴
