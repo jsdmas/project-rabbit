@@ -13,6 +13,8 @@ import { IActivityCount, Iprofile } from "../types/user";
 import Spinner from "../components/Spinner";
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
+import { isAxiosError } from "axios";
+import { IErrorTypes } from "../types/error";
 
 const Grid = styled.div`
     margin-top: 8vh;
@@ -47,6 +49,10 @@ const ProfileImg = styled.div`
     svg{
         width: 30%;
         height: 30%;
+    }
+    img{
+        max-width: 80%;
+        max-height: 80%;
     }
 `;
 
@@ -130,7 +136,7 @@ const FileInput = styled.input`
 `;
 
 const UserProfile = () => {
-    const [userLoading, { loginUserId }] = useLoginInfo();
+    const [userLoading, { loginUserId, loginUserSnsId }] = useLoginInfo();
     const { userid } = useParams();
     const { onError } = useError();
     const queryClient = useQueryClient();
@@ -169,12 +175,24 @@ const UserProfile = () => {
     };
 
     // edit Profile
-    const { mutate: userImage } = useMutation(uploadUserProfile, { onSuccess, onError });
+    const { mutate: userImage } = useMutation(uploadUserProfile, {
+        onSuccess,
+        onError: (error) => {
+            if (isAxiosError(error) && error.response) {
+                const { response: { data } } = error;
+                const { rt, rtcode, rtmsg }: IErrorTypes = data;
+                Swal.fire({ icon: "error", title: rtmsg, text: `${rt} | ${rtcode}` });
+            } else {
+                alert("형식을 알수없는 오류입니다.");
+            }
+        }, retry: 1, retryDelay: 600
+    });
+
     const onUploadImage = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.currentTarget.files) {
-            const file = event.currentTarget.files[0];
-            console.log(file);
-            userImage({ file, loginUserId });
+            const userImageFile = event.currentTarget.files[0];
+            console.log(userImageFile);
+            userImage({ userImageFile, loginUserId });
         }
     };
     return (
@@ -219,12 +237,12 @@ const UserProfile = () => {
                 <>
                     <SettingMenu>
                         <Ul>
-                            <Li><label htmlFor="fileInput">사진 변경</label></Li>
-                            <Li><Link to="/user/change-password">비밀번호 변경</Link></Li>
+                            <Li><label htmlFor="userImageFile">사진 변경</label></Li>
+                            {loginUserSnsId ? null : <Li><Link to="/user/change-password">비밀번호 변경</Link></Li>}
                             <Li><Link to="" onClick={onDeleteUser}>회원 탈퇴</Link></Li>
                         </Ul>
                     </SettingMenu>
-                    <FileInput type="file" id="fileInput" onChange={onUploadImage} accept="image/*" name="userImageFile" />
+                    <FileInput type="file" id="userImageFile" onChange={onUploadImage} accept="image/*" name="userImageFile" />
                 </>
             )}
         </>

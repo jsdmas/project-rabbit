@@ -224,6 +224,27 @@ class UserService {
         return data;
     }
 
+    async changeAvatar(params) {
+        let dbcon = null;
+        let data = null;
+        console.debug("updateAvatar");
+        console.debug(params);
+        try {
+            dbcon = await DBPool.getConnection();
+            let sql = getStatement("userMapper", "updateAvatar", params);
+            let [result] = await dbcon.query(sql);
+            if (result.affectedRows === 0) {
+                throw new BadRequestException();
+            }
+            data = result[0];
+        } catch (error) {
+            throw error
+        } finally {
+            if (dbcon) { dbcon.release(); }
+        }
+        return data;
+    }
+
 };
 
 const userService = new UserService();

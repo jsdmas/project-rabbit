@@ -32,7 +32,6 @@ const UserInfo = styled.div`
     color: ${props => props.theme.textColor};
     img:first-child{
         width: 70%;
-        border-radius: 50%;
         padding-right: 10px;
     }
     span:last-child{
@@ -86,7 +85,7 @@ const ThreadList = ({ title, content, created, img_name, img_url, like, modified
     return (
         <Wrapper>
             <UserInfo>
-                <Col>{userimg ? <img alt={userimg} src={userimg} /> : <FontAwesomeIcon icon={faUser} />}</Col>
+                <Col>{userimg ? <img alt={`${user_id}`} src={userimg} /> : <FontAwesomeIcon icon={faUser} />}</Col>
                 <Col>{nickname ? nickname : "anonymous"}</Col>
                 <Col>posted by {created.slice(0, 10)}&nbsp;&nbsp;{created.slice(11, 19)}</Col>
             </UserInfo>

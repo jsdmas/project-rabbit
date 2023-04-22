@@ -61,6 +61,10 @@ app.use(passport.initialize()); // 요청 객체에 passport 설정을 심음
 app.use(passport.session()); // rea.session 객체에 passport 정보를 추가해서 저장
 passportConfig();
 
+app.use("/uploads", express.static("uploads"));
+app.use("/user/uploads", express.static("uploads"));
+app.use("/thread/uploads", express.static("uploads"));
+
 app.use("/", rootRouter);
 app.use("/auth", authRouter);
 app.use("/thread", threadRouter);

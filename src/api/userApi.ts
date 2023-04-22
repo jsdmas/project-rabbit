@@ -87,12 +87,13 @@ export const deleteUser = async ({ loginUserId }: { loginUserId?: number }) => {
     return response;
 }
 
-export const uploadUserProfile = async ({ file, loginUserId }: { file: File, loginUserId?: number }) => {
+export const uploadUserProfile = async ({ userImageFile, loginUserId }: { userImageFile: File, loginUserId?: number }) => {
     let response = null;
     try {
-        const { data } = await axios.patch(`/change-photo`, { file, loginUserId }, { withCredentials: true, headers: { "Content-Type": "multipart/form-data" } });
+        const { data } = await axios.patch(`/change-photo`, { userImageFile, loginUserId }, { withCredentials: true, headers: { "Content-Type": "multipart/form-data" } });
         response = data;
     } catch (error) {
+        console.log(error);
         throw error;
     }
     return response;

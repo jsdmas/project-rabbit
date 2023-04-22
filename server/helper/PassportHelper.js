@@ -13,7 +13,6 @@ export const passportConfig = () => {
     // 직렬화 (Serialization) : 객체를 직렬화하여 전송 가능한 형태로 만든다.
     passport.serializeUser((user, done) => {
         // req.login(user, ...) 가 실행되면 직렬화 실행.
-        console.log(user);
         done(null, user.user_id);
     });
 
@@ -25,8 +24,6 @@ export const passportConfig = () => {
         await userService.userInfo({ user_id })
             .then(result => {
                 const { description, ...information } = result;
-                console.log("deserializeUser")
-                console.log(information)
                 done(null, information)
             })
             .catch(error => done(error));

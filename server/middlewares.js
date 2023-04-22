@@ -1,3 +1,4 @@
+import multer from "multer";
 import { ForbiddenException } from "./helper/ExceptionHelper";
 import logger from "./helper/LogHelper";
 import UtileHelper from "./helper/UtileHelper";
@@ -91,3 +92,4 @@ export const isNotLoggedIn = (req, _, next) => {
     }
 };
 
+export const avatarUpload = multer({ dest: "uploads/avatars", limits: { fileSize: 10000 } }); // 10KB

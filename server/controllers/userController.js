@@ -3,6 +3,8 @@ import RegexHelper from "../helper/RegexHelper";
 import userService from "../services/userService";
 import bcrypt from "bcrypt";
 import { UnauthorizedException } from "../helper/ExceptionHelper";
+import { avatarUpload } from "../middlewares";
+import { BadRequestException } from "../helper/ExceptionHelper";
 
 export const createAcount = async (req, res, next) => {
     const { body: { data: { email, password, nickname } } } = req;
@@ -148,13 +150,18 @@ export const changePassword = async (req, res, next) => {
 };
 
 export const changePhoto = async (req, res, next) => {
-
-
-    let data = null;
-    try {
-
-    } catch (error) {
-        return next(error);
-    }
-    return res.sendResult({ data });
+    const upload = avatarUpload.single("userImageFile");
+    upload(req, res, async (error) => {
+        let data = null;
+        try {
+            const { file, body: { loginUserId }, user: { img_url } } = req;
+            data = await userService.changeAvatar({ user_id: loginUserId, newImgUrl: file?.path ? file?.path : img_url });
+            if (error) {
+                throw new BadRequestException(400, "파일 크기는 10KB 까지 가능합니다.");
+            }
+        } catch (error) {
+            return next(error);
+        }
+        return res.sendResult({ data });
+    });
 };

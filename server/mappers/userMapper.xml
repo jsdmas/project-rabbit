@@ -66,4 +66,11 @@
         SET password = #{newPassword}
         WHERE user_id = #{user_id}
     </update>
+
+    <!-- 유저 프로필 업데이트 -->
+    <update id="updateAvatar">
+        UPDATE user
+        SET img_url = #{newImgUrl}
+        WHERE user_id = #{user_id}
+    </update>
 </mapper>
