@@ -4,8 +4,7 @@
 
 # 해야할일
 
-search 검색기록 만들기 (localstorage atom effect)
---> reactHelmet (font 적용)
+reactHelmet (font 적용), 시멘틱 태그 최적화
 --> 404 페이지 디자인
 --> 반응형 디자인 설정
 --> 배포 (lazy loading)
