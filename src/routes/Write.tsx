@@ -79,9 +79,6 @@ const ImgInput = styled.input`
     display: none;
 
 `;
-const UserIdInput = styled.input`
-    display: none;
-`;
 const Label = styled.label`
     background-color: ${props => props.theme.buttonColor};
     border-radius: 5px;

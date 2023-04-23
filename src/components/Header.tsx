@@ -3,15 +3,14 @@ import styled from "styled-components";
 import lightLogo from "../assets/logo_light.png";
 import darkLogo from "../assets/logo_dark.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars, faMagnifyingGlass, faMoon, faSun } from "@fortawesome/free-solid-svg-icons";
+import { faBars, faMagnifyingGlass, faMoon, faSun, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useRecoilState, useResetRecoilState, useSetRecoilState } from "recoil";
-import { darkState, OrderBy, orderbyState, OrderCommends, orderCommendState, keywordOptionState, searchKeywordState, SearchOption, errorMessageState } from "../atoms";
+import { darkState, OrderBy, orderbyState, OrderCommends, orderCommendState, keywordOptionState, searchKeywordState, SearchOption, errorMessageState, searchHistoryState } from "../atoms";
 import { useQueryClient } from "@tanstack/react-query";
 import { throttle } from "lodash";
 import { FieldValues, useForm } from "react-hook-form";
 import useLoginInfo from "../hooks/useLoginInfo";
-import Spinner from "./Spinner";
 import { logout } from "../api/userApi";
 
 const Nav = styled.nav`
@@ -73,22 +72,72 @@ const Form = styled.form`
         color: ${props => props.theme.buttonColor};
         border-radius: 5px;
     }
-    button{
-        place-self: center end;
-        border: none;
-        padding: 5px;
-        background-color: ${props => props.theme.buttonColor};
-        color: #fff;
-        cursor: pointer;
-        border-radius: 5px;
-    }
 `;
 
 const Item = styled.div`
+    width: 100%;
+    ul{
+        padding:5px;
+        padding-right: 20px;
+    }
+    li{
+        color : ${props => props.theme.textColor};
+        display:grid;
+        grid-template-columns: 1fr 0.2fr;
+        row-gap: 10px;
+        place-self: center center;
+        width: 100%;
+        height: 100%;
+        span{
+            place-self: center start;
+            cursor: pointer;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            width: 90%;
+            &:hover{
+                color : ${props => props.theme.accentColor};
+            }
+        }
+    }
 `;
 
+
 const SearchButton = styled.button`
-white-space: nowrap;
+    white-space: nowrap;
+    place-self: center end;
+    border: none;
+    padding: 5px;
+    background-color: ${props => props.theme.buttonColor};
+    color: #fff;
+    cursor: pointer;
+    border-radius: 5px;
+`;
+
+const HistoryButton = styled(SearchButton)`
+    background-color: ${props => props.theme.bgColor};
+    font-size: 1em;
+    width: 20%;
+    place-self: center start;
+`;
+
+const SearchHistoryBox = styled.div`
+    position: absolute;
+    top: 80%;
+    width: 43%;
+    min-height: 50px;
+    max-height: 95px ;
+    background-color: ${props => props.theme.bgColor};
+    color: ${props => props.theme.textColor};
+    margin-left: 15px;
+    overflow: scroll;
+    border-radius: 5px;
+
+    display: flex;
+    flex-direction: column;
+    div{
+        width: 100%;
+    }
 `;
 
 const Menu = styled.div <{ isMenu: boolean }>`
@@ -142,6 +191,13 @@ const Header = ({ remove }: { remove?: () => void }) => {
     //? 유저 로그인 정보
     const [isuserLoading, { loginState, loginUserId }] = useLoginInfo();
 
+    // 검색 history
+    const [searchHistory, setSearchHistory] = useRecoilState(searchHistoryState);
+    const [history, setHistory] = useState(false);
+    const handleHistoryDelete = (index: number) => {
+        setSearchHistory(prev => prev.filter((_, i) => i !== index));
+    };
+
     //? 검색 option  State
     const sortLike = useSetRecoilState(orderCommendState);
     const sortTime = useSetRecoilState(orderbyState);
@@ -183,6 +239,7 @@ const Header = ({ remove }: { remove?: () => void }) => {
             if (!remove) return;
             setSearchOption(option);
             setSearchKeyword(search);
+            setSearchHistory(prev => [search, ...prev])
             remove();
             resetErrorMessage();
             setValue("search", null);
@@ -207,8 +264,23 @@ const Header = ({ remove }: { remove?: () => void }) => {
                         </select>
                         <Item>
                             <FontAwesomeIcon icon={faMagnifyingGlass} size="sm" />
-                            <input type="text" {...register("search")} placeholder="keyword..." />
+                            <input type="text" {...register("search")} placeholder="keyword..." autoComplete="off" onClick={() => setHistory(prev => !prev)} />
+                            {!history ? null : (
+                                <SearchHistoryBox>
+                                    <ul>
+                                        {searchHistory.map((value, index) => {
+                                            return (
+                                                <li key={index} >
+                                                    <span onClick={() => setValue("search", value)}>{value}</span>
+                                                    <HistoryButton type="button" onClick={() => handleHistoryDelete(index)}><FontAwesomeIcon icon={faXmark} /></HistoryButton>
+                                                </li>
+                                            )
+                                        })}
+                                    </ul>
+                                </SearchHistoryBox>
+                            )}
                         </Item>
+
                         <SearchButton type="submit">검색</SearchButton>
                     </Form> : null}
             </Item>
