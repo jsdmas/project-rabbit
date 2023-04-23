@@ -1,5 +1,6 @@
-import { ForbiddenException } from "../helper/ExceptionHelper";
+import { BadRequestException, ForbiddenException } from "../helper/ExceptionHelper";
 import RegexHelper from "../helper/RegexHelper";
+import { threadUpload } from "../middlewares";
 import threadService from "../services/threadService";
 
 export const getThreadList = async (req, res, next) => {
@@ -69,32 +70,38 @@ export const createThread = async (req, res, next) => {
 };
 
 export const editThread = async (req, res, next) => {
-    const { body: { data: { postData: { postTitle, postContent, userId = null }, threadid } } } = req;
-
-    try {
-        if (userId) {
-            // 유저가 작성한 thread이고, 로그인중인 유저의 id와 일치하면 통과, 아니면 오류
-            if (userId != req?.user?.userId) {
-                throw new ForbiddenException();
+    const upload = threadUpload.single("threadImg");
+    upload(req, res, async (error) => {
+        const { body: { postTitle, postContent, userId = null, threadid }, file } = req;
+        try {
+            if (userId) {
+                // 유저가 작성한 thread이고, 로그인중인 유저의 id와 일치하면 통과, 아니면 오류
+                if (userId != req?.user?.userId) {
+                    throw new ForbiddenException();
+                }
             }
+            RegexHelper.value(postTitle, "제목을 올바르게 적어주세요");
+            RegexHelper.value(postContent, "본문을 올바르게 적어주세요");
+            RegexHelper.minLength(postTitle, 1, "최소 1글자 이상적어야 합니다.");
+            RegexHelper.minLength(postContent, 1, "최소 1글자 이상적어야 합니다.");
+            RegexHelper.maxLength(postTitle, 50, "제목은 최대 50글자입니다.");
+            RegexHelper.maxLength(postContent, 1000000, "본문은 최대 1000000글자입니다.");
+        } catch (error) {
+            return next(error);
         }
-        RegexHelper.value(postTitle, "제목을 올바르게 적어주세요");
-        RegexHelper.value(postContent, "본문을 올바르게 적어주세요");
-        RegexHelper.minLength(postTitle, 1, "최소 1글자 이상적어야 합니다.");
-        RegexHelper.minLength(postContent, 1, "최소 1글자 이상적어야 합니다.");
-        RegexHelper.maxLength(postTitle, 50, "제목은 최대 50글자입니다.");
-        RegexHelper.maxLength(postContent, 1000000, "본문은 최대 1000000글자입니다.");
-    } catch (error) {
-        return next(error);
-    }
 
-    let data = null;
-    try {
-        data = await threadService.updateThread({ postTitle, postContent, userId, threadid });
-    } catch (error) {
-        return next(error);
-    }
-    return res.sendResult({ data });
+        let data = null;
+        try {
+            if (error) {
+                throw new BadRequestException(400, "파일 크기는 50KB 까지 가능합니다.");
+            }
+            const [postInfo] = await threadService.getThread({ threadid });
+            data = await threadService.updateThread({ postTitle, postContent, userId, threadid, img_url: file ? file.path : postInfo?.postImg });
+        } catch (error) {
+            return next(error);
+        }
+        return res.sendResult({ data });
+    })
 };
 
 export const likethread = async (req, res, next) => {

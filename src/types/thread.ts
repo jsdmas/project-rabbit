@@ -61,9 +61,8 @@ export interface IpostCommentData {
 };
 
 export interface IpostData {
-    userId: number
+    userId: string
     postTitle: string
     postContent: string
-    postImgUrl?: string
-    postImgName?: string
+    postImg?: FileList
 };

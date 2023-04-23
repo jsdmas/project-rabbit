@@ -47,10 +47,15 @@ export const createThread = async (postData: IpostData) => {
     return response;
 };
 
-export const updateThread = async (postData: IpostData, threadid: string) => {
+export const updateThread = async ({ userId, postTitle, postContent, postImg }: IpostData, threadid: string) => {
     let response = null;
+    let threadImg = null;
+    if (postImg) {
+        threadImg = postImg[0];
+        console.log(threadImg);
+    }
     try {
-        const { data } = await axios.patch(`/thread/${threadid}`, { data: { postData, threadid } }, { withCredentials: true });
+        const { data } = await axios.patch(`/thread/${threadid}`, { userId, postTitle, postContent, threadImg, threadid }, { withCredentials: true, headers: { "Content-Type": "multipart/form-data" } });
         response = data;
     } catch (error) {
         throw error;

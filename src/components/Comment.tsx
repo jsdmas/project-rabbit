@@ -13,6 +13,7 @@ import Swal from "sweetalert2"
 import { useForm } from "react-hook-form"
 import RegexHelper from "../helper/RegexHelper"
 import useError from "../hooks/useError"
+import useLoginInfo from "../hooks/useLoginInfo"
 
 const Grid = styled.div<{ inside?: string }>`
     display: grid;
@@ -53,7 +54,7 @@ const UserInfo = styled.div`
     grid-template-columns: 2fr 2fr 1fr 1fr;
     font-size: 0.8em;
     gap: 10px;
-    span:nth-child(1), span:nth-child(2){
+    span:nth-child(2){
         opacity: 0.5;
     }
     svg{
@@ -118,6 +119,7 @@ const Comment = ({ inside, commentContent, commentCreated, commentLike, commentW
     const { threadid } = useParams() as TTreadId;
     const queryClient = useQueryClient();
     const [commentEdit, setCommentEdit] = useState(false);
+    const [userloading, { loginUserId }] = useLoginInfo();
     const [replyId, setReplyId] = useRecoilState(replyState);
     const { register, handleSubmit, formState: { errors } } = useForm<IpostCommentData>();
     const { onError } = useError();
@@ -184,14 +186,19 @@ const Comment = ({ inside, commentContent, commentCreated, commentLike, commentW
                 </UserImg>
                 <UserInfo>
                     <UserInfoCol>
-                        {commentWriteUser ? commentWriteUser : "anonymous"}
+                        {commentWriteUser ? <Link to={`/user/${commentUserId}`}>{commentWriteUser}</Link> : "anonymous"}
                     </UserInfoCol>
                     <UserInfoCol>
                         {commentModified ? `수정:${commentModified.slice(0, 10)}` : commentCreated?.slice(0, 10)}
                     </UserInfoCol>
                     <UserInfoCol>
-                        <Link to="" onClick={() => setCommentEdit(prev => !prev)}>수정</Link> &nbsp;|&nbsp;
-                        <Link to="" onClick={handleCommentDelete}>삭제</Link>
+                        {/* 익명 작성자는 수정/삭제 가능 다른 로그인 유저가 작성한 버튼은 보이지 않는다. */}
+                        {userloading ? null : commentUserId == loginUserId || (commentUserId == null) ? (
+                            <>
+                                <Link to="" onClick={() => setCommentEdit(prev => !prev)}>수정</Link> &nbsp;|&nbsp;
+                                <Link to="" onClick={handleCommentDelete}>삭제</Link>
+                            </>
+                        ) : null}
                     </UserInfoCol>
                     <UserInfoCol>
                         <FontAwesomeIcon icon={faHeart} onClick={handleCommentLike} /> &nbsp;&nbsp;{commentLike}

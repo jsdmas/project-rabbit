@@ -93,3 +93,5 @@ export const isNotLoggedIn = (req, _, next) => {
 };
 
 export const avatarUpload = multer({ dest: "uploads/avatars", limits: { fileSize: 10000 } }); // 10KB
+
+export const threadUpload = multer({ dest: "uploads/threads", limits: { fileSize: 50000 } }); // 50KB

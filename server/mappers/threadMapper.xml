@@ -69,7 +69,7 @@
     <!-- thread 수정 -->
     <update id="updateThread">
         UPDATE post
-        SET title = #{postTitle}, content = #{postContent}, modified = now()
+        SET title = #{postTitle}, content = #{postContent}, modified = now(), img_url = #{img_url}
         WHERE post_id = #{threadid}
     </update>
 

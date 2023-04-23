@@ -13,6 +13,7 @@ import Header from "../components/Header";
 import CommentForm from "../components/CommentForm";
 import Spinner from "../components/Spinner";
 import useError from "../hooks/useError";
+import useLoginInfo from "../hooks/useLoginInfo";
 
 
 const Wrapper = styled.div`
@@ -59,6 +60,9 @@ const Main = styled.main`
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    img{
+        max-width: 425px;
+    }
 `;
 
 const TitleSection = styled.div`
@@ -108,9 +112,10 @@ const Thread = () => {
     const queryClient = useQueryClient();
     const navigate = useNavigate();
     const { onError } = useError();
+    const [userloading, { loginUserId }] = useLoginInfo();
     const { data: response, isLoading } = useQuery<IResponse>(["thread", threadid], () => fetchThread(threadid), { onError, retry: 3, retryDelay: 600 });
     const [threadItem] = response?.data ?? [];
-    const { postContent, postCreated, postLike, postTitle, postWriteUser, postWriteUserImgUrl, postModified, userId } = threadItem ?? {};
+    const { postContent, postCreated, postLike, postTitle, postWriteUser, postWriteUserImgUrl, postModified, userId, postImg } = threadItem ?? {};
     const onSuccess = () => queryClient.invalidateQueries(["thread", threadid]);
     const { mutate: threadlike } = useMutation(patchThreadLike, { onSuccess, onError });
     const { mutate: deleteMutate } = useMutation((threadid: string) => deleteThread(userId, threadid), { onSuccess, onError });
@@ -149,14 +154,22 @@ const Thread = () => {
                 <Wrapper>
                     <Head>
                         <Col><BackPageIcon /></Col>
-                        <Col>{postWriteUserImgUrl ? <img alt={postWriteUserImgUrl} src={postWriteUserImgUrl} /> : <FontAwesomeIcon icon={faUser} />} {postWriteUser ? postWriteUser : "anonymous"}</Col>
+                        <Col>{postWriteUserImgUrl ? <img alt={postWriteUserImgUrl} src={postWriteUserImgUrl} /> : <FontAwesomeIcon icon={faUser} />} {postWriteUser ? <Link to={`/user/${userId}`}>{postWriteUser}</Link> : "anonymous"}</Col>
                         <Col>{postModified ? `수정됨 : ${postModified?.slice(0, 10)} ${postModified?.slice(11, 19)}` : `posted by ${postCreated?.slice(0, 10)} ${postCreated?.slice(11, 19)}`}</Col>
                     </Head>
                     <Main>
                         <TitleSection>
                             <Col>{postTitle}</Col>
-                            <Col><Link to={`edit`}>수정</Link>&nbsp;|&nbsp;<Link to="" onClick={handleThreadDelete}>삭제</Link></Col>
+                            <Col>
+                                {/* 로그인유저, 익명유저 식별 */}
+                                {userloading ? null : (userId == loginUserId) || (userId == null) ? (
+                                    <>
+                                        <Link to={`edit`}>수정</Link>&nbsp;|&nbsp;<Link to="" onClick={handleThreadDelete}>삭제</Link>
+                                    </>
+                                ) : null}
+                            </Col>
                         </TitleSection>
+                        {postImg ? <img src={postImg} alt={postImg} /> : null}
                         {postContent}
                         <LoveBox>
                             <Col onClick={likeIncrement}>
