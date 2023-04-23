@@ -67,12 +67,41 @@ const ErrorMessage = styled.span`
     font-size: 1em;
 `;
 
-const ImgInput = styled.input`
-visibility: hidden;
+
+const ImgDiv = styled.div`
+    width: 100%;
+    height: 10%;
+    display: flex;
+    align-items: center;
 `;
 
+const ImgInput = styled.input`
+    display: none;
+
+`;
+const UserIdInput = styled.input`
+    display: none;
+`;
+const Label = styled.label`
+    background-color: ${props => props.theme.buttonColor};
+    border-radius: 5px;
+    color: #fff;
+    width: 30%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    white-space: nowrap;
+`;
+const SelectImgInfo = styled.div`
+    white-space: nowrap;
+    padding-left: 5%;
+    display: flex;
+    align-items: center;
+    width: 70%;
+`;
 const Write = () => {
-    const { register, handleSubmit, formState: { errors } } = useForm<IpostData>();
+    const { register, handleSubmit, formState: { errors }, watch } = useForm<IpostData>();
     const navigate = useNavigate();
     const onVaild = async (postData: IpostData) => {
         const { data: response } = await createThread(postData);
@@ -102,6 +131,11 @@ const Write = () => {
                         }
                     })} placeholder='Title...' />
                     <ErrorMessage>{errors?.postTitle?.message}</ErrorMessage>
+                    <ImgDiv>
+                        <Label htmlFor='writeThreadImg'>이미지 편집</Label>
+                        <SelectImgInfo>선택된 이미지 : {watch("postImg")?.[0]?.name} </SelectImgInfo>
+                        <ImgInput id='writeThreadImg' type="file" {...register("postImg")} accept="image/*" />
+                    </ImgDiv>
                     <ContentTextArea {...register("postContent", {
                         required: "본문은 반드시 적어야 합니다.",
                         maxLength: {

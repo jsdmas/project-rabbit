@@ -36,10 +36,15 @@ export const fetchMainTextThread = async (threadid: string) => {
     return response;
 };
 
-export const createThread = async (postData: IpostData) => {
+export const createThread = async ({ userId, postTitle, postContent, postImg }: IpostData) => {
     let response = null;
+    let threadImg = null;
+    if (postImg) {
+        threadImg = postImg[0];
+        console.log(threadImg);
+    }
     try {
-        const { data } = await axios.post("/write", postData, { withCredentials: true });
+        const { data } = await axios.post("/write", { userId, postTitle, postContent, threadImg }, { withCredentials: true, headers: { "Content-Type": "multipart/form-data" } });
         response = data;
     } catch (error) {
         throw error;

@@ -7,6 +7,7 @@
 이미지 업로드 가능하게 하기
 --> search 검색기록 만들기 (localstorage atom effect)
 --> reactHelmet (font 적용)
+
 --> 404 페이지 디자인
 --> 반응형 디자인 설정
    

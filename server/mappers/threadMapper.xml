@@ -62,8 +62,8 @@
 
     <!-- thread 저장 -->
     <insert id="postThread">
-        INSERT INTO post(title, content, created, user_id)
-        VALUES(#{postTitle}, #{postContent}, now(), #{userId})
+        INSERT INTO post(title, content, created, user_id, img_url)
+        VALUES(#{postTitle}, #{postContent}, now(), #{userId}, #{img_url})
     </insert>
 
     <!-- thread 수정 -->

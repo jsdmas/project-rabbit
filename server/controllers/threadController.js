@@ -47,26 +47,31 @@ export const getThreadMainText = async (req, res, next) => {
 };
 
 export const createThread = async (req, res, next) => {
-    const { params: { threadid }, body: { postTitle, postContent } } = req;
-    const userId = req?.user ? req?.user?.userId : null;
-    try {
-        RegexHelper.value(postTitle, "제목을 올바르게 적어주세요");
-        RegexHelper.value(postContent, "본문을 올바르게 적어주세요");
-        RegexHelper.minLength(postTitle, 1, "최소 1글자 이상적어야 합니다.");
-        RegexHelper.minLength(postContent, 1, "최소 1글자 이상적어야 합니다.");
-        RegexHelper.maxLength(postTitle, 50, "제목은 최대 50글자입니다.");
-        RegexHelper.maxLength(postContent, 1000000, "본문은 최대 1000000글자입니다.");
-    } catch (error) {
-        return next(error);
-    }
+    const upload = threadUpload.single("threadImg");
+    upload(req, res, async (error) => {
+        console.log(req.body);
+        console.log(req.file);
+        const { body: { postTitle, postContent }, file } = req;
+        const userId = req?.user ? req?.user?.userId : null;
+        try {
+            RegexHelper.value(postTitle, "제목을 올바르게 적어주세요");
+            RegexHelper.value(postContent, "본문을 올바르게 적어주세요");
+            RegexHelper.minLength(postTitle, 1, "최소 1글자 이상적어야 합니다.");
+            RegexHelper.minLength(postContent, 1, "최소 1글자 이상적어야 합니다.");
+            RegexHelper.maxLength(postTitle, 50, "제목은 최대 50글자입니다.");
+            RegexHelper.maxLength(postContent, 1000000, "본문은 최대 1000000글자입니다.");
+        } catch (error) {
+            return next(error);
+        }
 
-    let data = null;
-    try {
-        data = await threadService.addThread({ threadid, postTitle, postContent, userId });
-    } catch (error) {
-        return next(error);
-    }
-    return res.sendResult({ data });
+        let data = null;
+        try {
+            data = await threadService.addThread({ postTitle, postContent, userId, img_url: file ? file.path : null });
+        } catch (error) {
+            return next(error);
+        }
+        return res.sendResult({ data });
+    })
 };
 
 export const editThread = async (req, res, next) => {

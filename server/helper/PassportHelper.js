@@ -69,7 +69,6 @@ const naverStrategy = () => {
                 clientSecret: process.env.NAVER_CLIENT_SECRET,
                 callbackURL: process.env.NAVER_CALLBACK_URL,
             }, async (accessToken, refreshToken, profile, done) => {
-                console.log(profile._json);
                 const { _json: { nickname, email, profile_image, id } } = profile;
                 try {
                     const userExists = await userService.userExists({ email });
