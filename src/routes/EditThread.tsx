@@ -15,7 +15,7 @@ import useLoginInfo from '../hooks/useLoginInfo';
 import { useEffect } from 'react';
 import Meta from '../Meta';
 
-const Wrapper = styled.div`
+const Wrapper = styled.section`
     margin-top: 8vh;
     color: ${props => props.theme.textColor};
     padding:0px 1em;

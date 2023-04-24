@@ -16,7 +16,7 @@ import Swal from 'sweetalert2';
 import useLoginInfo from '../hooks/useLoginInfo';
 import Meta from '../Meta';
 
-const Wrapper = styled.div`
+const Wrapper = styled.section`
     margin : 7vh auto;
     display: grid;
     gap: 30px;

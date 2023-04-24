@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { IThreadList } from "../types/thread";
 import { memo } from "react";
 
-const Wrapper = styled.div`
+const Wrapper = styled.section`
     width: 100%;
     height: 100%;
     max-width: 320px;
@@ -23,7 +23,7 @@ const Wrapper = styled.div`
     }
 `;
 
-const UserInfo = styled.div`
+const UserInfo = styled.article`
     display: grid;
     width: 100%;
     height: 100%;

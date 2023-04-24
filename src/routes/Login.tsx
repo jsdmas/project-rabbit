@@ -16,7 +16,7 @@ import { IErrorTypes } from "../types/error";
 import useLoginInfo from "../hooks/useLoginInfo";
 import Meta from "../Meta";
 
-const Wrapper = styled.div`
+const Wrapper = styled.section`
     margin : 7vh auto;
     display: grid;
     gap: 30px;

@@ -17,13 +17,13 @@ import { isAxiosError } from "axios";
 import { IErrorTypes } from "../types/error";
 import Meta from "../Meta";
 
-const Grid = styled.div`
+const Grid = styled.section`
     margin-top: 8vh;
     display: grid;
     height: 60vh;
     grid-template-rows: 1fr 5fr 2fr 0.2fr 2fr;
 `;
-const TopNav = styled.div`
+const TopNav = styled.nav`
     display: grid;
     grid-template-columns: 1fr 1fr;
     padding: 0 20px;
@@ -43,7 +43,7 @@ const TopNav = styled.div`
     }
 `;
 
-const ProfileImg = styled.div`
+const ProfileImg = styled.figure`
     display: flex;
     justify-content: center;
     align-items: center;

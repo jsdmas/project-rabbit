@@ -15,7 +15,7 @@ import RegexHelper from "../helper/RegexHelper"
 import useError from "../hooks/useError"
 import useLoginInfo from "../hooks/useLoginInfo"
 
-const Grid = styled.div<{ inside?: string }>`
+const Grid = styled.section<{ inside?: string }>`
     display: grid;
     grid-template-rows: 3fr 0.2fr;
     gap: 10px;
@@ -23,19 +23,19 @@ const Grid = styled.div<{ inside?: string }>`
     padding-top: 10px;
 `;
 
-const User = styled.div`
+const User = styled.article`
     grid-column: 1 / -1;
     display: grid;
     grid-template-columns: 1fr 3fr;
     gap: 10px;
 `;
 
-const FormDiv = styled.div<{ fromReplyId?: number | null }>`
+const FormWrapper = styled.article<{ fromReplyId?: number | null }>`
     grid-column: 1 / -1;
     visibility: ${props => props.fromReplyId ? "" : "hidden"};
 `;
 
-const UserImg = styled.div`
+const UserImg = styled.figure`
     height: 100%;
     place-items: center;
     place-content: center;
@@ -230,9 +230,9 @@ const Comment = ({ inside, commentContent, commentCreated, commentLike, commentW
             </User>
             {!commentParentNum ? (
                 commentId === replyId ? (
-                    <FormDiv fromReplyId={replyId}>
+                    <FormWrapper fromReplyId={replyId}>
                         <CommentForm commentParentNum={replyId} />
-                    </FormDiv>
+                    </FormWrapper>
                 ) : null
             ) : null}
         </Grid>

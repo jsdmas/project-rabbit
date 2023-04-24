@@ -17,13 +17,13 @@ import useLoginInfo from "../hooks/useLoginInfo";
 import Meta from "../Meta";
 
 
-const Wrapper = styled.div`
+const Wrapper = styled.section`
     margin-top: 8vh;
     color: ${props => props.theme.textColor};
     padding:0px 1em;
 `;
 
-const Head = styled.div`
+const Head = styled.header`
     display: grid;
     grid-template-columns: 1fr 1.2fr 3fr;
     img{
@@ -98,7 +98,7 @@ const LoveBox = styled.div`
     }
 `;
 
-const CommentWrapper = styled.div`
+const CommentWrapper = styled.article`
     margin-top: 10px;
     padding: 0px 10px;
     width: 100%;

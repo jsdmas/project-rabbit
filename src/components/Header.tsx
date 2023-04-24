@@ -13,7 +13,7 @@ import { FieldValues, useForm } from "react-hook-form";
 import useLoginInfo from "../hooks/useLoginInfo";
 import { logout } from "../api/userApi";
 
-const Nav = styled.nav`
+const Nav = styled.header`
     z-index: 99;
     position: fixed;
     left: 50%;

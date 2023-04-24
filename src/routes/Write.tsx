@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { IpostData } from '../types/thread';
 import Meta from '../Meta';
 
-const Wrapper = styled.div`
+const Wrapper = styled.section`
     margin-top: 8vh;
     color: ${props => props.theme.textColor};
     padding:0px 1em;
@@ -69,7 +69,7 @@ const ErrorMessage = styled.span`
 `;
 
 
-const ImgDiv = styled.div`
+const ImgDiv = styled.figure`
     width: 100%;
     height: 10%;
     display: flex;

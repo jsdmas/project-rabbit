@@ -21,7 +21,7 @@ interface IPageData {
     rtmsg: string
 }
 
-const Wrapper = styled.div`
+const Wrapper = styled.section`
     margin: auto;
 `;
 

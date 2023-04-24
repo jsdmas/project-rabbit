@@ -15,12 +15,12 @@ import { IErrorTypes } from "../types/error";
 import Swal from "sweetalert2";
 import Meta from "../Meta";
 
-const Grid = styled.div`
+const Grid = styled.section`
     margin-top:  10vh;
     height: 60vh;
 `;
 
-const TopNav = styled.div`
+const TopNav = styled.nav`
     display: flex;
     justify-content: center;
     align-items: center;
