@@ -3,6 +3,7 @@ import { ThemeProvider, createGlobalStyle } from "styled-components";
 import { darkTheme, lightTheme } from "./theme";
 import { useRecoilValue } from "recoil";
 import { darkState } from "./atoms";
+import { HelmetProvider } from "react-helmet-async"
 
 const GlobalStyle = createGlobalStyle`
 
@@ -25,6 +26,7 @@ time, mark, audio, video {
 	font-size: 100%;
 	font: inherit;
 	vertical-align: baseline;
+	font-family: 'Gothic A1', sans-serif;
 }
 /* HTML5 display-role reset for older browsers */
 article, aside, details, figcaption, figure, 
@@ -69,8 +71,10 @@ const App = () => {
 	return (
 		<>
 			<ThemeProvider theme={isdark ? darkTheme : lightTheme}>
-				<GlobalStyle />
-				<Router />
+				<HelmetProvider>
+					<GlobalStyle />
+					<Router />
+				</HelmetProvider>
 			</ThemeProvider>
 		</>
 	);

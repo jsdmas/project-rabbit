@@ -14,6 +14,7 @@ import Spinner from '../components/Spinner';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import useLoginInfo from '../hooks/useLoginInfo';
+import Meta from '../Meta';
 
 const Wrapper = styled.div`
     margin : 7vh auto;
@@ -114,6 +115,7 @@ const Join = () => {
     useEffect(() => { if (!userInfoLoading && loginState) navigate("/") }, [userInfoLoading, loginState, navigate]);
     return (
         <>
+            <Meta title='회원가입 | Rabbit' description='Rabbit 회원가입 페이지입니다.' />
             {userInfoLoading ? <Spinner isLoading={userInfoLoading} /> : (
                 <>
                     <Header />

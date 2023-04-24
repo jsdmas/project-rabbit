@@ -3,6 +3,7 @@ import Header from '../components/Header';
 import styled from 'styled-components';
 import { faHouse } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
+import Meta from '../Meta';
 
 const Wrapper = styled.section`
     margin-top: 7vh;
@@ -36,15 +37,18 @@ const Home = styled.button`
 const NotFound = () => {
     const navigate = useNavigate();
     return (
-        <Wrapper>
-            <Header />
-            <Text>
-                <Home onClick={() => navigate("/")} type='button'>
-                    <FontAwesomeIcon icon={faHouse} /> 홈으로
-                </Home>
-                페이지를 찾을 수 없어요!!😵
-            </Text>
-        </Wrapper>
+        <>
+            <Meta title='Not Found Page | Rabbit' description='Rabbit 사이트에 등록되지 않은 url 입니다.' />
+            <Wrapper>
+                <Header />
+                <Text>
+                    <Home onClick={() => navigate("/")} type='button'>
+                        <FontAwesomeIcon icon={faHouse} /> 홈으로
+                    </Home>
+                    페이지를 찾을 수 없어요!!😵
+                </Text>
+            </Wrapper>
+        </>
     );
 };
 

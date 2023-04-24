@@ -15,6 +15,7 @@ import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
 import { isAxiosError } from "axios";
 import { IErrorTypes } from "../types/error";
+import Meta from "../Meta";
 
 const Grid = styled.div`
     margin-top: 8vh;
@@ -226,6 +227,7 @@ const UserProfile = () => {
     };
     return (
         <>
+            <Meta title={`${nickname} Profile | Rabbit`} description={description} image={img_url} />
             <Header />
             {isLoading ? <Spinner isLoading={isLoading} /> : (
                 <Grid>

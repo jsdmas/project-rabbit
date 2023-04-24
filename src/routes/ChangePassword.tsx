@@ -13,6 +13,7 @@ import useError from "../hooks/useError";
 import { isAxiosError } from "axios";
 import { IErrorTypes } from "../types/error";
 import Swal from "sweetalert2";
+import Meta from "../Meta";
 
 const Grid = styled.div`
     margin-top:  10vh;
@@ -104,6 +105,7 @@ const ChangePassword = () => {
     };
     return (
         <>
+            <Meta title="change-password | Rabbit" description="비밀번호 변경 페이지" />
             <Header />
             <Grid>
                 <TopNav>

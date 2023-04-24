@@ -14,6 +14,7 @@ import Swal from "sweetalert2";
 import { isAxiosError } from "axios";
 import { IErrorTypes } from "../types/error";
 import useLoginInfo from "../hooks/useLoginInfo";
+import Meta from "../Meta";
 
 const Wrapper = styled.div`
     margin : 7vh auto;
@@ -138,6 +139,7 @@ const Login = () => {
     useEffect(() => { if (!userInfoLoading && loginState) navigate("/") }, [userInfoLoading, loginState, navigate]);
     return (
         <>
+            <Meta title="Login | Rabbit" description="Rabbit 로그인 페이지 입니다." />
             {userInfoLoading ? <Spinner isLoading={userInfoLoading} /> : (
                 <>
                     <Header />

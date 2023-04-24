@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form"
 import { createThread } from '../api/threadApi';
 import { useNavigate } from 'react-router-dom';
 import { IpostData } from '../types/thread';
+import Meta from '../Meta';
 
 const Wrapper = styled.div`
     margin-top: 8vh;
@@ -106,6 +107,7 @@ const Write = () => {
     };
     return (
         <>
+            <Meta title='글쓰기 | Rabbit' description='Rabbit 사이트 글 작성 페이지입니다.' />
             <Header />
             <Wrapper>
                 <Head>

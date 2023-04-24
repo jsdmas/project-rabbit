@@ -14,6 +14,7 @@ import CommentForm from "../components/CommentForm";
 import Spinner from "../components/Spinner";
 import useError from "../hooks/useError";
 import useLoginInfo from "../hooks/useLoginInfo";
+import Meta from "../Meta";
 
 
 const Wrapper = styled.div`
@@ -149,6 +150,7 @@ const Thread = () => {
     };
     return (
         <>
+            <Meta title={`${postTitle} | Rabbit`} description={postContent} image={postImg} />
             <Header />
             {isLoading ? <Spinner isLoading={isLoading} /> : (
                 <Wrapper>

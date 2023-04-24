@@ -13,6 +13,7 @@ import Spinner from '../components/Spinner';
 import useError from '../hooks/useError';
 import useLoginInfo from '../hooks/useLoginInfo';
 import { useEffect } from 'react';
+import Meta from '../Meta';
 
 const Wrapper = styled.div`
     margin-top: 8vh;
@@ -143,6 +144,7 @@ const EditThread = () => {
     }, [userloading, loginUserId, userId, navigate]);
     return (
         <>
+            <Meta title={`${postTitle} Edit | Rabbit`} description={postContent} />
             <Header />
             {isLoading ? <Spinner isLoading={isLoading} /> : (
                 <Wrapper>

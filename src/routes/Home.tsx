@@ -10,6 +10,7 @@ import { throttle } from "lodash";
 import { IThreadList } from "../types/thread";
 import Spinner from "../components/Spinner";
 import { isAxiosError } from "axios";
+import Meta from "../Meta";
 
 interface IPageData {
     data: IThreadList[]
@@ -75,6 +76,7 @@ const Home = () => {
     }
     return (
         <>
+            <Meta title="Rabbit" description="Rabbit 사이트의 홈페이지입니다.(포트폴리오 용)" />
             <Header remove={remove} />
             <Wrapper>
                 {isLoading || !response?.pages?.length ? <Spinner isLoading={isLoading} /> :
