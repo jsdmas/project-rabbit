@@ -32,6 +32,7 @@ const Head = styled.header`
     span{
         place-self: center center;
         font-size: 1.2em;
+        font-family: 'Noto Sans KR', sans-serif;
         color: ${props => props.theme.buttonColor};
         svg{
             font-size: 1.5em;

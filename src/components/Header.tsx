@@ -3,7 +3,7 @@ import styled from "styled-components";
 import lightLogo from "../assets/logo_light.png";
 import darkLogo from "../assets/logo_dark.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowRightFromBracket, faBars, faCheckToSlot, faFeatherAlt, faHourglass, faHourglassHalf, faIdBadge, faMagnifyingGlass, faMoon, faSdCard, faSun, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { faArrowRightFromBracket, faBars, faCheckToSlot, faFeatherAlt, faIdBadge, faMagnifyingGlass, faMoon, faSdCard, faSun, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useRecoilState, useResetRecoilState, useSetRecoilState } from "recoil";
 import { darkState, OrderBy, orderbyState, OrderCommends, orderCommendState, keywordOptionState, searchKeywordState, SearchOption, errorMessageState, searchHistoryState } from "../atoms";
@@ -202,6 +202,7 @@ const Ul = styled.ul`
 `;
 
 const Li = styled.li`
+font-family: 'Noto Sans KR', sans-serif;
     padding: 5px 0px;
     border-bottom: 1px solid ${props => props.theme.buttonColor};
     width: 100%;
@@ -224,6 +225,7 @@ const Li = styled.li`
         align-items: center;
         width: 100%;
         height: 100%;
+        font-family: 'Noto Sans KR', sans-serif;
     }
 `;
 
@@ -274,6 +276,7 @@ const Header = ({ remove }: { remove?: () => void }) => {
         resetKeyword();
         resetErrorMessage();
     };
+    // 검색 함수
     const { register, handleSubmit, setFocus, setValue } = useForm();
     const onVaild = (data: FieldValues) => {
         const { option, search } = data;
@@ -283,6 +286,7 @@ const Header = ({ remove }: { remove?: () => void }) => {
             if (!remove) return;
             setSearchOption(option);
             setSearchKeyword(search);
+            setHistory(false);
             setSearchHistory(prev => [search, ...prev])
             remove();
             resetErrorMessage();
@@ -342,7 +346,7 @@ const Header = ({ remove }: { remove?: () => void }) => {
                         <Li><Link to="/write"><FontAwesomeIcon icon={faFeatherAlt} />&nbsp;글쓰기</Link></Li>
                         {pathname === "/" ? <Li onClick={sortTimeClick}>시간 정렬</Li> : null}
                         {pathname === "/" ? <Li onClick={sortLikeClick}>좋아요 정렬</Li> : null}
-                        <Li onClick={() => setIsdark(prev => !prev)}><FontAwesomeIcon icon={isdark ? faMoon : faSun} /></Li>
+                        <Li onClick={() => setIsdark(prev => !prev)}><FontAwesomeIcon icon={isdark ? faSun : faMoon} /></Li>
                     </Ul>
                 )}
             </Menu>

@@ -4,7 +4,7 @@ import { deleteUser, editDescription, getUserProfile, uploadUserProfile } from "
 import useLoginInfo from "../hooks/useLoginInfo";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import useError from "../hooks/useError";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import styled from "styled-components";
 import BackPageIcon from "../components/BackPageIcon";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -78,6 +78,9 @@ const UserDescription = styled.div`
         display: flex;
         justify-content: space-evenly;
         font-size: 22px;
+        h2{
+            font-family: 'Noto Sans KR', sans-serif;
+        }
     }
     p{
         opacity: 0.6;
@@ -143,6 +146,7 @@ const SettingMenu = styled.div`
     white-space: nowrap;
     border-radius: 5px;
     font-size: 0.8em;
+    
     @media ${media.tablet} {
         width: 15%;
         right: 20%;
@@ -160,19 +164,42 @@ const Ul = styled.ul`
     align-items: center;
     height: 100%;
     width: 100%;
-    
+    font-size: 1.2em;
 `;
 
 const Li = styled.li`
-    label{
-        color:${props => props.theme.accentColor};
-        cursor: pointer;
-        &:hover{
-            color:${props => props.theme.buttonColor};
-        }
-    }
     width: 100%;
     height: 100%;
+    background-color: ${props => props.theme.postColor};
+    &:hover{
+        background-color:${props => props.theme.buttonColor};
+        color: #fff;
+    }
+    label{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+        color:${props => props.theme.accentColor};
+        cursor: pointer;
+        font-family: 'Noto Sans KR', sans-serif;
+        &:hover{
+        color: #fff;
+    }
+    }
+    
+    a{
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-family: 'Noto Sans KR', sans-serif;
+        &:hover{
+        color: #fff;
+    }
+    }
     display: flex;
     justify-content: center;
     align-items: center;
@@ -180,6 +207,8 @@ const Li = styled.li`
     &:last-child{
         border-bottom:none;
     }
+    
+    
 `;
 
 const FileInput = styled.input`
@@ -191,7 +220,6 @@ const UserProfile = () => {
     const { userid } = useParams();
     const { onError } = useError();
     const queryClient = useQueryClient();
-    const naviagate = useNavigate();
     const [edit, setEdit] = useState(false);
     const [setting, setSetting] = useState(false);
     const onSuccess = () => queryClient.invalidateQueries(["userProfile", userid]);
@@ -215,7 +243,6 @@ const UserProfile = () => {
             allowOutsideClick: () => !Swal.isLoading()
         })
             .then((result) => result.value ? Swal.fire({ title: "탈퇴 성공!", icon: "success" }) : null)
-            .then(() => naviagate("/"));
     }
     // edit description
     const { register, handleSubmit, formState: { errors } } = useForm<{ userDescription: string }>();

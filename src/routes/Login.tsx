@@ -46,6 +46,7 @@ const Head = styled.header`
     h1{
         font-size: 1.4em;
         color: ${props => props.theme.buttonColor};
+        font-family: 'Noto Sans KR', sans-serif;
     }
 
 `;

@@ -23,6 +23,7 @@ const Head = styled.header`
     display: flex;
     justify-content: space-between;
     span{
+        font-family: 'Noto Sans KR', sans-serif;
         place-self: center center;
         font-size: 1.2em;
         color: ${props => props.theme.buttonColor};
