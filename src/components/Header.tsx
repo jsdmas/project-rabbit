@@ -3,7 +3,7 @@ import styled from "styled-components";
 import lightLogo from "../assets/logo_light.png";
 import darkLogo from "../assets/logo_dark.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars, faMagnifyingGlass, faMoon, faSun, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { faArrowRightFromBracket, faBars, faCheckToSlot, faFeatherAlt, faHourglass, faHourglassHalf, faIdBadge, faMagnifyingGlass, faMoon, faSdCard, faSun, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useRecoilState, useResetRecoilState, useSetRecoilState } from "recoil";
 import { darkState, OrderBy, orderbyState, OrderCommends, orderCommendState, keywordOptionState, searchKeywordState, SearchOption, errorMessageState, searchHistoryState } from "../atoms";
@@ -12,6 +12,7 @@ import { throttle } from "lodash";
 import { FieldValues, useForm } from "react-hook-form";
 import useLoginInfo from "../hooks/useLoginInfo";
 import { logout } from "../api/userApi";
+import { media } from "../styles/mediaQuery";
 
 const Nav = styled.header`
     z-index: 99;
@@ -21,6 +22,12 @@ const Nav = styled.header`
     top: 0;
     display: grid;
     grid-template-columns: 0.5fr 9fr 0.5fr;
+    @media ${media.tablet} {
+        grid-template-columns: 0.5fr 1fr 7fr 0.5fr;
+    }
+    @media ${media.desktop} {
+        grid-template-columns: 0.5fr 0.5fr 6fr 0.5fr;
+    }
     width: 100%;
     max-width: 1440px;
     height: 6vh;
@@ -29,14 +36,15 @@ const Nav = styled.header`
     div:nth-child(1){
         place-self: center start;
     }
-    div:nth-child(2){
+`;
+
+const Rabbit = styled.span`
+    display: none;
+    color: ${props => props.theme.accentColor};
+    font-family: 'Noto Sans KR', sans-serif;
+    @media ${media.tablet} {
         display: flex;
-        justify-content: center;
         align-items: center;
-    }
-    div:nth-child(3){
-        place-self: center end;
-        color: ${props => props.theme.buttonColor};
     }
 `;
 
@@ -55,6 +63,11 @@ const Form = styled.form`
     grid-template-columns: 0.1fr 1fr 0.1fr;
     width: 100%;
     column-gap:5px;
+    @media ${media.desktop}{
+        width: 50%;
+        place-self: center center;
+        margin-right:120px;
+    }
     svg{
         position: relative;
         left: 20px;
@@ -76,6 +89,11 @@ const Form = styled.form`
 
 const Item = styled.div`
     width: 100%;
+    place-self: center center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
     ul{
         padding:5px;
         padding-right: 20px;
@@ -102,6 +120,11 @@ const Item = styled.div`
     }
 `;
 
+const MenuNav = styled.span`
+    place-self: center end;
+    color: ${props => props.theme.buttonColor};
+    padding: 0px 15px;
+`;
 
 const SearchButton = styled.button`
     white-space: nowrap;
@@ -119,24 +142,44 @@ const HistoryButton = styled(SearchButton)`
     font-size: 1em;
     width: 20%;
     place-self: center start;
+    @media ${media.phone} {
+        place-self: center end;
+        padding-right:20px;
+    }
+    @media ${media.tablet} {
+        place-self: center end;
+        padding-right:20px;
+    }
 `;
 
 const SearchHistoryBox = styled.div`
     position: absolute;
-    top: 80%;
+    top: 85%;
     width: 43%;
     min-height: 50px;
-    max-height: 95px ;
+    max-height: 95px;
     background-color: ${props => props.theme.bgColor};
     color: ${props => props.theme.textColor};
     margin-left: 15px;
     overflow: scroll;
     border-radius: 5px;
-
     display: flex;
     flex-direction: column;
     div{
         width: 100%;
+    }
+    li{
+        border-bottom: 1px solid ${props => props.theme.accentColor};
+    }
+    @media ${media.phone} {
+        width: 59%;
+    }
+    @media ${media.tablet} {
+        width: 56%;
+        max-height: 150px;
+    }
+    @media ${media.desktop} {
+        width: 30%;
     }
 `;
 
@@ -145,6 +188,7 @@ const Menu = styled.div <{ isMenu: boolean }>`
     place-self: end;
     position: absolute;
     width: 100px;
+    white-space: nowrap;
     background-color: ${props => props.theme.bgColor};
     border: 1px solid ${props => props.theme.buttonColor};
     color: ${props => props.theme.textColor};
@@ -253,6 +297,7 @@ const Header = ({ remove }: { remove?: () => void }) => {
                     <Img src={isdark ? darkLogo : lightLogo} alt="logo_rabbit" />
                 </Link>
             </Col>
+            <Rabbit>Rabbit</Rabbit>
             <Item>
                 {pathname === "/" ?
                     <Form onSubmit={handleSubmit(onVaild)}>
@@ -284,19 +329,19 @@ const Header = ({ remove }: { remove?: () => void }) => {
                         <SearchButton type="submit">검색</SearchButton>
                     </Form> : null}
             </Item>
-            <Col>
+            <MenuNav>
                 <FontAwesomeIcon icon={faBars} onClick={() => setIsMenu(prev => !prev)} cursor="pointer" />
-            </Col>
+            </MenuNav>
             <Menu isMenu={isMenu} >
                 {isuserLoading ? null : (
                     <Ul>
-                        {loginState ? null : <Li><Link to="/login">login</Link></Li>}
-                        {loginState ? null : <Li><Link to="/join">Join</Link></Li>}
-                        {loginState ? <Li><Link to="" onClick={() => logout().then(() => navigate(0))}>logout</Link></Li> : null}
-                        {loginState ? <Li><Link to={`/user/${loginUserId}`}>my-profile</Link></Li> : null}
-                        <Li><Link to="/write">글쓰기</Link></Li>
-                        {pathname === "/" ? <Li onClick={sortTimeClick}>시간 순 정렬</Li> : null}
-                        {pathname === "/" ? <Li onClick={sortLikeClick}>좋아요 순 정렬</Li> : null}
+                        {loginState ? null : <Li><Link to="/login"><FontAwesomeIcon icon={faCheckToSlot} />&nbsp;login</Link></Li>}
+                        {loginState ? null : <Li><Link to="/join"><FontAwesomeIcon icon={faSdCard} />&nbsp;Join</Link></Li>}
+                        {loginState ? <Li><Link to="" onClick={() => logout().then(() => navigate("/"))}><FontAwesomeIcon icon={faArrowRightFromBracket} />&nbsp;logout</Link></Li> : null}
+                        {loginState ? <Li><Link to={`/user/${loginUserId}`}><FontAwesomeIcon icon={faIdBadge} />&nbsp;my-profile</Link></Li> : null}
+                        <Li><Link to="/write"><FontAwesomeIcon icon={faFeatherAlt} />&nbsp;글쓰기</Link></Li>
+                        {pathname === "/" ? <Li onClick={sortTimeClick}>시간 정렬</Li> : null}
+                        {pathname === "/" ? <Li onClick={sortLikeClick}>좋아요 정렬</Li> : null}
                         <Li onClick={() => setIsdark(prev => !prev)}><FontAwesomeIcon icon={isdark ? faMoon : faSun} /></Li>
                     </Ul>
                 )}

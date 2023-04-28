@@ -1,6 +1,6 @@
 import Router from "./Router";
 import { ThemeProvider, createGlobalStyle } from "styled-components";
-import { darkTheme, lightTheme } from "./theme";
+import { darkTheme, lightTheme } from "./styles/theme";
 import { useRecoilValue } from "recoil";
 import { darkState } from "./atoms";
 import { HelmetProvider } from "react-helmet-async"

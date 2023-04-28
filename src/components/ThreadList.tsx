@@ -13,11 +13,12 @@ const Wrapper = styled.section`
     margin: 30px auto;
     padding: 10px;
     border-radius: 5px;
+    border: 1px solid ${props => props.theme.accentColor};
+    box-shadow: 5px 5px 5px 0px rgba(0,0,0,0.3);
     display: grid;
     grid-template-rows: 0.5fr 0.6fr 2fr 0.5fr;
-    row-gap: 5px;
+    row-gap: 10px;
     background-color: ${props => props.theme.postColor};
-    box-shadow: 0px 0px 3px 2px ${props => props.theme.postColor};
     &:first-child{
         margin-top: 10vh;
     }
@@ -47,14 +48,23 @@ const Col = styled.span`
 
 const Title = styled.h2`
     font-size: 24px;
+    font-family: 'Noto Sans KR', sans-serif;
+    width: 100%;
+    height: 100%;
+    padding-bottom: 10%;
     text-overflow: ellipsis;
     place-self: center start;
+    transition: 0.2s ease-in;
+    &:hover{
+        background-color: ${props => props.theme.accentColor};
+        color: #fff;
+    }
 `;
 
 const TitleLink = styled(Link)`
     color: ${props => props.theme.buttonColor};
+    overflow: hidden;   
 `;
-
 
 const Content = styled.div`
     border: 1px solid ${props => props.theme.buttonColor};
@@ -80,13 +90,12 @@ const PostInfo = styled.div`
     color: ${props => props.theme.textColor};
 `;
 
-
 const ThreadList = ({ title, content, created, img_name, img_url, like, modified, post_id, user_id, nickname, userimg, commentCnt }: IThreadList) => {
     return (
         <Wrapper>
             <UserInfo>
                 <Col>{userimg ? <img alt={`${user_id}`} src={userimg} /> : <FontAwesomeIcon icon={faUser} />}</Col>
-                <Col>{nickname ? nickname : "anonymous"}</Col>
+                <Col>{nickname ? <Link to={`/user/${user_id}`}>{nickname}</Link> : "anonymous"}</Col>
                 <Col>posted by {created.slice(0, 10)}&nbsp;&nbsp;{created.slice(11, 19)}</Col>
             </UserInfo>
             <TitleLink to={`/thread/${post_id}`}><Title>{title}</Title></TitleLink>

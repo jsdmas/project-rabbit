@@ -1,4 +1,4 @@
-import { memo } from "react";
+import { memo, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import Swal from "sweetalert2";
@@ -15,6 +15,7 @@ import Spinner from "../components/Spinner";
 import useError from "../hooks/useError";
 import useLoginInfo from "../hooks/useLoginInfo";
 import Meta from "../Meta";
+import { media } from "../styles/mediaQuery";
 
 
 const Wrapper = styled.section`
@@ -26,14 +27,23 @@ const Wrapper = styled.section`
 const Head = styled.header`
     display: grid;
     grid-template-columns: 1fr 1.2fr 3fr;
+    @media ${media.phone} {
+        grid-template-columns: 2fr 1.5fr 1.5fr;
+    }
     img{
         width: 30%;
         height: 50%;
-        border-radius: 50%;
         padding-right: 10px;
     }
     svg{
         padding-right: 10px;
+    }
+    div:first-child{
+        place-self: center start;
+        font-size: 1.2em;
+        @media ${media.desktop}{
+            font-size: 1.5em;
+        }
     }
     div:last-child{
         opacity: 0.5;
@@ -45,6 +55,7 @@ const Head = styled.header`
         display: flex;
         align-items: center;
         justify-content: end;
+        place-self: center end;
     }
 `;
 
@@ -61,9 +72,24 @@ const Main = styled.main`
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    img{
-        max-width: 425px;
-    }
+`;
+
+const ImgDiv = styled.div`
+    width: 100%;
+    overflow: scroll;
+`;
+
+const MainImg = styled.img<{ imgWidthSize?: number }>`
+    width: ${props => props.imgWidthSize};
+    @media ${media.phone} {
+            max-width: 600px;
+        }
+        @media ${media.tablet} {
+            max-width: 768px;
+        }
+        @media ${media.desktop} {
+            max-width: 1200px;
+        }
 `;
 
 const TitleSection = styled.div`
@@ -73,8 +99,11 @@ const TitleSection = styled.div`
     padding-bottom: 10px;
     border-bottom: 1px solid ${props => props.theme.accentColor};
     div:first-child{
+        font-family: 'Noto Sans KR', sans-serif;
         font-size: 1.5em;
         padding-right: 5px;
+        word-break: break-all;
+        line-height: 35px;
     }
     div:last-child{
         font-size: 0.8em;
@@ -101,7 +130,7 @@ const LoveBox = styled.div`
 const CommentWrapper = styled.article`
     margin-top: 10px;
     padding: 0px 10px;
-    width: 100%;
+    width: 95%;
 `;
 
 const CommentSection = styled.div`
@@ -113,6 +142,7 @@ const Thread = () => {
     const queryClient = useQueryClient();
     const navigate = useNavigate();
     const { onError } = useError();
+    const [imgWidth, setImgWidth] = useState(0);
     const [userloading, { loginUserId }] = useLoginInfo();
     const { data: response, isLoading } = useQuery<IResponse>(["thread", threadid], () => fetchThread(threadid), { onError, retry: 3, retryDelay: 600 });
     const [threadItem] = response?.data ?? [];
@@ -148,6 +178,11 @@ const Thread = () => {
             allowOutsideClick: () => !Swal.isLoading()
         }).then((result) => result.value ? Swal.fire({ title: "삭제 성공!", icon: "success" }) : null)
     };
+    const handleImgLoad = (event: React.SyntheticEvent<HTMLImageElement>) => {
+        const imgElement = event.currentTarget as HTMLImageElement;
+        console.log(imgElement.naturalWidth);
+        setImgWidth(imgElement.naturalWidth);
+    };
     return (
         <>
             <Meta title={`${postTitle} | Rabbit`} description={postContent} image={postImg} />
@@ -171,7 +206,9 @@ const Thread = () => {
                                 ) : null}
                             </Col>
                         </TitleSection>
-                        {postImg ? <img src={postImg} alt={postImg} /> : null}
+                        <ImgDiv >
+                            {postImg ? <MainImg src={postImg} alt={postImg} onLoad={handleImgLoad} imgWidthSize={imgWidth} /> : null}
+                        </ImgDiv>
                         {postContent}
                         <LoveBox>
                             <Col onClick={likeIncrement}>

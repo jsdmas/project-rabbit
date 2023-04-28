@@ -6,7 +6,6 @@ import threadService from "../services/threadService";
 export const getThreadList = async (req, res, next) => {
     const { query: { orderCommend = "p.created", orderby = "DESC", searchKeyword = "", keywordoption } } = req;
     let { query: { offset = 0 } } = req;
-    console.log(searchKeyword, keywordoption);
     let data = null;
     let nextOffset = offset;
     try {

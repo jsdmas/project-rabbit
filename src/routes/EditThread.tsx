@@ -14,30 +14,38 @@ import useError from '../hooks/useError';
 import useLoginInfo from '../hooks/useLoginInfo';
 import { useEffect } from 'react';
 import Meta from '../Meta';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCheck, faImage, faPencil } from '@fortawesome/free-solid-svg-icons';
 
 const Wrapper = styled.section`
+    margin: auto;
     margin-top: 8vh;
     color: ${props => props.theme.textColor};
     padding:0px 1em;
     height: 50vh;
+    max-width: 600px;
 `;
 
 const Head = styled.header`
-    place-self: center center;
     display: flex;
     justify-content: space-between;
     span{
+        place-self: center center;
         font-size: 1.2em;
         color: ${props => props.theme.buttonColor};
+        svg{
+            font-size: 1.5em;
+        }
     }
 `;
 
 const Form = styled.form`
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
+    justify-content: space-between;
     align-items: flex-start;
     height: 100%;
+    margin-top: 5vh;
     color:${props => props.theme.textColor};
 `;
 
@@ -61,7 +69,8 @@ const ContentTextArea = styled.textarea`
 `;
 
 const SubmitButton = styled.button`
-    width: 100%;
+    margin: auto;
+    width: 50%;
     color: #fff;
     background-color: ${props => props.theme.buttonColor};
     border: none;
@@ -81,6 +90,8 @@ const ImgDiv = styled.div`
     height: 10%;
     display: flex;
     align-items: center;
+    font-size: 0.8em;
+    margin: 2vh 0;
 `;
 
 const ImgInput = styled.input`
@@ -170,8 +181,8 @@ const EditThread = () => {
                         })} placeholder='Title...' defaultValue={postTitle} />
                         <ErrorMessage>{errors?.postTitle?.message}</ErrorMessage>
                         <ImgDiv>
-                            <Label htmlFor='threadImg'>이미지 편집</Label>
-                            <SelectImgInfo>선택된 이미지 : {watch("postImg")?.[0]?.name} </SelectImgInfo>
+                            <Label htmlFor='threadImg'><FontAwesomeIcon icon={faPencil} />&nbsp;이미지 편집</Label>
+                            <SelectImgInfo><FontAwesomeIcon icon={faImage} />&nbsp;선택된 이미지 : {watch("postImg")?.[0]?.name} </SelectImgInfo>
                             <ImgInput id='threadImg' type="file" {...register("postImg")} accept="image/*" />
                         </ImgDiv>
                         <ContentTextArea {...register("postContent", {
@@ -189,7 +200,7 @@ const EditThread = () => {
                             }
                         })} placeholder='Content...' defaultValue={postContent} />
                         <ErrorMessage>{errors?.postContent?.message}</ErrorMessage>
-                        <SubmitButton type="submit">완료</SubmitButton>
+                        <SubmitButton type="submit"><FontAwesomeIcon icon={faCheck} /> 완료</SubmitButton>
                     </Form>
                 </Wrapper>
             )}

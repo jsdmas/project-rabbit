@@ -9,8 +9,12 @@ import { replyState } from "../atoms";
 import RegexHelper from "../helper/RegexHelper";
 import { IpostCommentData, TTreadId } from "../types/thread";
 import useError from "../hooks/useError";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faFeatherPointed } from "@fortawesome/free-solid-svg-icons";
 
 const Form = styled.form<{ fromReplyId?: number | null }>`
+    margin: auto;
+    width: 100%;
     display: grid;
     grid-template-columns: 1fr 0.2fr;
     height: 100%;
@@ -20,6 +24,7 @@ const Form = styled.form<{ fromReplyId?: number | null }>`
         color: #fff;
         border-radius: 5px;
         cursor: pointer;
+        white-space: nowrap;
     }
     span{
         margin-top: 10px;
@@ -72,7 +77,7 @@ const CommentForm = ({ commentParentNum }: { commentParentNum?: number }) => {
                         RegexValue: (commentContent) => RegexHelper.value(commentContent) ? true : "내용을 올바르게 적어주세요"
                     }
                 })} />
-            <button ref={buttonRef}>작성</button>
+            <button ref={buttonRef}><FontAwesomeIcon icon={faFeatherPointed} />&nbsp;작성</button>
             <span>{errors.commentContent?.message}</span>
         </Form>
 

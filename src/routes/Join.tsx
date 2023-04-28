@@ -15,11 +15,15 @@ import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import useLoginInfo from '../hooks/useLoginInfo';
 import Meta from '../Meta';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faAddressCard, faCheck } from '@fortawesome/free-solid-svg-icons';
+import { media } from '../styles/mediaQuery';
 
 const Wrapper = styled.section`
     margin : 7vh auto;
     display: grid;
     gap: 30px;
+    max-width: 600px;
 `;
 
 const Head = styled.header`
@@ -30,10 +34,16 @@ const Head = styled.header`
     margin: auto;
     width: 50%;
     span{
-        font-size: 1.2em;
+        font-size: 2em;
         color: ${props => props.theme.buttonColor};
         position: absolute;
         left: 10%;
+        @media ${media.tablet}{
+            left: 20%;
+        }
+        @media ${media.desktop}{
+            left: 30%;
+        }
     }
     h1{
         font-size: 1.4em;
@@ -122,7 +132,7 @@ const Join = () => {
                     <Wrapper>
                         <Head>
                             <BackPageIcon />
-                            <h1>회원가입</h1>
+                            <h1><FontAwesomeIcon icon={faAddressCard} />&nbsp;회원가입</h1>
                         </Head>
                         <Form onSubmit={handleSubmit(onVaild)}>
                             <Input type="email" placeholder='email' {...register("email", {
@@ -167,7 +177,7 @@ const Join = () => {
                                 }
                             })} />
                             <span>{errors?.nickname?.message}</span>
-                            {isLoading ? <Spinner isLoading={isLoading} /> : <Button>완료</Button>}
+                            {isLoading ? <Spinner isLoading={isLoading} /> : <Button><FontAwesomeIcon icon={faCheck} />&nbsp;완료</Button>}
                         </Form>
                     </Wrapper>
                 </>

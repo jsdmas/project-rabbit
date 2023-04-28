@@ -14,4 +14,6 @@ export const darkTheme: DefaultTheme = {
     textColor: "#fff",
     buttonColor: "#00ADB5",
     accentColor: "#057D83",
+
 }
+

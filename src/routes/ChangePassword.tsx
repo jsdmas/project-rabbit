@@ -1,23 +1,28 @@
 import { useEffect } from "react";
-import Header from "../components/Header";
-import useLoginInfo from "../hooks/useLoginInfo";
+import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
+import { isAxiosError } from "axios";
 import { useForm } from "react-hook-form";
-import styled from "styled-components";
-import BackPageIcon from "../components/BackPageIcon";
-import { IPassword } from "../types/user";
-import RegexHelper from "../helper/RegexHelper";
 import { useMutation } from "@tanstack/react-query";
 import { ChangeOfPassword } from "../api/userApi";
+import styled from "styled-components";
+import Header from "../components/Header";
+import BackPageIcon from "../components/BackPageIcon";
+import useLoginInfo from "../hooks/useLoginInfo";
+import { IPassword } from "../types/user";
+import RegexHelper from "../helper/RegexHelper";
 import useError from "../hooks/useError";
-import { isAxiosError } from "axios";
 import { IErrorTypes } from "../types/error";
-import Swal from "sweetalert2";
 import Meta from "../Meta";
+import { media } from "../styles/mediaQuery";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faKey, faPencil } from "@fortawesome/free-solid-svg-icons";
 
 const Grid = styled.section`
+    margin: auto;
     margin-top:  10vh;
     height: 60vh;
+    max-width: 768px;
 `;
 
 const TopNav = styled.nav`
@@ -27,12 +32,18 @@ const TopNav = styled.nav`
     height: 10%;
     h2{
         color: ${props => props.theme.buttonColor};
-        font-size: 24px;
+        font-size: 1.5em;
+        svg{
+            font-size: 1em;
+        }
     }
     span{
         position: absolute;
         left: 10%;
         font-size: 1.8em;
+        @media ${media.desktop}{
+            font-size: 2em;
+        }
     }
 `;
 
@@ -43,6 +54,7 @@ const Form = styled.form`
     width: 60%;
     display: grid;
     grid-template-rows: 1fr 0.5fr 1fr 0.5fr 1fr 0.5fr 0.7fr;
+    
     button{
         width: 82%;
         place-self: center center;
@@ -54,6 +66,9 @@ const Form = styled.form`
         height: 100%;
         &:hover{
             background-color: ${props => props.theme.accentColor};
+        }
+        @media ${media.phone}{
+            width: 65%;
         }
     }
     span{
@@ -71,6 +86,9 @@ const PasswordInput = styled.input`
     width: 80%;
     border:1px solid ${props => props.theme.buttonColor};
     border-radius: 5px;
+    &::placeholder{
+        color: ${props => props.theme.accentColor};
+    }
 `;
 
 const ChangePassword = () => {
@@ -110,40 +128,42 @@ const ChangePassword = () => {
             <Grid>
                 <TopNav>
                     <BackPageIcon />
-                    <h2>비밀번호 변경</h2>
+                    <h2>
+                        <FontAwesomeIcon icon={faKey} />&nbsp;비밀번호 변경
+                    </h2>
                 </TopNav>
                 <Form onSubmit={handleSubmit(onVaild)}>
                     <PasswordInput type="password" placeholder="기존 비밀번호" {...register("currentPW", {
-                        required: "password를 입력해주세요.",
+                        required: "⚠️ password를 입력해주세요.",
                         maxLength: {
                             value: 255,
-                            message: "최대 255자까지 가능합니다."
+                            message: "⚠️ 최대 255자까지 가능합니다."
                         },
                         validate: {
-                            RegexValue: (value) => RegexHelper.value(value) ? true : "양식을 올바르게 적어주세요",
-                            RegexCompare: (passwordConfirm = "", formValues) => RegexHelper.compareTo(passwordConfirm, formValues.changePW) ? "이전 비밀번호와 같습니다." : true,
+                            RegexValue: (value) => RegexHelper.value(value) ? true : "⚠️ 양식을 올바르게 적어주세요",
+                            RegexCompare: (passwordConfirm = "", formValues) => RegexHelper.compareTo(passwordConfirm, formValues.changePW) ? "⚠️ 이전 비밀번호와 같습니다." : true,
                         }
                     })} />
                     <span>{errors?.currentPW?.message}</span>
                     <PasswordInput type="password" placeholder="변경할 비밀번호" {...register("changePW", {
-                        required: "변경할 password를 입력해주세요.",
+                        required: "⚠️ 변경할 password를 입력해주세요.",
                         maxLength: {
                             value: 255,
-                            message: "최대 255자까지 가능합니다."
+                            message: "⚠️ 최대 255자까지 가능합니다."
                         },
                         validate: {
-                            RegexValue: (value) => RegexHelper.value(value) ? true : "양식을 올바르게 적어주세요",
+                            RegexValue: (value) => RegexHelper.value(value) ? true : "⚠️ 양식을 올바르게 적어주세요",
                         }
                     })} />
                     <span>{errors?.changePW?.message}</span>
                     <PasswordInput type="password" placeholder="변경할 비밀번호 확인" {...register("changePWCompare", {
-                        required: "변경할 password를 확인해주세요.",
+                        required: "⚠️ 변경할 password를 확인해주세요.",
                         validate: {
-                            RegexCompare: (passwordConfirm = "", formValues) => RegexHelper.compareTo(passwordConfirm, formValues.changePW) ? true : "비밀번호를 확인해주세요",
+                            RegexCompare: (passwordConfirm = "", formValues) => RegexHelper.compareTo(passwordConfirm, formValues.changePW) ? true : "⚠️ 비밀번호를 확인해주세요",
                         }
                     })} />
                     <span>{errors?.changePWCompare?.message}</span>
-                    <button>수정</button>
+                    <button><FontAwesomeIcon icon={faPencil} /> 수정</button>
                 </Form>
             </Grid>
         </>

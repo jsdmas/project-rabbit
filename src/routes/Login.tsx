@@ -7,7 +7,7 @@ import { login } from "../api/userApi";
 import { ILogin } from "../types/register";
 import Spinner from "../components/Spinner";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faComment } from "@fortawesome/free-solid-svg-icons";
+import { faCheck, faComment, faN, faSignsPost } from "@fortawesome/free-solid-svg-icons";
 import { memo, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
@@ -15,12 +15,15 @@ import { isAxiosError } from "axios";
 import { IErrorTypes } from "../types/error";
 import useLoginInfo from "../hooks/useLoginInfo";
 import Meta from "../Meta";
+import { media } from "../styles/mediaQuery";
 
 const Wrapper = styled.section`
     margin : 7vh auto;
     display: grid;
     gap: 30px;
+    max-width: 600px;
 `;
+
 const Head = styled.header`
     display: flex;
     justify-content: center;
@@ -29,10 +32,16 @@ const Head = styled.header`
     margin: auto;
     width: 50%;
     span{
-        font-size: 1.2em;
+        font-size: 2em;
         color: ${props => props.theme.buttonColor};
         position: absolute;
         left: 10%;
+        @media ${media.tablet} {
+            left: 20%;
+        }
+        @media ${media.desktop} {
+            left: 30%;
+        }
     }
     h1{
         font-size: 1.4em;
@@ -83,7 +92,10 @@ const Button = styled.button`
 
 const NaverOAuthLogin = styled.div`
     margin: auto;
-    width: 80%;
+    width: 60%;
+    @media ${media.tablet} {
+        width: 50%;
+    }
     background-color: rgb(10,226,97);
     height: 7vh;
     border-radius: 5px;
@@ -96,9 +108,8 @@ const NaverOAuthLogin = styled.div`
     &:hover{
         background-color: rgb(16, 174, 79);
     }
-    span{
-        font-size: 30px;
-        font-weight: bold;
+    svg{
+        font-size: 1.5em;
         padding-right: 15px;
     }
 `;
@@ -110,9 +121,6 @@ const KakaoOAuthLogin = styled(NaverOAuthLogin)`
         background-color: rgb(204, 188, 21);
     }
     svg{
-        font-size: 24px;
-        font-weight: bold;
-        padding-right: 15px;
         margin-bottom: 2px;
     }
 `;
@@ -146,14 +154,14 @@ const Login = () => {
                     <Wrapper>
                         <Head>
                             <BackPageIcon />
-                            <h1>로그인</h1>
+                            <h1><FontAwesomeIcon icon={faSignsPost} />&nbsp;로그인</h1>
                         </Head>
                         <Form onSubmit={handleSubmit(onVaild)}>
                             <Input type="email" placeholder='email' {...register("email")} />
                             <Input type="password" placeholder='password' {...register("password")} />
-                            {isLoading ? <Spinner isLoading={isLoading} /> : <Button>완료</Button>}
+                            {isLoading ? <Spinner isLoading={isLoading} /> : <Button><FontAwesomeIcon icon={faCheck} />&nbsp;login</Button>}
                         </Form>
-                        <NaverOAuthLogin onClick={() => window.location.href = "http://localhost:8000/auth/naver"}><span>N</span>네이버 로그인</NaverOAuthLogin>
+                        <NaverOAuthLogin onClick={() => window.location.href = "http://localhost:8000/auth/naver"}><FontAwesomeIcon icon={faN} />&nbsp;네이버 로그인</NaverOAuthLogin>
                         <KakaoOAuthLogin onClick={() => window.location.href = "http://localhost:8000/auth/kakao"}><FontAwesomeIcon icon={faComment} /> 카카오 로그인</KakaoOAuthLogin>
                     </Wrapper>
                 </>

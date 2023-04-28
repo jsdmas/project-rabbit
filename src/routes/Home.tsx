@@ -71,9 +71,6 @@ const Home = () => {
         }, { threshold: 0.5 });
         io.observe(observerTargetEl.current);
     }, [throttled]);
-    if (!isLoading) {
-        console.log(response);
-    }
     return (
         <>
             <Meta title="Rabbit" description="Rabbit 사이트의 홈페이지입니다.(포트폴리오 용)" />

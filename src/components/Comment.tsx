@@ -1,4 +1,4 @@
-import { faHeart, faUser } from "@fortawesome/free-solid-svg-icons"
+import { faHeart, faReply, faUser } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import styled from "styled-components"
 import { Link, useParams } from "react-router-dom"
@@ -14,6 +14,7 @@ import { useForm } from "react-hook-form"
 import RegexHelper from "../helper/RegexHelper"
 import useError from "../hooks/useError"
 import useLoginInfo from "../hooks/useLoginInfo"
+import { media } from "../styles/mediaQuery"
 
 const Grid = styled.section<{ inside?: string }>`
     display: grid;
@@ -43,9 +44,13 @@ const UserImg = styled.figure`
     flex-direction: column;
     gap: 10px;
     img{
-        width: 40%;
-        height: 40px;
-        border-radius: 50%;
+        width: 30%;
+        @media ${media.tablet} {
+            width: 30%;
+        }
+        @media ${media.desktop}{
+            width: 20%;
+        }
     }
 `;
 
@@ -69,14 +74,24 @@ const UserInfo = styled.div`
 
 const UserInfoCol = styled.span`
     white-space: nowrap;
+    display: flex;
+`;
+
+const UserInfoColTime = styled.span`
+    display: none;
+    @media ${media.tablet}{
+        display: flex;
+    }
 `;
 
 const ReplyButton = styled.button`
     background-color: ${props => props.theme.accentColor};
     border: none;
+    font-size: 0.7em;
     border-radius: 5px;
     color: #fff;
     cursor: pointer;
+    white-space: nowrap;
 `;
 
 const UserComment = styled.div<{ commentEdit: boolean }>`
@@ -182,7 +197,7 @@ const Comment = ({ inside, commentContent, commentCreated, commentLike, commentW
             <User>
                 <UserImg>
                     {commentWriteUserImgUrl ? <img alt={commentWriteUserImgUrl} src={commentWriteUserImgUrl} /> : <FontAwesomeIcon icon={faUser} />}
-                    {!commentParentNum ? (<ReplyButton onClick={() => commentId === replyId ? setReplyId(null) : setReplyId(commentId)} type="button">답글</ReplyButton>) : null}
+                    {!commentParentNum ? (<ReplyButton onClick={() => commentId === replyId ? setReplyId(null) : setReplyId(commentId)} type="button"><FontAwesomeIcon icon={faReply} />&nbsp;답글</ReplyButton>) : null}
                 </UserImg>
                 <UserInfo>
                     <UserInfoCol>
@@ -190,6 +205,7 @@ const Comment = ({ inside, commentContent, commentCreated, commentLike, commentW
                     </UserInfoCol>
                     <UserInfoCol>
                         {commentModified ? `수정:${commentModified.slice(0, 10)}` : commentCreated?.slice(0, 10)}
+                        <UserInfoColTime>&nbsp;&nbsp;{commentCreated?.slice(11, 19)}</UserInfoColTime>
                     </UserInfoCol>
                     <UserInfoCol>
                         {/* 익명 작성자는 수정/삭제 가능 다른 로그인 유저가 작성한 버튼은 보이지 않는다. */}

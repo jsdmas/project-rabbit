@@ -7,29 +7,38 @@ import { createThread } from '../api/threadApi';
 import { useNavigate } from 'react-router-dom';
 import { IpostData } from '../types/thread';
 import Meta from '../Meta';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCheck, faImage, faPencil } from '@fortawesome/free-solid-svg-icons';
 
 const Wrapper = styled.section`
+    margin: auto;
     margin-top: 8vh;
     color: ${props => props.theme.textColor};
     padding:0px 1em;
     height: 50vh;
+    max-width: 600px;
 `;
 
 const Head = styled.header`
     display: flex;
     justify-content: space-between;
     span{
+        place-self: center center;
         font-size: 1.2em;
         color: ${props => props.theme.buttonColor};
+        svg{
+            font-size: 1.5em;
+        }
     }
 `;
 
 const Form = styled.form`
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
+    justify-content: space-between;
     align-items: flex-start;
     height: 100%;
+    margin-top: 5vh;
     color:${props => props.theme.textColor};
 `;
 
@@ -53,7 +62,8 @@ const ContentTextArea = styled.textarea`
 `;
 
 const SubmitButton = styled.button`
-    width: 100%;
+    margin: auto;
+    width: 50%;
     color: #fff;
     background-color: ${props => props.theme.buttonColor};
     border: none;
@@ -68,18 +78,19 @@ const ErrorMessage = styled.span`
     font-size: 1em;
 `;
 
-
-const ImgDiv = styled.figure`
+const ImgDiv = styled.div`
     width: 100%;
     height: 10%;
     display: flex;
     align-items: center;
+    font-size: 0.8em;
+    margin: 2vh 0;
 `;
 
 const ImgInput = styled.input`
     display: none;
-
 `;
+
 const Label = styled.label`
     background-color: ${props => props.theme.buttonColor};
     border-radius: 5px;
@@ -98,6 +109,7 @@ const SelectImgInfo = styled.div`
     align-items: center;
     width: 70%;
 `;
+
 const Write = () => {
     const { register, handleSubmit, formState: { errors }, watch } = useForm<IpostData>();
     const navigate = useNavigate();
@@ -131,8 +143,8 @@ const Write = () => {
                     })} placeholder='Title...' />
                     <ErrorMessage>{errors?.postTitle?.message}</ErrorMessage>
                     <ImgDiv>
-                        <Label htmlFor='writeThreadImg'>이미지 편집</Label>
-                        <SelectImgInfo>선택된 이미지 : {watch("postImg")?.[0]?.name} </SelectImgInfo>
+                        <Label htmlFor='writeThreadImg'><FontAwesomeIcon icon={faPencil} />&nbsp;이미지 편집</Label>
+                        <SelectImgInfo><FontAwesomeIcon icon={faImage} />&nbsp;선택된 이미지 : {watch("postImg")?.[0]?.name} </SelectImgInfo>
                         <ImgInput id='writeThreadImg' type="file" {...register("postImg")} accept="image/*" />
                     </ImgDiv>
                     <ContentTextArea {...register("postContent", {
@@ -150,7 +162,7 @@ const Write = () => {
                         }
                     })} placeholder='Content...' />
                     <ErrorMessage>{errors?.postContent?.message}</ErrorMessage>
-                    <SubmitButton type="submit">완료</SubmitButton>
+                    <SubmitButton type="submit"><FontAwesomeIcon icon={faCheck} /> 완료</SubmitButton>
                 </Form>
             </Wrapper>
         </>

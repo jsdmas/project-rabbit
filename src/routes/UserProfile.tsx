@@ -8,7 +8,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import BackPageIcon from "../components/BackPageIcon";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faGear, faPenToSquare, faPerson } from "@fortawesome/free-solid-svg-icons";
+import { faComment, faGear, faImage, faPaste, faPenToSquare, faPerson, faPersonRunning, faUnlock } from "@fortawesome/free-solid-svg-icons";
 import { IActivityCount, Iprofile } from "../types/user";
 import Spinner from "../components/Spinner";
 import { useForm } from "react-hook-form";
@@ -16,17 +16,22 @@ import Swal from "sweetalert2";
 import { isAxiosError } from "axios";
 import { IErrorTypes } from "../types/error";
 import Meta from "../Meta";
+import { media } from "../styles/mediaQuery";
 
 const Grid = styled.section`
+    margin: auto;
     margin-top: 8vh;
+    max-width: 600px;
     display: grid;
     height: 60vh;
     grid-template-rows: 1fr 5fr 2fr 0.2fr 2fr;
 `;
 const TopNav = styled.nav`
     display: grid;
+    margin: auto;
     grid-template-columns: 1fr 1fr;
     padding: 0 20px;
+    width:80%;
     span{
         place-self: center start;
     }
@@ -62,6 +67,11 @@ const UserDescription = styled.div`
     justify-content: space-around;
     align-items: center;
     flex-direction: column;
+
+    p{
+        word-break: break-all;
+        line-height: 20px;
+    }
     color: ${props => props.theme.textColor};
     span{
         width: 20%;
@@ -125,11 +135,22 @@ const ErrorMessage = styled.span`
 const SettingMenu = styled.div`
     position: absolute;
     top: 15%;
-    right: 0;
-    background-color: ${props => props.theme.postColor};
+    right: 0%;
+    background-color: ${props => props.theme.bgColor};
+    border: 1px solid ${props => props.theme.accentColor};
     height: 15%;
     width: 30%;
+    white-space: nowrap;
     border-radius: 5px;
+    font-size: 0.8em;
+    @media ${media.tablet} {
+        width: 15%;
+        right: 20%;
+    }
+    @media ${media.desktop} {
+        width: 10%;
+        right: 31%;
+    }
 `;
 
 const Ul = styled.ul`
@@ -241,10 +262,10 @@ const UserProfile = () => {
                     </ProfileImg>
                     <UserDescription>
                         <span>
-                            {userid == loginUserId ? <FontAwesomeIcon onClick={() => setEdit(prev => !prev)} icon={faPenToSquare} /> : null}
+                            {userid == loginUserId ? <><FontAwesomeIcon onClick={() => setEdit(prev => !prev)} icon={faPenToSquare} />&nbsp;&nbsp;</> : null}
                             <h2>{nickname}</h2>
                         </span>
-                        {!edit ? <p>{description}</p> : (
+                        {!edit ? <p>{description ? description : "소개글이 없습니다."}</p> : (
                             <EditForm onSubmit={handleSubmit(onVaild)}>
                                 <textarea defaultValue={description} {...register("userDescription", {
                                     maxLength: {
@@ -259,22 +280,22 @@ const UserProfile = () => {
                     </UserDescription>
                     <ErrorMessage>{errors?.userDescription?.message}</ErrorMessage>
                     <UserActivitySection>
-                        <span>threadNum : {postCount} </span>
-                        <span>commentNum : {commentCount}</span>
+                        <span><FontAwesomeIcon icon={faPaste} />&nbsp;thread : {postCount} </span>
+                        <span><FontAwesomeIcon icon={faComment} />&nbsp;comment : {commentCount}</span>
                     </UserActivitySection>
+                    {!setting ? null : (
+                        <>
+                            <SettingMenu>
+                                <Ul>
+                                    <Li><label htmlFor="userImageFile"><FontAwesomeIcon icon={faImage} />&nbsp;사진 변경</label></Li>
+                                    {loginUserSnsId ? null : <Li><Link to="/user/change-password"><FontAwesomeIcon icon={faUnlock} />&nbsp;비밀번호 변경</Link></Li>}
+                                    <Li><Link to="" onClick={onDeleteUser}><FontAwesomeIcon icon={faPersonRunning} />&nbsp;회원 탈퇴</Link></Li>
+                                </Ul>
+                            </SettingMenu>
+                            <FileInput type="file" id="userImageFile" onChange={onUploadImage} accept="image/*" name="userImageFile" />
+                        </>
+                    )}
                 </Grid>
-            )}
-            {!setting ? null : (
-                <>
-                    <SettingMenu>
-                        <Ul>
-                            <Li><label htmlFor="userImageFile">사진 변경</label></Li>
-                            {loginUserSnsId ? null : <Li><Link to="/user/change-password">비밀번호 변경</Link></Li>}
-                            <Li><Link to="" onClick={onDeleteUser}>회원 탈퇴</Link></Li>
-                        </Ul>
-                    </SettingMenu>
-                    <FileInput type="file" id="userImageFile" onChange={onUploadImage} accept="image/*" name="userImageFile" />
-                </>
             )}
         </>
     );
