@@ -341,7 +341,7 @@ const Header = ({ remove }: { remove?: () => void }) => {
                     <Ul>
                         {loginState ? null : <Li><Link to="/login"><FontAwesomeIcon icon={faCheckToSlot} />&nbsp;login</Link></Li>}
                         {loginState ? null : <Li><Link to="/join"><FontAwesomeIcon icon={faSdCard} />&nbsp;Join</Link></Li>}
-                        {loginState ? <Li><Link to="" onClick={() => logout().then(() => navigate("/"))}><FontAwesomeIcon icon={faArrowRightFromBracket} />&nbsp;logout</Link></Li> : null}
+                        {loginState ? <Li><Link to="" onClick={() => logout().then(() => navigate(0))}><FontAwesomeIcon icon={faArrowRightFromBracket} />&nbsp;logout</Link></Li> : null}
                         {loginState ? <Li><Link to={`/user/${loginUserId}`}><FontAwesomeIcon icon={faIdBadge} />&nbsp;my-profile</Link></Li> : null}
                         <Li><Link to="/write"><FontAwesomeIcon icon={faFeatherAlt} />&nbsp;글쓰기</Link></Li>
                         {pathname === "/" ? <Li onClick={sortTimeClick}>시간 정렬</Li> : null}

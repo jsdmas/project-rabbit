@@ -48,8 +48,6 @@ export const getThreadMainText = async (req, res, next) => {
 export const createThread = async (req, res, next) => {
     const upload = threadUpload.single("threadImg");
     upload(req, res, async (error) => {
-        console.log(req.body);
-        console.log(req.file);
         const { body: { postTitle, postContent }, file } = req;
         const userId = req?.user ? req?.user?.userId : null;
         try {
@@ -153,7 +151,6 @@ export const createComment = async (req, res, next) => {
     try {
         data = await threadService.postComment({ threadid, commentContent: comment, userId, commentParentNum });
     } catch (error) {
-        console.log(error);
         next(error);
     }
     return res.sendResult({ data });
@@ -161,10 +158,6 @@ export const createComment = async (req, res, next) => {
 
 export const threadDeleteComment = async (req, res, next) => {
     const { body: { commentId, commentUserId } } = req;
-    console.debug("threadDeleteComment");
-    console.debug(commentId);
-    console.debug("commentUserId");
-    console.debug(commentUserId);
 
     let data = null;
     try {

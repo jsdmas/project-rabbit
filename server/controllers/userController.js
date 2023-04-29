@@ -49,7 +49,6 @@ export const login = async (req, res, next) => {
     passport.authenticate("local", (authError, user, info) => {
         // 서버에서 처리과정중 에러가 날시
         if (authError) {
-            console.error(authError);
             return next(authError);
         }
         // db에서 유저정보가 맞지 않을시 
@@ -62,7 +61,6 @@ export const login = async (req, res, next) => {
         */
         return req.login(user, loginError => {
             if (loginError) {
-                console.error(loginError);
                 return next(loginError);
             }
 

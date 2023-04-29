@@ -180,7 +180,6 @@ const Thread = () => {
     };
     const handleImgLoad = (event: React.SyntheticEvent<HTMLImageElement>) => {
         const imgElement = event.currentTarget as HTMLImageElement;
-        console.log(imgElement.naturalWidth);
         setImgWidth(imgElement.naturalWidth);
     };
     return (

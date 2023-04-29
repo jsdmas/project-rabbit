@@ -4,3 +4,4 @@
 .env.production
 /_files
 /uploads
+/backend

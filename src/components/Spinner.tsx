@@ -11,7 +11,7 @@ const Wrapper = styled.div`
     z-index: 999;
 `;
 
-const Spinner = ({ isLoading }: { isLoading: boolean }) => {
+const Spinner = ({ isLoading }: { isLoading?: boolean }) => {
 
     return (
         <Wrapper>

@@ -269,7 +269,6 @@ const UserProfile = () => {
     const onUploadImage = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.currentTarget.files) {
             const userImageFile = event.currentTarget.files[0];
-            console.log(userImageFile);
             userImage({ userImageFile, loginUserId });
         }
     };

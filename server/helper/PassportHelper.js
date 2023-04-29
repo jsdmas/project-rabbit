@@ -20,7 +20,6 @@ export const passportConfig = () => {
     passport.deserializeUser(async (user_id, done) => {
         // serializeUser 가 done 하거나 passport.session()이 실행되면 실행된다.
         // 즉, 서버 요청이 올때마다 항상 실행하여 로그인 유저 정보를 불러와 이용한다.
-        console.log(user_id);
         await userService.userInfo({ user_id })
             .then(result => {
                 const { description, ...information } = result;
@@ -81,7 +80,6 @@ const naverStrategy = () => {
                         done(null, newUser);
                     }
                 } catch (error) {
-                    console.error(error);
                     done(error);
                 }
             }
@@ -97,14 +95,11 @@ const kakaoStrategy = () => {
                 callbackURL: process.env.KAKAO_CALLBACK_URL, // 카카오 로그인 Redirect URI 경로
             },
             async (accessToken, refreshToken, profile, done) => {
-                console.log(profile);
                 const { _json: { properties: { nickname }, id, kakao_account_email = "이메일 미등록" } } = profile;
                 try {
                     // sns id가 기존유저가 있는지 비교
                     const userExists = await userService.userExistsSNSId({ sns_id: id });
                     // 이미 가입된 카카오 프로필이면 성공
-                    console.log("userExists passport값");
-                    console.log(userExists);
                     if (userExists) {
                         done(null, userExists);
                     } else {
@@ -112,7 +107,6 @@ const kakaoStrategy = () => {
                         done(null, newUser);
                     }
                 } catch (error) {
-                    console.error(error);
                     done(error);
                 }
             }

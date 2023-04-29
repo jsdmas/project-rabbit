@@ -1,3 +1,4 @@
+import { join } from "path";
 import express from "express";
 import userAgent from "express-useragent";
 import methodOverride from "method-override";
@@ -61,17 +62,23 @@ app.use(passport.initialize()); // 요청 객체에 passport 설정을 심음
 app.use(passport.session()); // rea.session 객체에 passport 정보를 추가해서 저장
 passportConfig();
 
+app.use(express.static(join(__dirname, 'build')));
+app.use("/thread/static", express.static(join(__dirname, 'build', 'static')));
+app.use("/user/static", express.static(join(__dirname, 'build', 'static')));
+app.use('/thread/:threadid/static', express.static(join(__dirname, 'build', 'static')));
+
 app.use("/uploads", express.static("uploads"));
 app.use("/user/uploads", express.static("uploads"));
 app.use("/thread/uploads", express.static("uploads"));
 
-app.use("/", rootRouter);
-app.use("/auth", authRouter);
-app.use("/thread", threadRouter);
+app.use("/api", rootRouter);
+app.use("/api/auth", authRouter);
+app.use("/api/thread", threadRouter);
+
+app.get('*', (req, res) => res.sendFile(join(__dirname, 'build', 'index.html')));
 
 app.use((err, _, res, __) => res.sendError(err));
 app.use("*", (_, res, __) => res.sendError(new PageNotFoundException()));
-
 
 app.listen(process.env.PORT, () => {
     const serverIp = UtileHelper.getIp();
