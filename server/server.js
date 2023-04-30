@@ -80,7 +80,7 @@ app.get('*', (req, res) => res.sendFile(join(__dirname, 'build', 'index.html')))
 app.use((err, _, res, __) => res.sendError(err));
 app.use("*", (_, res, __) => res.sendError(new PageNotFoundException()));
 
-app.listen(process.env.PORT, () => {
+app.listen(process.env.PORT || "8080", () => {
     const serverIp = UtileHelper.getIp();
     logger.debug("--------------------------------------------------");
     logger.debug("|              Start Express Server              |");

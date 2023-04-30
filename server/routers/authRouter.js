@@ -11,9 +11,9 @@ authRouter.post("/login", isNotLoggedIn, login);
 authRouter.get("/check-login-status", loginStatus);
 // naver
 authRouter.get("/naver", isNotLoggedIn, passport.authenticate('naver'));
-authRouter.get("/naver/callback", isNotLoggedIn, passport.authenticate('naver', { successRedirect: "http://localhost:3000", failureRedirect: "http://localhost:3000" }));
+authRouter.get("/naver/callback", isNotLoggedIn, passport.authenticate('naver', { successRedirect: "https://sdmas-rabbit.fly.dev", failureRedirect: "https://sdmas-rabbit.fly.dev" }));
 // kakao
 authRouter.get("/kakao", isNotLoggedIn, passport.authenticate('kakao'));
-authRouter.get('/kakao/callback', isNotLoggedIn, passport.authenticate('kakao', { successRedirect: "http://localhost:3000", failureRedirect: "http://localhost:3000" }));
+authRouter.get('/kakao/callback', isNotLoggedIn, passport.authenticate('kakao', { successRedirect: "https://sdmas-rabbit.fly.dev", failureRedirect: "https://sdmas-rabbit.fly.dev" }));
 
 export default authRouter;
