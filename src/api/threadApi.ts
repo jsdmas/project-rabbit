@@ -5,7 +5,7 @@ import { IpostCommentData, IpostData } from "../types/thread";
 export const fetchThreadList = async (offset = 0, orderCommend: OrderCommends, orderby: OrderBy, searchKeyword: string | null = "", keywordoption?: SearchOption) => {
     let response = null;
     try {
-        const { data } = await axios.get("/api/threads", { params: { offset, orderCommend, orderby, searchKeyword, keywordoption } });
+        const { data } = await axios.get(`/api/threads`, { params: { offset, orderCommend, orderby, searchKeyword, keywordoption } });
         response = data;
     } catch (error) {
         throw error;

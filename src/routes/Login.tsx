@@ -162,8 +162,8 @@ const Login = () => {
                             <Input type="password" placeholder='password' {...register("password")} />
                             {isLoading ? <Spinner isLoading={isLoading} /> : <Button><FontAwesomeIcon icon={faCheck} />&nbsp;login</Button>}
                         </Form>
-                        <NaverOAuthLogin onClick={() => window.location.href = "http://localhost:8000/auth/naver"}><FontAwesomeIcon icon={faN} />&nbsp;네이버 로그인</NaverOAuthLogin>
-                        <KakaoOAuthLogin onClick={() => window.location.href = "http://localhost:8000/auth/kakao"}><FontAwesomeIcon icon={faComment} /> 카카오 로그인</KakaoOAuthLogin>
+                        <NaverOAuthLogin onClick={() => window.location.href = "https://sdmas-rabbit.fly.dev/api/auth/naver"}><FontAwesomeIcon icon={faN} />&nbsp;네이버 로그인</NaverOAuthLogin>
+                        <KakaoOAuthLogin onClick={() => window.location.href = "https://sdmas-rabbit.fly.dev/api/auth/kakao"}><FontAwesomeIcon icon={faComment} /> 카카오 로그인</KakaoOAuthLogin>
                     </Wrapper>
                 </>
             )}
