@@ -30,7 +30,7 @@ const Head = styled.header`
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 10vh;
+    height: 70px;
     margin: auto;
     width: 50%;
     span{
@@ -56,7 +56,7 @@ const Head = styled.header`
 const Form = styled.form`
     display: grid;
     grid-template-columns: 1fr;
-    height: 50vh;
+    height: 350px;
     row-gap: 3vh;
     span{
         place-self: center center;

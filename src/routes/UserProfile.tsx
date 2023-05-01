@@ -80,6 +80,7 @@ const UserDescription = styled.div`
         font-size: 22px;
         h2{
             font-family: 'Noto Sans KR', sans-serif;
+            white-space: nowrap;
         }
     }
     p{

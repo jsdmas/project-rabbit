@@ -33,7 +33,7 @@ const Form = styled.form<{ fromReplyId?: number | null }>`
 `;
 
 const CommentTextarea = styled.textarea`
-    height: 6vh;
+    height: 50px;
     width: 90%;
     resize: none;
     border: 1px solid ${props => props.theme.accentColor};

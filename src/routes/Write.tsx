@@ -15,7 +15,7 @@ const Wrapper = styled.section`
     margin-top: 8vh;
     color: ${props => props.theme.textColor};
     padding:0px 1em;
-    height: 50vh;
+    height: 350px;
     max-width: 600px;
 `;
 

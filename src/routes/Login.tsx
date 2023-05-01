@@ -28,7 +28,7 @@ const Head = styled.header`
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 10vh;
+    height: 70px;
     margin: auto;
     width: 50%;
     span{
@@ -54,7 +54,7 @@ const Head = styled.header`
 const Form = styled.form`
     display: grid;
     grid-template-columns: 1fr;
-    height: 30vh;
+    height: 200px;
     row-gap: 3vh;
     span{
         place-self: center center;
@@ -98,7 +98,7 @@ const NaverOAuthLogin = styled.div`
         width: 50%;
     }
     background-color: rgb(10,226,97);
-    height: 7vh;
+    min-height: 50px;
     border-radius: 5px;
     color: #fff;
     display: flex;

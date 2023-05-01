@@ -30,7 +30,7 @@ const Nav = styled.header`
     }
     width: 100%;
     max-width: 1440px;
-    height: 6vh;
+    min-height: 50px;
     background-color: ${props => props.theme.postColor};
     box-shadow: 0 0 5px rgba(0,0,0,0.2);
     div:nth-child(1){
