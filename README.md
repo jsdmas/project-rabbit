@@ -1,9 +1,11 @@
 # Rabbit
-글을 올리고 자신만의 프로필을 만들 수 있는 SNS 사이트 입니다.   
-로그인 하지 않고도 글 작성이 가능합니다.  
-트위터, reddit 같은 SNS를 참고하여 만들었습니다.  
+<img width="328" alt="logo_light" src="https://user-images.githubusercontent.com/105098581/235834084-71f07345-3396-445c-82ab-7c9f88ce0f5e.png">  
 
-# 서비스 주소
+- 글을 올리고 자신만의 프로필을 만들 수 있는 SNS 사이트 입니다.   
+- 로그인 하지 않고도 글 작성이 가능합니다.  
+- 트위터, reddit 같은 SNS를 참고하여 만들었습니다.
+
+# 📁서비스 주소
 https://sdmas-rabbit.fly.dev
 
 # 기능
@@ -30,38 +32,37 @@ https://sdmas-rabbit.fly.dev
 |                                                                                                                        |
 
 
-# Skills
-## Back-end
+# 🛠️ Skills
 
-- `server` : node.js
-- `Language` : javaScript
-- `Framework` : express
-- `DBMS` : MySQL
-## Server
-
-AWS RDS
-## Front-end
+### 📄 Front-end
 
 - `Language` : TypeScript  
 - `Framework` : React  
 - `State management` : recoil  
 - `Style` : styled-component  
+### 💾 Back-end
 
-# Server ERD
+- `Language` : javaScript
+- `Framework` : express
+- `DBMS` : MySQL
+### 🔋Server
+
+- AWS RDS
+
+# ⚙️ Server ERD
 
 <img width="483" alt="erd" src="https://user-images.githubusercontent.com/105098581/235833047-e14042ef-9a56-45ec-abb9-5dfa59d8e901.png">
 
+### 📈Development Period
 
-# Web App Architecture
+2023.03.29 ~ 2023.05.03
+### 📝Development Rules
+- git 규칙 
+- 기술 선택&사용이유
+- 코드정리 eslint, pretter 익스텐션을 설치해 사용.
+- 아쉬운점& 에러 대처 기타 설명부가 부분: pdf 파일에서 설명
 
-# Development Period
-개발기간
-# Development Rules
-규칙, 기술 선택&사용이유, 에러 해결 방법
-코드정리는 eslint, pretter 익스텐션을 설치해 사용.
-아쉬운점 : font em, rem 사용
-
-# 목업
+### 🖼️목업
 [figma-rabbit](https://www.figma.com/file/VdqnJ2uhOuZA9jhywhxCsX/Like-Reddit?node-id=8-70&t=WSYYUJuWCmMMVJgE-0)
 
-# pdf 정리 파일
+### 📊 코드 기능 정리 pdf 파일
