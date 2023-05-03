@@ -149,7 +149,7 @@ const Thread = () => {
     const { postContent, postCreated, postLike, postTitle, postWriteUser, postWriteUserImgUrl, postModified, userId, postImg } = threadItem ?? {};
     const onSuccess = () => queryClient.invalidateQueries(["thread", threadid]);
     const { mutate: threadlike } = useMutation(patchThreadLike, { onSuccess, onError });
-    const { mutate: deleteMutate } = useMutation((threadid: string) => deleteThread(userId, threadid), {
+    const { mutate: deleteMutate, isLoading: deleteRequset } = useMutation((threadid: string) => deleteThread(userId, threadid), {
         onSuccess: () => {
             onSuccess();
             Swal.fire({ title: "삭제 성공!", icon: "success" })
@@ -193,7 +193,7 @@ const Thread = () => {
         <>
             <Meta title={`${postTitle} | Rabbit`} description={postContent} image={postImg} />
             <Header />
-            {isLoading ? <Spinner isLoading={isLoading} /> : (
+            {isLoading || deleteRequset ? <Spinner isLoading={isLoading} /> : (
                 <Wrapper>
                     <Head>
                         <Col><BackPageIcon /></Col>

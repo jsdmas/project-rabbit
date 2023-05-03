@@ -129,7 +129,7 @@ const EditThread = () => {
     const { register, handleSubmit, formState: { errors }, watch } = useForm<IpostData>();
     const { onError } = useError();
     const { data: response, isLoading } = useQuery<IResponse>(["thread", threadid], () => fetchMainTextThread(threadid), { onError, retry: 3, retryDelay: 600 });
-    const { mutate: editThread } = useMutation((postData: IpostData) => updateThread(postData, threadid),
+    const { mutate: editThread, isLoading: editRequest } = useMutation((postData: IpostData) => updateThread(postData, threadid),
         {
             onSuccess: () => {
                 Swal.fire({ title: "수정 성공!", icon: "success" })
@@ -164,7 +164,7 @@ const EditThread = () => {
         <>
             <Meta title={`${postTitle} Edit | Rabbit`} description={postContent} />
             <Header />
-            {isLoading ? <Spinner isLoading={isLoading} /> : (
+            {isLoading || editRequest ? <Spinner isLoading={isLoading} /> : (
                 <Wrapper>
                     <Head>
                         <BackPageIcon />
