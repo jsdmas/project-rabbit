@@ -5,10 +5,16 @@
 - 로그인 하지 않고도 글 작성이 가능합니다.  
 - 트위터, reddit 같은 SNS를 참고하여 만들었습니다.
 
-# 📁서비스 주소
+## 💫 서비스 주소
 https://sdmas-rabbit.fly.dev
 
-# 기능
+### test 계정
+| email                 | passWord  |
+| --------------------- | --------- |
+| testemail01@naver.com | 1q2w3e4r! |
+| testemail01@test.com  | 123qwe!   |
+
+# 🌟 기능
 
 | 게시글 무한 스크롤                                                                                                     | 게시글 최신순 정렬                                                                                                    |
 | ---------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
@@ -48,21 +54,57 @@ https://sdmas-rabbit.fly.dev
 ### 🔋Server
 
 - AWS RDS
-
-# ⚙️ Server ERD
-
+# 프로젝트 구조
+Font-end
+```
+📦src
+ ┣ 📂api
+ ┣ 📂assets // logo img file
+ ┣ 📂components
+ ┣ 📂helper
+ ┣ 📂hooks
+ ┣ 📂routes
+ ┣ 📂styles // 컬러 설정 & 반응형 설정
+ ┣ 📂types
+ ┣ App.tsx
+ ┣ atoms.ts // state 관리
+ ┣ index.tsx
+ ┣ Meta.tsx // 페이지 정보
+ ┗ Router.tsx // react 라우팅 설정
+```
+Back-end
+```
+📦server
+ ┣ 📂controllers
+ ┣ 📂helper
+ ┣ 📂mappers // mybatis를 활용한 SQL문 모음
+ ┣ 📂routers // api 라우터 설정
+ ┣ 📂services // controller에 적용시키는 기능들
+ ┣ middlewares.js
+ ┗ server.js
+```
+### ⚙️ Server ERD
 <img width="483" alt="erd" src="https://user-images.githubusercontent.com/105098581/235833047-e14042ef-9a56-45ec-abb9-5dfa59d8e901.png">
+
 
 ### 📈Development Period
 
 2023.03.29 ~ 2023.05.03
-### 📝Development Rules
-- git 규칙 
-- 기술 선택&사용이유
-- 코드정리 eslint, pretter 익스텐션을 설치해 사용.
-- 아쉬운점& 에러 대처 기타 설명부가 부분: pdf 파일에서 설명
 
-### 🖼️목업
-[figma-rabbit](https://www.figma.com/file/VdqnJ2uhOuZA9jhywhxCsX/Like-Reddit?node-id=8-70&t=WSYYUJuWCmMMVJgE-0)
+### 🖼️ 목업
 
-### 📊 코드 기능 정리 pdf 파일
+| [![My Skills](https://skillicons.dev/icons?i=figma&theme=light)](https://skillicons.dev) | [figma-rabbit](https://www.figma.com/file/VdqnJ2uhOuZA9jhywhxCsX/Like-Reddit?node-id=8-70&t=WSYYUJuWCmMMVJgE-0) |
+| ---------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
+
+### Commit message 
+| fix  | 기능에 대한 버그 수정 |
+| ---- | --------------------- |
+| test | 테스트 코드 추가/수정 |
+| fin  | 기능 구현 완료        |
+### 개발 환경
+|                                    vscode                                     |                                                                   pretter                                                                    |                                                                   eslint                                                                   |
+| :---------------------------------------------------------------------------: | :------------------------------------------------------------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------------------------------------------------------: |
+| [![My Skills](https://skillicons.dev/icons?i=vscode)](https://skillicons.dev) | <img width="50" alt="prettier" src="https://user-images.githubusercontent.com/105098581/235866550-a35ae665-c5d0-4357-8040-93c12f791f50.png"> | <img width="50" alt="eslint" src="https://user-images.githubusercontent.com/105098581/235866608-b6ef0c39-f2e1-4406-bf24-919441bde36c.png"> |
+
+### 📊 기능 정리 
+pdf 다운로드 : 
