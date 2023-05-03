@@ -149,7 +149,14 @@ const Thread = () => {
     const { postContent, postCreated, postLike, postTitle, postWriteUser, postWriteUserImgUrl, postModified, userId, postImg } = threadItem ?? {};
     const onSuccess = () => queryClient.invalidateQueries(["thread", threadid]);
     const { mutate: threadlike } = useMutation(patchThreadLike, { onSuccess, onError });
-    const { mutate: deleteMutate } = useMutation((threadid: string) => deleteThread(userId, threadid), { onSuccess, onError });
+    const { mutate: deleteMutate } = useMutation((threadid: string) => deleteThread(userId, threadid), {
+        onSuccess: () => {
+            onSuccess();
+            Swal.fire({ title: "삭제 성공!", icon: "success" })
+            navigate("/");
+        },
+        onError
+    });
     const likeIncrement = () => {
         const now = new Date();
         const incrementTime = new Date(localStorage.getItem("threadIncrementTime") || 0);
@@ -173,11 +180,11 @@ const Thread = () => {
             showLoaderOnConfirm: true,
             preConfirm: () => {
                 deleteMutate(threadid);
-                navigate(-1);
             },
             allowOutsideClick: () => !Swal.isLoading()
-        }).then((result) => result.value ? Swal.fire({ title: "삭제 성공!", icon: "success" }) : null)
+        })
     };
+
     const handleImgLoad = (event: React.SyntheticEvent<HTMLImageElement>) => {
         const imgElement = event.currentTarget as HTMLImageElement;
         setImgWidth(imgElement.naturalWidth);

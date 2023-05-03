@@ -129,7 +129,15 @@ const EditThread = () => {
     const { register, handleSubmit, formState: { errors }, watch } = useForm<IpostData>();
     const { onError } = useError();
     const { data: response, isLoading } = useQuery<IResponse>(["thread", threadid], () => fetchMainTextThread(threadid), { onError, retry: 3, retryDelay: 600 });
-    const { mutate: editThread } = useMutation((postData: IpostData) => updateThread(postData, threadid), { onError: (error) => onError(error) });
+    const { mutate: editThread } = useMutation((postData: IpostData) => updateThread(postData, threadid),
+        {
+            onSuccess: () => {
+                Swal.fire({ title: "수정 성공!", icon: "success" })
+                navigate(-1);
+            }
+            , onError: (error) => onError(error),
+
+        });
     const [threadItem] = response?.data ?? [];
     const { postTitle, postContent, userId } = threadItem ?? {};
     const onVaild = async (postData: IpostData) => {
@@ -140,11 +148,9 @@ const EditThread = () => {
             showLoaderOnConfirm: true,
             preConfirm: () => {
                 editThread(postData);
-                navigate(-1);
             },
             allowOutsideClick: () => !Swal.isLoading()
         })
-            .then((result) => result.isConfirmed ? Swal.fire({ title: "수정 성공!", icon: "success" }) : null)
     };
     // 글 작성자가 아닐경우 home으로 이동, 익명의 작성자 게시글 이라면 수정가능
     useEffect(() => {
