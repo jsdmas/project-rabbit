@@ -23,7 +23,7 @@ export const orderCommendState = atom<OrderCommends>({
     default: OrderCommends["p.created"],
 });
 
-// 시간 정렬
+// 오름차순, 내림차순
 export const orderbyState = atom<OrderBy>({
     key: "orderby",
     default: OrderBy.DESC,

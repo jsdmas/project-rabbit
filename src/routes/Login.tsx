@@ -140,7 +140,7 @@ const Login = () => {
         }
     }
     );
-    const { register, handleSubmit } = useForm<ILogin>();
+    const { register, handleSubmit, formState: { errors } } = useForm<ILogin>();
     const onVaild = ({ email, password }: ILogin) => {
         mutate({ email, password });
     }
@@ -158,8 +158,10 @@ const Login = () => {
                             <h1><FontAwesomeIcon icon={faSignsPost} />&nbsp;로그인</h1>
                         </Head>
                         <Form onSubmit={handleSubmit(onVaild)}>
-                            <Input type="email" placeholder='email' {...register("email")} />
-                            <Input type="password" placeholder='password' {...register("password")} />
+                            <Input type="email" placeholder='email' {...register("email", { required: "⚠️ email를 입력해주세요." })} />
+                            <span>{errors?.email?.message}</span>
+                            <Input type="password" placeholder='password' {...register("password", { required: "⚠️ password를 입력해주세요." })} />
+                            <span>{errors?.password?.message}</span>
                             {isLoading ? <Spinner isLoading={isLoading} /> : <Button><FontAwesomeIcon icon={faCheck} />&nbsp;login</Button>}
                         </Form>
                         <NaverOAuthLogin onClick={() => window.location.href = "https://sdmas-rabbit.fly.dev/api/auth/naver"}><FontAwesomeIcon icon={faN} />&nbsp;네이버 로그인</NaverOAuthLogin>
