@@ -141,7 +141,6 @@ const ChangePassword = () => {
                         },
                         validate: {
                             RegexValue: (value) => RegexHelper.value(value) ? true : "⚠️ 양식을 올바르게 적어주세요",
-                            RegexCompare: (passwordConfirm = "", formValues) => RegexHelper.compareTo(passwordConfirm, formValues.changePW) ? "⚠️ 이전 비밀번호와 같습니다." : true,
                         }
                     })} />
                     <span>{errors?.currentPW?.message}</span>

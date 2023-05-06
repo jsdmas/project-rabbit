@@ -94,6 +94,7 @@ const Button = styled.button`
 const NaverOAuthLogin = styled.div`
     margin: auto;
     width: 60%;
+    margin-top: 20px;
     @media ${media.tablet} {
         width: 50%;
     }
