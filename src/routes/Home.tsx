@@ -61,6 +61,7 @@ const Home = () => {
                 },
                 retry: 3,
                 retryDelay: 600,
+                staleTime: 1000 * 60
             });
     useEffect(() => {
         if (!observerTargetEl.current) return;

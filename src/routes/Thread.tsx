@@ -144,7 +144,7 @@ const Thread = () => {
     const { onError } = useError();
     const [imgWidth, setImgWidth] = useState(0);
     const [userloading, { loginUserId }] = useLoginInfo();
-    const { data: response, isLoading } = useQuery<IResponse>(["thread", threadid], () => fetchThread(threadid), { onError, retry: 3, retryDelay: 600 });
+    const { data: response, isLoading } = useQuery<IResponse>(["thread", threadid], () => fetchThread(threadid), { onError, retry: 3, retryDelay: 600, staleTime: 1000 * 60 });
     const [threadItem] = response?.data ?? [];
     const { postContent, postCreated, postLike, postTitle, postWriteUser, postWriteUserImgUrl, postModified, userId, postImg } = threadItem ?? {};
     const onSuccess = () => queryClient.invalidateQueries(["thread", threadid]);

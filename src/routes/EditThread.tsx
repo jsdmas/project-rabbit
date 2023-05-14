@@ -128,7 +128,7 @@ const EditThread = () => {
     const { threadid } = useParams() as TTreadId;
     const { register, handleSubmit, formState: { errors }, watch } = useForm<IpostData>();
     const { onError } = useError();
-    const { data: response, isLoading } = useQuery<IResponse>(["thread", threadid], () => fetchMainTextThread(threadid), { onError, retry: 3, retryDelay: 600 });
+    const { data: response, isLoading } = useQuery<IResponse>(["thread", threadid], () => fetchMainTextThread(threadid), { onError, retry: 3, retryDelay: 600, staleTime: 1000 * 30 });
     const { mutate: editThread, isLoading: editRequest } = useMutation((postData: IpostData) => updateThread(postData, threadid),
         {
             onSuccess: () => {
