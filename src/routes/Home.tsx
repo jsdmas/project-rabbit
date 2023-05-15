@@ -6,7 +6,7 @@ import { fetchThreadList } from "../api/threadApi";
 import { orderbyState, orderCommendState, searchKeywordState, keywordOptionState, errorMessageState } from "../atoms";
 import Header from "../components/Header";
 import Post from "../components/ThreadList";
-import { throttle } from "lodash";
+import { throttle } from "../helper/throttle";
 import { IThreadList } from "../types/thread";
 import Spinner from "../components/Spinner";
 import { isAxiosError } from "axios";
@@ -45,7 +45,7 @@ const Home = () => {
     const keword = useRecoilValue(searchKeywordState);
     const kewordoption = useRecoilValue(keywordOptionState);
     const observerTargetEl = useRef<HTMLDivElement>(null);
-    const throttled = useRef(throttle(() => fetchNextPage(), 250)).current;
+    const throttled = useRef(throttle(() => fetchNextPage(), 500)).current;
     const [errorMessage, setErrorMessage] = useRecoilState(errorMessageState);
     const { data: response, fetchNextPage, remove, isLoading }
         = useInfiniteQuery(["InfiniteThreadData"],

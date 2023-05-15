@@ -8,7 +8,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useRecoilState, useResetRecoilState, useSetRecoilState } from "recoil";
 import { darkState, OrderBy, orderbyState, OrderCommends, orderCommendState, keywordOptionState, searchKeywordState, SearchOption, errorMessageState, searchHistoryState } from "../atoms";
 import { useQueryClient } from "@tanstack/react-query";
-import { throttle } from "lodash";
+import { throttle } from "../helper/throttle";
 import { FieldValues, useForm } from "react-hook-form";
 import useLoginInfo from "../hooks/useLoginInfo";
 import { logout } from "../api/userApi";
@@ -263,11 +263,11 @@ const Header = ({ remove }: { remove?: () => void }) => {
     const sortLikeClick = throttle(() => {
         queryClient.clear();
         sortLike(prev => prev === OrderCommends["p.created"] ? OrderCommends["p.like"] : OrderCommends["p.created"]);
-    }, 300);
+    }, 400);
     const sortTimeClick = throttle(() => {
         queryClient.clear();
         sortTime(prev => prev === OrderBy.DESC ? OrderBy.ASC : OrderBy.DESC);
-    }, 300);
+    }, 400);
 
     //? 로고 클릭 함수
     const homeClick = () => {
