@@ -11,6 +11,7 @@ import { IpostCommentData, TTreadId } from "../types/thread";
 import useError from "../hooks/useError";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFeatherPointed } from "@fortawesome/free-solid-svg-icons";
+import { useTextArea } from "../hooks/useTextArea";
 
 const Form = styled.form<{ fromReplyId?: number | null }>`
     margin: auto;
@@ -44,21 +45,17 @@ const CommentForm = ({ commentParentNum }: { commentParentNum?: number }) => {
     const { threadid } = useParams() as TTreadId;
     const queryClient = useQueryClient();
     const setReply = useSetRecoilState(replyState);
-    const { onError } = useError();
+    const { errorMessage } = useError();
     const { register, handleSubmit, formState: { errors }, reset } = useForm<IpostCommentData>();
-    const buttonRef = useRef<HTMLButtonElement | null>(null);
-    const { mutate } = useMutation((data: IpostCommentData) => postComment(data, threadid, commentParentNum), { onSuccess: () => queryClient.invalidateQueries(["thread", threadid]), onError });
+
+    const { mutate } = useMutation((data: IpostCommentData) => postComment(data, threadid, commentParentNum), { onSuccess: () => queryClient.invalidateQueries(["thread", threadid]), onError: (error) => errorMessage(error, false) });
     const commentSubmit = (data: IpostCommentData) => {
         mutate(data);
         setReply(null);
         reset();
     };
 
-    const onkeydown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
-        if (event.key === "Enter" && buttonRef.current !== null) {
-            buttonRef.current.focus()
-        }
-    };
+    const [buttonRef, onkeydown] = useTextArea();
 
     return (
         <Form onSubmit={handleSubmit(commentSubmit)}>

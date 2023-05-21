@@ -99,7 +99,7 @@ const Join = () => {
     const [userInfoLoading, { loginState }] = useLoginInfo();
     const { register, handleSubmit, formState: { errors } } = useForm<IPostJoin>();
     const [errorMessage, setErrorMessage] = useState("");
-    const { onError } = useError();
+    const { errorMessage: onErrorLogin } = useError();
     const { mutate, isLoading } = useMutation(postJoin, {
         onSuccess: () => {
             navigate("/login")
@@ -113,10 +113,9 @@ const Join = () => {
             if (isAxiosError(error) && error.response) {
                 const { response: { data } } = error;
                 const { rtcode, rtmsg }: IErrorTypes = data;
-                rtcode === 401 ? setErrorMessage(rtmsg) : onError(error);
+                rtcode === 401 ? setErrorMessage(rtmsg) : onErrorLogin(error, false);
             }
-        },
-        retry: 3, retryDelay: 600
+        }
     });
     const onVaild = (data: IPostJoin) => {
         const { confirm, ...restData } = data;

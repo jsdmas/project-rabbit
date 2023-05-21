@@ -93,7 +93,7 @@ const PasswordInput = styled.input`
 
 const ChangePassword = () => {
     const navigate = useNavigate();
-    const { onError } = useError();
+    const { errorMessage } = useError();
     const [isLoading, { loginState, loginUserId, loginUserSnsId }] = useLoginInfo();
     // 로그인 판별 - sns 로 접속한 사람은 비밀번호가 존재하지 않으므로 접근제한.
     useEffect(() => {
@@ -111,7 +111,7 @@ const ChangePassword = () => {
                 rtcode === 401 ? Swal.fire({
                     icon: "error",
                     title: rtmsg
-                }) : onError(error);
+                }) : errorMessage(error, false);
             }
         }
     });

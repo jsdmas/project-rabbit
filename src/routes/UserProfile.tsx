@@ -219,19 +219,19 @@ const FileInput = styled.input`
 const UserProfile = () => {
     const [_, { loginUserId, loginUserSnsId }] = useLoginInfo();
     const { userid } = useParams();
-    const { onError } = useError();
+    const { errorMessage } = useError();
     const queryClient = useQueryClient();
     const [edit, setEdit] = useState(false);
     const [setting, setSetting] = useState(false);
     const onSuccess = () => queryClient.invalidateQueries(["userProfile", userid]);
 
     // userInfo 데이터
-    const { isLoading, data: response } = useQuery(["userProfile", userid], () => getUserProfile(userid), { onError, retry: 3, retryDelay: 600, staleTime: 1000 * 30 });
+    const { isLoading, data: response } = useQuery(["userProfile", userid], () => getUserProfile(userid), { onError: (error) => errorMessage(error), retry: 3, retryDelay: 600, staleTime: 1000 * 30 });
     const { img_url, img_name, description, nickname }: Iprofile = response?.data ?? {};
     const { postCount, commentCount }: IActivityCount = response?.activityCount ?? {};
 
     // 회원탈퇴
-    const { mutate: deleteUserMutate } = useMutation(deleteUser, { onError });
+    const { mutate: deleteUserMutate } = useMutation(deleteUser, { onError: (error) => errorMessage(error) });
     const onDeleteUser = () => {
         Swal.fire({
             title: "정말 회원탈퇴 하시겠습니까?",
@@ -247,7 +247,7 @@ const UserProfile = () => {
     }
     // edit description
     const { register, handleSubmit, formState: { errors } } = useForm<{ userDescription: string }>();
-    const { mutate: editInfo } = useMutation((userDescription: string) => editDescription(userDescription, userid), { onSuccess, onError });
+    const { mutate: editInfo } = useMutation((userDescription: string) => editDescription(userDescription, userid), { onSuccess, onError: (error) => errorMessage(error) });
     const onVaild = ({ userDescription }: { userDescription: string }) => {
         editInfo(userDescription)
         setEdit(prev => !prev);
@@ -256,15 +256,7 @@ const UserProfile = () => {
     // edit Profile
     const { mutate: userImage } = useMutation(uploadUserProfile, {
         onSuccess,
-        onError: (error) => {
-            if (isAxiosError(error) && error.response) {
-                const { response: { data } } = error;
-                const { rt, rtcode, rtmsg }: IErrorTypes = data;
-                Swal.fire({ icon: "error", title: rtmsg, text: `${rt} | ${rtcode}` });
-            } else {
-                alert("형식을 알수없는 오류입니다.");
-            }
-        }, retry: 1, retryDelay: 600
+        onError: (error) => errorMessage(error, false)
     });
 
     const onUploadImage = (event: React.ChangeEvent<HTMLInputElement>) => {

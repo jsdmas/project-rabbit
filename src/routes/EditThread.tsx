@@ -127,15 +127,15 @@ const EditThread = () => {
     const navigate = useNavigate();
     const { threadid } = useParams() as TTreadId;
     const { register, handleSubmit, formState: { errors }, watch } = useForm<IpostData>();
-    const { onError } = useError();
-    const { data: response, isLoading } = useQuery<IResponse>(["thread", threadid], () => fetchMainTextThread(threadid), { onError, retry: 3, retryDelay: 600, staleTime: 1000 * 30 });
+    const { errorMessage } = useError();
+    const { data: response, isLoading } = useQuery<IResponse>(["thread", threadid], () => fetchMainTextThread(threadid), { onError: (error) => errorMessage(error), staleTime: 1000 * 30 });
     const { mutate: editThread, isLoading: editRequest } = useMutation((postData: IpostData) => updateThread(postData, threadid),
         {
             onSuccess: () => {
                 Swal.fire({ title: "수정 성공!", icon: "success" })
                 navigate(-1);
             }
-            , onError: (error) => onError(error),
+            , onError: (error) => errorMessage(error),
 
         });
     const [threadItem] = response?.data ?? [];

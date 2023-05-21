@@ -16,6 +16,7 @@ import { IErrorTypes } from "../types/error";
 import useLoginInfo from "../hooks/useLoginInfo";
 import Meta from "../Meta";
 import { media } from "../styles/mediaQuery";
+import useError from "../hooks/useError";
 
 const Wrapper = styled.section`
     margin : 7vh auto;
@@ -129,16 +130,11 @@ const KakaoOAuthLogin = styled(NaverOAuthLogin)`
 
 const Login = () => {
     const navigate = useNavigate();
+    const { errorMessage } = useError();
     const [userInfoLoading, { loginState }] = useLoginInfo();
     const { isLoading, mutate } = useMutation(login, {
         onSuccess: () => navigate("/"),
-        onError: (error) => {
-            if (isAxiosError(error) && error.response) {
-                const { response: { data } } = error;
-                const { rt, rtcode, rtmsg }: IErrorTypes = data;
-                Swal.fire({ icon: "error", title: rtmsg, text: `${rt} | ${rtcode}` });
-            }
-        }
+        onError: (error) => errorMessage(error, false)
     }
     );
     const { register, handleSubmit, formState: { errors } } = useForm<ILogin>();

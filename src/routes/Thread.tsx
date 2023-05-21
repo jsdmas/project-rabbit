@@ -141,21 +141,21 @@ const Thread = () => {
     const { threadid } = useParams() as TTreadId;
     const queryClient = useQueryClient();
     const navigate = useNavigate();
-    const { onError } = useError();
+    const { errorMessage } = useError();
     const [imgWidth, setImgWidth] = useState(0);
     const [userloading, { loginUserId }] = useLoginInfo();
-    const { data: response, isLoading } = useQuery<IResponse>(["thread", threadid], () => fetchThread(threadid), { onError, retry: 3, retryDelay: 600, staleTime: 1000 * 60 });
+    const { data: response, isLoading } = useQuery<IResponse>(["thread", threadid], () => fetchThread(threadid), { onError: (error) => errorMessage(error), staleTime: 1000 * 60 });
     const [threadItem] = response?.data ?? [];
     const { postContent, postCreated, postLike, postTitle, postWriteUser, postWriteUserImgUrl, postModified, userId, postImg } = threadItem ?? {};
     const onSuccess = () => queryClient.invalidateQueries(["thread", threadid]);
-    const { mutate: threadlike } = useMutation(patchThreadLike, { onSuccess, onError });
+    const { mutate: threadlike } = useMutation(patchThreadLike, { onSuccess, onError: (error) => errorMessage(error, false) });
     const { mutate: deleteMutate, isLoading: deleteRequset } = useMutation((threadid: string) => deleteThread(userId, threadid), {
         onSuccess: () => {
             onSuccess();
             Swal.fire({ title: "삭제 성공!", icon: "success" })
             navigate("/");
         },
-        onError
+        onError: (error) => errorMessage(error, false)
     });
     const likeIncrement = () => {
         const now = new Date();

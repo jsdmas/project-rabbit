@@ -15,6 +15,7 @@ import RegexHelper from "../helper/RegexHelper"
 import useError from "../hooks/useError"
 import useLoginInfo from "../hooks/useLoginInfo"
 import { media } from "../styles/mediaQuery"
+import { useTextArea } from "../hooks/useTextArea"
 
 const Grid = styled.section<{ inside?: string }>`
     display: grid;
@@ -137,19 +138,13 @@ const Comment = ({ inside, commentContent, commentCreated, commentLike, commentW
     const [userloading, { loginUserId }] = useLoginInfo();
     const [replyId, setReplyId] = useRecoilState(replyState);
     const { register, handleSubmit, formState: { errors } } = useForm<IpostCommentData>();
-    const { onError } = useError();
+    const { errorMessage } = useError();
     const onSuccess = () => queryClient.invalidateQueries(["thread", threadid]);
+    const [buttonRef, onkeydown] = useTextArea();
 
-    const buttonRef = useRef<HTMLButtonElement | null>(null);
-    const onkeydown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
-        if (event.key === "Enter" && buttonRef.current !== null) {
-            buttonRef.current.focus()
-        }
-    };
-
-    const { mutate: editMutate } = useMutation((data: IpostCommentData) => editComment(data, commentId), { onSuccess, onError });
-    const { mutate: deleteCommentMutate } = useMutation((commentId: number) => deleteComment(commentId, commentUserId), { onSuccess, onError });
-    const { mutate: likeMutate } = useMutation(commentIncrementLike, { onSuccess, onError });
+    const { mutate: editMutate } = useMutation((data: IpostCommentData) => editComment(data, commentId), { onSuccess, onError: (error) => errorMessage(error, false) });
+    const { mutate: deleteCommentMutate } = useMutation((commentId: number) => deleteComment(commentId, commentUserId), { onSuccess, onError: (error) => errorMessage(error, false) });
+    const { mutate: likeMutate } = useMutation(commentIncrementLike, { onSuccess, onError: (error) => errorMessage(error, false) });
 
     const commentEditSubmit = (data: IpostCommentData) => {
         Swal.fire({

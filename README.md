@@ -7,7 +7,7 @@
 로그인 하지 않고도 글 작성이 가능합니다.  
 트위터, reddit 같은 SNS를 참고하여 만들었습니다.
 
-## 💫 서비스 주소 (23.05.09 - aws 서버 중단)
+## 💫 서비스 주소
 https://sdmas-rabbit.fly.dev 
  
 
@@ -45,51 +45,6 @@ https://sdmas-rabbit.fly.dev
 
 # 🛠️ Skills
 
-### 📄 Front-end
-
-- `Language` : TypeScript  
-- `Framework` : React  
-- `State management` : recoil  
-- `Style` : styled-component  
-### 💾 Back-end
-
-- `Language` : javaScript
-- `Framework` : express
-- `DBMS` : MySQL
-### 🔋Server
-
-- AWS RDS
-# 프로젝트 구조
-Font-end
-```
-📦src
- ┣ 📂api
- ┣ 📂assets // logo img file
- ┣ 📂components
- ┣ 📂helper
- ┣ 📂hooks
- ┣ 📂routes
- ┣ 📂styles // 컬러 설정 & 반응형 설정
- ┣ 📂types 
- ┣ App.tsx
- ┣ atoms.ts // state 관리
- ┣ index.tsx
- ┣ Meta.tsx // 페이지 정보
- ┗ Router.tsx // react 라우팅 설정
-```
-Back-end
-```
-📦server
- ┣ 📂controllers
- ┣ 📂helper
- ┣ 📂mappers // mybatis를 활용한 SQL문 모음
- ┣ 📂routers // api 라우터 설정
- ┣ 📂services // controller에 적용시키는 기능들
- ┣ middlewares.js
- ┗ server.js
-```
-### ⚙️ Server ERD
-<img width="483" alt="erd" src="https://user-images.githubusercontent.com/105098581/235833047-e14042ef-9a56-45ec-abb9-5dfa59d8e901.png">
 
 
 ### 📈Development Period
@@ -101,67 +56,10 @@ Back-end
 | [![My Skills](https://skillicons.dev/icons?i=figma&theme=light)](https://skillicons.dev) | [figma-rabbit](https://www.figma.com/file/VdqnJ2uhOuZA9jhywhxCsX/Like-Reddit?node-id=8-70&t=WSYYUJuWCmMMVJgE-0) |
 | ---------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
 
-### Commit message 
-| fix  | 기능에 대한 버그 수정 |
-| ---- | --------------------- |
-| test | 테스트 코드 추가/수정 |
-| fin  | 기능 구현 완료        |
-### 개발 환경
-|                                    vscode                                     |                                                                   pretter                                                                    |                                                                   eslint                                                                   |
-| :---------------------------------------------------------------------------: | :------------------------------------------------------------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------------------------------------------------------: |
-| [![My Skills](https://skillicons.dev/icons?i=vscode)](https://skillicons.dev) | <img width="50" alt="prettier" src="https://user-images.githubusercontent.com/105098581/235866550-a35ae665-c5d0-4357-8040-93c12f791f50.png"> | <img width="50" alt="eslint" src="https://user-images.githubusercontent.com/105098581/235866608-b6ef0c39-f2e1-4406-bf24-919441bde36c.png"> |
+
+# 고쳐할거
+
+write 스타일 중복 개선
 
 
-# 📊 개발 내용
 
-### React
-개발자 생태계가 크기 때문에 에러에 대처하기가 비교적 쉽고, 라이브러리가 많아 개발에 용이할 것이라 생각했습니다.  
-  
-Virtual DOM을 이용해 브라우저 렌더링 횟수를 줄여주고, 컴포넌트 단위로 코드를 나누어 재사용할 수 있기 때문에, 유지보수를 하기에도 좋다고 판단하여 사용하였습니다.
-### typescript
-
-javaScript는 런타임에서 변수의 타입이 결정되기 때문에 실행 시점이 되어야 에러를 파악할 수 있지만,  
-  
-타입스크립트는 코드 작성 시점에 타입 에러를 발견할 수 있습니다.  
-  
-매번 타입을 결정해야 하기 때문에 번거롭고 코드양이 증가하는 단점도 있지만,  
-  
-에러를 미리 발견할 수 있고, 무엇보다 자동 완성이 된다는 면에서 도입을 결정하였습니다.  
-
-### 전역 변수 관리, 서버 통신 로직 분리
-
-개발 중 routes 담당 page에서 상태관리, 서버 통신 로직이 중구난방으로 섞여있어
-유지보수가 힘들어지고 가독성이 떨어지는 상황이 발생하였습니다.  
-  
-그래서 상태 관리 라이브러리인 **recoil**과 값을 쉽게 가져오고 캐싱, 업데이트, 에러핸들링 등 비동기 과정을 수월하게 해주는 **react-query**를 사용하였습니다.  
-  
-그 결과, 기존 로직들을 분리해 가독성 향상및 유지보수 과정이 수월하게 되었습니다.
-
-### custom Hook
-
-page나 component에서 에러처리를 할떄, 그리고 로그인 여부를 확인할 떄 반복되는 코드가 발견되었습니다.  
-  
-그래서 hook으로 만들어서 범용적으로 사용할 수 있게 개발하였습니다.  
-
-### react-hook-form
-
-기존 회원가입이나 비밀번호 변경 등 form register를 구현할떄마다 usestate를 사용해  
-  
-error, 상태값, 조건, 서버 통신값 관리 등 코드가 길어져 가독성및 유지보수가 떨어지는 상황이 발생했습니다.  
-  
-해결 방법으로 **react-hook-form**을 사용하여 가독성을 높이고 유지보수를 높였습니다.  
-
-### 무한스크롤
-무한 스크롤 구현 방법은 크게 3가지로 나눌 수 있었습니다. scroll event, IntersectionObserver API, react-query : useInfiniteQuery  
-
-이번 프로젝트에서는 무한스크롤을 쉽게 구현해주는 useInfiniteQuery를 사용하였고 이유는 다음과 같습니다.  
-  
-- 데이터 페칭
-- 캐싱 처리, 로딩 및 오류 상태 관리
-- 리액트 쿼리 개발자 도구 지원 (추적 용이)
-- 프리패칭(Prefetching) : 다음 페이지 데이터를 미리 가져와서, 다음 페이지로 넘어갈 때 미리 데이터를 가져왔기 때문에 매끄럽게 처리 되는 기능.
-- 가비지 컬렉션
-
-다음 데이터가 호출될 타이밍은 IntersectionObserver 를 통해 구현하였습니다.  
-  
-또한, 호출되는 타이밍을 조절하여 과부하를 막기위해 **throttle** 를 사용하였습니다.
