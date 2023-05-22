@@ -1,5 +1,4 @@
 # Rabbit
-<center>
 
 <img width="328" alt="logo_light" src="https://user-images.githubusercontent.com/105098581/235834084-71f07345-3396-445c-82ab-7c9f88ce0f5e.png">  
 
@@ -16,8 +15,6 @@ https://sdmas-rabbit.fly.dev
 | --------------------- | --------- |
 | testemail01@naver.com | 1q2w3e4r! |
 | testemail01@test.com  | 123qwe!   |
-
-</center>
 
 # 🌟 기능
 
@@ -43,9 +40,9 @@ https://sdmas-rabbit.fly.dev
 |                                                                                                                        |
 
 
-# 🛠️ Skills
+# 🛠️ Front-End
 
-
+- typeScript, React, React-Query, Recoil
 
 ### 📈Development Period
 
@@ -55,11 +52,3 @@ https://sdmas-rabbit.fly.dev
 
 | [![My Skills](https://skillicons.dev/icons?i=figma&theme=light)](https://skillicons.dev) | [figma-rabbit](https://www.figma.com/file/VdqnJ2uhOuZA9jhywhxCsX/Like-Reddit?node-id=8-70&t=WSYYUJuWCmMMVJgE-0) |
 | ---------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
-
-
-# 고쳐할거
-
-write 스타일 중복 개선
-
-
-
