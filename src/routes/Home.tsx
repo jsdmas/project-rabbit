@@ -59,8 +59,7 @@ const Home = () => {
                         setErrorMessage(error.response?.data.rtmsg);
                     }
                 },
-                retry: 3,
-                retryDelay: 600,
+                refetchInterval: 1000 * 60,
                 staleTime: 1000 * 60
             });
     useEffect(() => {
