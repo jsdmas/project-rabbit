@@ -1,4 +1,3 @@
-import styled from 'styled-components';
 import RegexHelper from '../helper/RegexHelper';
 import BackPageIcon from '../components/BackPageIcon';
 import Header from '../components/Header';
@@ -9,107 +8,7 @@ import { IpostData } from '../types/thread';
 import Meta from '../Meta';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faImage, faPencil } from '@fortawesome/free-solid-svg-icons';
-
-const Wrapper = styled.section`
-    margin: auto;
-    margin-top: 8vh;
-    color: ${props => props.theme.textColor};
-    padding:0px 1em;
-    height: 350px;
-    max-width: 600px;
-`;
-
-const Head = styled.header`
-    display: flex;
-    justify-content: space-between;
-    span{
-        font-family: 'Noto Sans KR', sans-serif;
-        place-self: center center;
-        font-size: 1.2em;
-        color: ${props => props.theme.buttonColor};
-        svg{
-            font-size: 1.5em;
-        }
-    }
-`;
-
-const Form = styled.form`
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: flex-start;
-    height: 100%;
-    margin-top: 5vh;
-    color:${props => props.theme.textColor};
-`;
-
-const TitleInput = styled.input`
-    width:100%;
-    height: 10%;
-    background-color: ${props => props.theme.postColor};
-    border:1px solid ${props => props.theme.accentColor};
-    border-radius: 5px;
-    color:${props => props.theme.textColor};
-`;
-
-const ContentTextArea = styled.textarea`
-    height:50%;
-    width: 100%;
-    resize: none;
-    background-color: ${props => props.theme.postColor};
-    border:1px solid ${props => props.theme.accentColor};
-    border-radius: 5px;
-    color:${props => props.theme.textColor};
-`;
-
-const SubmitButton = styled.button`
-    margin: auto;
-    width: 50%;
-    color: #fff;
-    background-color: ${props => props.theme.buttonColor};
-    border: none;
-    border-radius: 5px;
-    height: 10%;
-    cursor: pointer;
-`;
-
-const ErrorMessage = styled.span`
-    color: ${props => props.theme.accentColor};
-    height: 3%;
-    font-size: 1em;
-`;
-
-const ImgDiv = styled.div`
-    width: 100%;
-    height: 10%;
-    display: flex;
-    align-items: center;
-    font-size: 0.8em;
-    margin: 2vh 0;
-`;
-
-const ImgInput = styled.input`
-    display: none;
-`;
-
-const Label = styled.label`
-    background-color: ${props => props.theme.buttonColor};
-    border-radius: 5px;
-    color: #fff;
-    width: 30%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    white-space: nowrap;
-`;
-const SelectImgInfo = styled.div`
-    white-space: nowrap;
-    padding-left: 5%;
-    display: flex;
-    align-items: center;
-    width: 70%;
-`;
+import { ContentTextArea, ErrorMessage, Form, Head, ImgDiv, ImgInput, Label, SelectImgInfo, SubmitButton, TitleInput, Wrapper } from '../styles/writeBase';
 
 const Write = () => {
     const { register, handleSubmit, formState: { errors }, watch } = useForm<IpostData>();

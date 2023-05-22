@@ -13,8 +13,6 @@ import { IActivityCount, Iprofile } from "../types/user";
 import Spinner from "../components/Spinner";
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
-import { isAxiosError } from "axios";
-import { IErrorTypes } from "../types/error";
 import Meta from "../Meta";
 import { media } from "../styles/mediaQuery";
 
@@ -226,7 +224,7 @@ const UserProfile = () => {
     const onSuccess = () => queryClient.invalidateQueries(["userProfile", userid]);
 
     // userInfo 데이터
-    const { isLoading, data: response } = useQuery(["userProfile", userid], () => getUserProfile(userid), { onError: (error) => errorMessage(error), retry: 3, retryDelay: 600, staleTime: 1000 * 30 });
+    const { isLoading, data: response } = useQuery(["userProfile", userid], () => getUserProfile(userid), { onError: (error) => errorMessage(error), staleTime: 1000 * 30 });
     const { img_url, img_name, description, nickname }: Iprofile = response?.data ?? {};
     const { postCount, commentCount }: IActivityCount = response?.activityCount ?? {};
 
