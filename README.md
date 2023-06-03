@@ -17,7 +17,7 @@ https://sdmas-rabbit.fly.dev
 | testemail01@test.com  | 123qwe!   |
 
 # 🌟 Protflio
-- [googleDirve](https://drive.google.com/file/d/1jb7t18hgKlEVAN2PKNw9Jixh079meQMA/view?usp=sharing)
+- [googleDirve-pdf](https://drive.google.com/file/d/1jb7t18hgKlEVAN2PKNw9Jixh079meQMA/view?usp=sharing)
 
 
 
