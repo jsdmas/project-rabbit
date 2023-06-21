@@ -2,7 +2,7 @@
 
 <img width="328" alt="logo_light" src="https://user-images.githubusercontent.com/105098581/235834084-71f07345-3396-445c-82ab-7c9f88ce0f5e.png">  
 
-**23.06.21 배포중단**
+**23.06.21 배포중단**  
 글을 올리고 자신만의 프로필을 만들 수 있는 SNS 사이트 입니다.   
 로그인 하지 않고도 글 작성이 가능합니다.  
 트위터, reddit 같은 SNS를 참고하여 만들었습니다.
