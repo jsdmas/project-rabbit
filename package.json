@@ -5,6 +5,7 @@
   "proxy": "http://localhost:8001",
   "homepage": ".",
   "dependencies": {
+    "@craco/craco": "^7.1.0",
     "@fortawesome/fontawesome-svg-core": "^6.4.0",
     "@fortawesome/free-solid-svg-icons": "^6.4.0",
     "@fortawesome/react-fontawesome": "^0.2.0",
@@ -26,7 +27,6 @@
     "express-mysql-session": "^3.0.0",
     "express-session": "^1.17.3",
     "express-useragent": "^1.0.15",
-    "framer-motion": "^10.10.0",
     "lodash": "^4.17.21",
     "method-override": "^3.0.0",
     "multer": "^1.4.5-lts.1",
@@ -56,9 +56,9 @@
   "scripts": {
     "start": "NODE_ENV=production node backend/server.js",
     "build": "npm run build:server && npm run build:react",
-    "dev:react": "react-scripts start",
+    "dev:react": "craco start",
     "dev:server": "nodemon",
-    "build:react": "BUILD_PATH='backend/build' react-scripts build",
+    "build:react": "BUILD_PATH='backend/build' craco build",
     "build:server": "babel server -d backend"
   },
   "eslintConfig": {
@@ -84,11 +84,23 @@
     "@babel/core": "^7.21.3",
     "@babel/node": "^7.20.7",
     "@babel/preset-env": "^7.20.2",
+    "@tanstack/react-query-devtools": "^4.28.0",
     "@types/lodash": "^4.14.192",
+    "@typescript-eslint/eslint-plugin": "^5.61.0",
+    "@typescript-eslint/parser": "^5.61.0",
     "babel-loader": "^9.1.2",
     "cra-bundle-analyzer": "^0.1.1",
+    "eslint": "^8.44.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-import-resolver-typescript": "^3.5.5",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-jsx-a11y": "^6.7.1",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-react": "^7.32.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-simple-import-sort": "^10.0.0",
     "nodemon": "^2.0.22",
-    "webpack-bundle-analyzer": "^4.8.0",
-    "@tanstack/react-query-devtools": "^4.28.0"
+    "prettier": "^3.0.0",
+    "webpack-bundle-analyzer": "^4.8.0"
   }
 }
