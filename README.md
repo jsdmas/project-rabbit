@@ -2,6 +2,30 @@
 
 <img width="328" alt="logo_light" src="https://user-images.githubusercontent.com/105098581/235834084-71f07345-3396-445c-82ab-7c9f88ce0f5e.png">
 
+**23.06.21 배포중단**  
+글을 올리고 자신만의 프로필을 만들 수 있는 SNS 사이트 입니다.  
+로그인 하지 않고도 글 작성이 가능합니다.  
+트위터, reddit 같은 SNS를 참고하여 만들었습니다.
+
+## 💫 서비스 주소 (23.06.21 배포중단)
+
+### AWS 비용이 부담되서 배포를 중단하게 되었습니다 ㅠㅠ
+
+https://sdmas-rabbit.fly.dev
+
+### test 계정
+
+| email                 | passWord  |
+| --------------------- | --------- |
+| testemail01@naver.com | 1q2w3e4r! |
+| testemail01@test.com  | 123qwe!   |
+
+> > > > > > > 0c7e12f80843fdd53407e2f2015554ec0f3d672c
+
+# 🌟 Protflio
+
+- [googleDirve-pdf](https://drive.google.com/file/d/1jb7t18hgKlEVAN2PKNw9Jixh079meQMA/view?usp=sharing)
+
 # 🌟 기능
 
 |                                                   게시글 무한 스크롤                                                   |                                                  게시글 최신순 정렬                                                   |
