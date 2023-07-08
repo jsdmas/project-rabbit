@@ -1,20 +1,6 @@
 # Rabbit
 
-<img width="328" alt="logo_light" src="https://user-images.githubusercontent.com/105098581/235834084-71f07345-3396-445c-82ab-7c9f88ce0f5e.png">  
-
-글을 올리고 자신만의 프로필을 만들 수 있는 SNS 사이트 입니다.   
-로그인 하지 않고도 글 작성이 가능합니다.  
-트위터, reddit 같은 SNS를 참고하여 만들었습니다.
-
-## 💫 서비스 주소
-https://sdmas-rabbit.fly.dev 
- 
-
-### test 계정
-| email                 | passWord  |
-| --------------------- | --------- |
-| testemail01@naver.com | 1q2w3e4r! |
-| testemail01@test.com  | 123qwe!   |
+<img width="328" alt="logo_light" src="https://user-images.githubusercontent.com/105098581/235834084-71f07345-3396-445c-82ab-7c9f88ce0f5e.png">
 
 # 🌟 기능
 
@@ -39,14 +25,14 @@ https://sdmas-rabbit.fly.dev
 |      ![](https://user-images.githubusercontent.com/105098581/235830126-7892efb7-62a6-4d56-9a3b-017660a8d663.gif)       |
 |                                                                                                                        |
 
-
 # 🛠️ Front-End
 
 - typeScript, React, React-Query, Recoil
 
 ### 📈Development Period
 
-2023.03.29 ~ 2023.05.03
+- 2023.03.29 ~ 2023.05.03
+- refactor : 2023.07.08 ~
 
 ### 🖼️ 목업
 
