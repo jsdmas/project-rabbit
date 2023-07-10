@@ -1,19 +1,20 @@
-import styled from 'styled-components';
-import Header from '../components/Header';
-import BackPageIcon from '../components/BackPageIcon';
-import { useForm } from 'react-hook-form';
-import { useMutation } from '@tanstack/react-query';
-import { login } from '../api/userApi';
-import { ILogin } from '../types/register';
-import Spinner from '../components/Spinner';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faComment, faN, faSignsPost } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useMutation } from '@tanstack/react-query';
 import { memo, useEffect } from 'react';
+import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
+
+import { login } from '../api/userApi';
+import BackPageIcon from '../components/BackPageIcon';
+import Header from '../components/Header';
+import Spinner from '../components/Spinner';
+import useError from '../hooks/useError';
 import useLoginInfo from '../hooks/useLoginInfo';
 import Meta from '../Meta';
 import { media } from '../styles/mediaQuery';
-import useError from '../hooks/useError';
+import { ILogin } from '../types/register';
 
 const Wrapper = styled.section`
   margin: 7vh auto;
@@ -140,10 +141,12 @@ const Login = () => {
   const onVaild = ({ email, password }: ILogin) => {
     mutate({ email, password });
   };
+
   // 로그인 여부
   useEffect(() => {
     if (!userInfoLoading && loginState) navigate('/');
   }, [userInfoLoading, loginState, navigate]);
+
   return (
     <>
       <Meta title="Login | Rabbit" description="Rabbit 로그인 페이지 입니다." />

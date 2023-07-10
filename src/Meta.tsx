@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet-async';
 import logo from './assets/logo_light.png';
 import { IMeta } from './types/meta';
 
-const Meta = (props: IMeta) => {
+const Meta = (props: Partial<IMeta>) => {
   return (
     <Helmet>
       <meta charSet="UTF-8" />
