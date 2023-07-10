@@ -3,11 +3,6 @@ import { Helmet } from 'react-helmet-async';
 import logo from './assets/logo_light.png';
 import { IMeta } from './types/meta';
 
-/**
- * @description SEO 처리 컴포넌트
- * @param props title, description, author, url, image
- * @returns {JSX.Element}
- */
 const Meta = (props: IMeta) => {
   return (
     <Helmet>

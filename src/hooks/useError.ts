@@ -1,6 +1,7 @@
-import { useNavigate } from 'react-router-dom';
 import { isAxiosError } from 'axios';
+import { useNavigate } from 'react-router-dom';
 import Swal, { SweetAlertIcon } from 'sweetalert2';
+
 import { IErrorTypes } from '../types/error';
 
 /**
@@ -17,17 +18,19 @@ export default function useError() {
         response: { data },
       } = error;
       const { rtmsg }: IErrorTypes = data;
+
       Swal.fire({ icon, title: rtmsg });
     } else {
       alert('형식을 알수없는 오류입니다.');
     }
   };
 
-  const errorMessage = (error: unknown, goHome: boolean = true) => {
+  const errorMessage = (error: unknown, goHome = true) => {
     if (goHome) {
       navigate('/');
     }
     HandleErrorHelper(error);
   };
+
   return { errorMessage };
 }

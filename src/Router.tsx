@@ -1,6 +1,8 @@
 import { lazy, Suspense } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
+
 import Spinner from './components/Spinner';
+
 const EditThread = lazy(() => import('./routes/EditThread'));
 const Home = lazy(() => import('./routes/Home'));
 const Join = lazy(() => import('./routes/Join'));

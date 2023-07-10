@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+
 import { loginStatus } from '../api/userApi';
 import { IUser, IUserState } from '../types/register';
 
@@ -13,11 +14,13 @@ export default function useLoginInfo(): IUser {
     loginUserId: undefined,
     loginUserSnsId: undefined,
   });
+
   useEffect(() => {
     loginStatus().then((result) => {
       setUserState(result);
       setIsLoading(false);
     });
   }, []);
+
   return [isLoading, userState];
 }
