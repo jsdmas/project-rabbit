@@ -7,14 +7,14 @@ import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import Swal from 'sweetalert2';
 
-import { fetchMainTextThread, updateThread } from '../api/threadApi';
-import BackPageIcon from '../components/BackPageIcon';
-import Header from '../components/Header';
-import Spinner from '../components/Spinner';
-import RegexHelper from '../helper/RegexHelper';
-import useError from '../hooks/useError';
-import useLoginInfo from '../hooks/useLoginInfo';
-import Meta from '../Meta';
+import { fetchMainTextThread, updateThread } from '../../api/threadApi';
+import BackPageIcon from '../../components/BackPageIcon';
+import Header from '../../components/Header';
+import Spinner from '../../components/Spinner';
+import RegexHelper from '../../helper/RegexHelper';
+import useError from '../../hooks/useError';
+import useLoginInfo from '../../hooks/useLoginInfo';
+import Meta from '../../Meta';
 import {
   ContentTextArea,
   ErrorMessage,
@@ -27,8 +27,8 @@ import {
   SubmitButton,
   TitleInput,
   Wrapper,
-} from '../styles/writeBase';
-import { IpostData, IResponse, TTreadId } from '../types/thread';
+} from '../../styles/writeBase';
+import { IpostData, IResponse, TTreadId } from '../../types/thread';
 
 const UserIdInput = styled.input`
   display: none;

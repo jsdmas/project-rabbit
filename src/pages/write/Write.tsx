@@ -3,11 +3,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 
-import { createThread } from '../api/threadApi';
-import BackPageIcon from '../components/BackPageIcon';
-import Header from '../components/Header';
-import RegexHelper from '../helper/RegexHelper';
-import Meta from '../Meta';
+import { createThread } from '@/api/threadApi';
+import BackPageIcon from '@/components/BackPageIcon';
+import Header from '@/components/Header';
+import RegexHelper from '@/helper/RegexHelper';
+import Meta from '@/Meta';
 import {
   ContentTextArea,
   ErrorMessage,
@@ -20,8 +20,8 @@ import {
   SubmitButton,
   TitleInput,
   Wrapper,
-} from '../styles/writeBase';
-import { IpostData } from '../types/thread';
+} from '@/styles/writeBase';
+import { IpostData } from '@/types/thread';
 
 const Write = () => {
   const {

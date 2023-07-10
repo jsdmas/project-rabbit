@@ -8,16 +8,16 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import Swal from 'sweetalert2';
 
-import { ChangeOfPassword } from '../api/userApi';
-import BackPageIcon from '../components/BackPageIcon';
-import Header from '../components/Header';
-import RegexHelper from '../helper/RegexHelper';
-import useError from '../hooks/useError';
-import useLoginInfo from '../hooks/useLoginInfo';
-import Meta from '../Meta';
-import { media } from '../styles/mediaQuery';
-import { IErrorTypes } from '../types/error';
-import { IPassword } from '../types/user';
+import { ChangeOfPassword } from '../../api/userApi';
+import BackPageIcon from '../../components/BackPageIcon';
+import Header from '../../components/Header';
+import RegexHelper from '../../helper/RegexHelper';
+import useError from '../../hooks/useError';
+import useLoginInfo from '../../hooks/useLoginInfo';
+import Meta from '../../Meta';
+import { media } from '../../styles/mediaQuery';
+import { IErrorTypes } from '../../types/error';
+import { IPassword } from '../../types/user';
 
 const Grid = styled.section`
   margin: auto;

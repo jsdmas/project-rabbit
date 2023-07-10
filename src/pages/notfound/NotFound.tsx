@@ -3,8 +3,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
-import Header from '../components/Header';
-import Meta from '../Meta';
+import Header from '../../components/Header';
+import Meta from '../../Meta';
 
 const Wrapper = styled.section`
   margin-top: 7vh;

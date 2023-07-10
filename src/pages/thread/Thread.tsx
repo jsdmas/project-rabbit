@@ -6,17 +6,17 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import Swal from 'sweetalert2';
 
-import { deleteThread, fetchThread, patchThreadLike } from '../api/threadApi';
-import BackPageIcon from '../components/BackPageIcon';
-import Comment from '../components/Comment';
-import CommentForm from '../components/CommentForm';
-import Header from '../components/Header';
-import Spinner from '../components/Spinner';
-import useError from '../hooks/useError';
-import useLoginInfo from '../hooks/useLoginInfo';
-import Meta from '../Meta';
-import { media } from '../styles/mediaQuery';
-import { IcommentData, IResponse, TTreadId } from '../types/thread';
+import { deleteThread, fetchThread, patchThreadLike } from '../../api/threadApi';
+import BackPageIcon from '../../components/BackPageIcon';
+import Comment from '../../components/Comment';
+import CommentForm from '../../components/CommentForm';
+import Header from '../../components/Header';
+import Spinner from '../../components/Spinner';
+import useError from '../../hooks/useError';
+import useLoginInfo from '../../hooks/useLoginInfo';
+import Meta from '../../Meta';
+import { media } from '../../styles/mediaQuery';
+import { IcommentData, IResponse, TTreadId } from '../../types/thread';
 
 const Wrapper = styled.section`
   margin-top: 8vh;

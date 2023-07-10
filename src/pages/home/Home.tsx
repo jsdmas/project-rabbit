@@ -4,20 +4,20 @@ import { memo, useEffect, useRef } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 
-import { fetchThreadList } from '../api/threadApi';
+import { fetchThreadList } from '@/api/threadApi';
 import {
   errorMessageState,
   keywordOptionState,
   orderbyState,
   orderCommendState,
   searchKeywordState,
-} from '../atoms';
-import Header from '../components/Header';
-import Spinner from '../components/Spinner';
-import Post from '../components/ThreadList';
-import { throttle } from '../helper/throttle';
-import Meta from '../Meta';
-import { IThreadList } from '../types/thread';
+} from '@/atoms';
+import Header from '@/components/Header';
+import Spinner from '@/components/Spinner';
+import Post from '@/components/ThreadList';
+import { throttle } from '@/helper/throttle';
+import Meta from '@/Meta';
+import { IThreadList } from '@/types/thread';
 
 interface IPageData {
   data: IThreadList[];

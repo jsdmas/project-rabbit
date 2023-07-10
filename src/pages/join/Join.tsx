@@ -8,17 +8,17 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import Swal from 'sweetalert2';
 
-import { postJoin } from '../api/userApi';
-import BackPageIcon from '../components/BackPageIcon';
-import Header from '../components/Header';
-import Spinner from '../components/Spinner';
-import RegexHelper from '../helper/RegexHelper';
-import useError from '../hooks/useError';
-import useLoginInfo from '../hooks/useLoginInfo';
-import Meta from '../Meta';
-import { media } from '../styles/mediaQuery';
-import { IErrorTypes } from '../types/error';
-import { IPostJoin } from '../types/register';
+import { postJoin } from '../../api/userApi';
+import BackPageIcon from '../../components/BackPageIcon';
+import Header from '../../components/Header';
+import Spinner from '../../components/Spinner';
+import RegexHelper from '../../helper/RegexHelper';
+import useError from '../../hooks/useError';
+import useLoginInfo from '../../hooks/useLoginInfo';
+import Meta from '../../Meta';
+import { media } from '../../styles/mediaQuery';
+import { IErrorTypes } from '../../types/error';
+import { IPostJoin } from '../../types/register';
 
 const Wrapper = styled.section`
   margin: 7vh auto;

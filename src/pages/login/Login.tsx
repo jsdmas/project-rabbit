@@ -6,15 +6,15 @@ import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { login } from '../api/userApi';
-import BackPageIcon from '../components/BackPageIcon';
-import Header from '../components/Header';
-import Spinner from '../components/Spinner';
-import useError from '../hooks/useError';
-import useLoginInfo from '../hooks/useLoginInfo';
-import Meta from '../Meta';
-import { media } from '../styles/mediaQuery';
-import { ILogin } from '../types/register';
+import { login } from '../../api/userApi';
+import BackPageIcon from '../../components/BackPageIcon';
+import Header from '../../components/Header';
+import Spinner from '../../components/Spinner';
+import useError from '../../hooks/useError';
+import useLoginInfo from '../../hooks/useLoginInfo';
+import Meta from '../../Meta';
+import { media } from '../../styles/mediaQuery';
+import { ILogin } from '../../types/register';
 
 const Wrapper = styled.section`
   margin: 7vh auto;
