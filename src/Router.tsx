@@ -22,10 +22,14 @@ const Router = () => {
           <Route path="/join" element={<Join />} />
           <Route path="/login" element={<Login />} />
           <Route path="/write" element={<Write />} />
-          <Route path="/user/:userid" element={<UserProfile />} />
-          <Route path="/user/change-password" element={<ChangePassword />} />
-          <Route path="/thread/:threadid" element={<Thread />} />
-          <Route path="/thread/:threadid/edit" element={<EditThread />} />
+          <Route path="/user">
+            <Route path=":userid" element={<UserProfile />} />
+            <Route path="change-password" element={<ChangePassword />} />
+          </Route>
+          <Route path="/thread">
+            <Route path=":threadid" element={<Thread />} />
+            <Route path=":threadid/edit" element={<EditThread />} />
+          </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Suspense>
