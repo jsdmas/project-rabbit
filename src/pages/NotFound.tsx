@@ -1,8 +1,9 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import Header from '../components/Header';
-import styled from 'styled-components';
 import { faHouse } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
+
+import Header from '../components/Header';
 import Meta from '../Meta';
 
 const Wrapper = styled.section`
@@ -36,6 +37,7 @@ const Home = styled.button`
 
 const NotFound = () => {
   const navigate = useNavigate();
+
   return (
     <>
       <Meta

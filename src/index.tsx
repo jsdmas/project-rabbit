@@ -8,7 +8,6 @@ import App from './App';
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      // 다른탭을 보다가 데이터 불러오는것을 방지
       refetchOnWindowFocus: false,
     },
   },

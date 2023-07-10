@@ -1,21 +1,22 @@
-import { memo, useState } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import Swal from 'sweetalert2';
-import styled from 'styled-components';
-import { IcommentData, IResponse, TTreadId } from '../types/thread';
 import { faHeart, faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { fetchThread, patchThreadLike, deleteThread } from '../api/threadApi';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { memo, useState } from 'react';
+import { Link, useNavigate, useParams } from 'react-router-dom';
+import styled from 'styled-components';
+import Swal from 'sweetalert2';
+
+import { deleteThread, fetchThread, patchThreadLike } from '../api/threadApi';
 import BackPageIcon from '../components/BackPageIcon';
 import Comment from '../components/Comment';
-import Header from '../components/Header';
 import CommentForm from '../components/CommentForm';
+import Header from '../components/Header';
 import Spinner from '../components/Spinner';
 import useError from '../hooks/useError';
 import useLoginInfo from '../hooks/useLoginInfo';
 import Meta from '../Meta';
 import { media } from '../styles/mediaQuery';
+import { IcommentData, IResponse, TTreadId } from '../types/thread';
 
 const Wrapper = styled.section`
   margin-top: 8vh;
@@ -179,6 +180,7 @@ const Thread = () => {
   const likeIncrement = () => {
     const now = new Date();
     const incrementTime = new Date(localStorage.getItem('threadIncrementTime') || 0);
+
     if (!incrementTime || now.getTime() - incrementTime.getTime() > 1000 * 30) {
       threadlike(threadid);
       localStorage.setItem('threadIncrementTime', now.toString());
@@ -204,10 +206,12 @@ const Thread = () => {
     });
   };
 
-  const handleImgLoad = (event: React.SyntheticEvent<HTMLImageElement>) => {
+  const handleImgLoad = (event: any) => {
     const imgElement = event.currentTarget as HTMLImageElement;
+
     setImgWidth(imgElement.naturalWidth);
   };
+
   return (
     <>
       <Meta title={`${postTitle} | Rabbit`} description={postContent} image={postImg} />
@@ -241,7 +245,7 @@ const Thread = () => {
                 {/* 로그인유저, 익명유저 식별 */}
                 {userloading ? null : userId == loginUserId || userId == null ? (
                   <>
-                    <Link to={`edit`}>수정</Link>&nbsp;|&nbsp;
+                    <Link to={'edit'}>수정</Link>&nbsp;|&nbsp;
                     <Link to="" onClick={handleThreadDelete}>
                       삭제
                     </Link>
@@ -275,7 +279,9 @@ const Thread = () => {
                   <Comment {...parent} />
                   {response?.commentData
                     ?.filter((child) => child.commentParentNum === parent.commentId)
-                    .map((child) => <Comment {...child} inside={'10vw'} key={child.commentId} />)}
+                    .map((child) => {
+                      return <Comment {...child} inside={'10vw'} key={child.commentId} />;
+                    })}
                 </CommentSection>
               ) : null,
             )}

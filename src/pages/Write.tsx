@@ -1,13 +1,13 @@
-import RegexHelper from '../helper/RegexHelper';
+import { faCheck, faImage, faPencil } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
+
+import { createThread } from '../api/threadApi';
 import BackPageIcon from '../components/BackPageIcon';
 import Header from '../components/Header';
-import { useForm } from 'react-hook-form';
-import { createThread } from '../api/threadApi';
-import { useNavigate } from 'react-router-dom';
-import { IpostData } from '../types/thread';
+import RegexHelper from '../helper/RegexHelper';
 import Meta from '../Meta';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCheck, faImage, faPencil } from '@fortawesome/free-solid-svg-icons';
 import {
   ContentTextArea,
   ErrorMessage,
@@ -21,6 +21,7 @@ import {
   TitleInput,
   Wrapper,
 } from '../styles/writeBase';
+import { IpostData } from '../types/thread';
 
 const Write = () => {
   const {
@@ -32,8 +33,10 @@ const Write = () => {
   const navigate = useNavigate();
   const onVaild = async (postData: IpostData) => {
     const { data: response } = await createThread(postData);
+
     navigate(`/thread/${response}`);
   };
+
   return (
     <>
       <Meta title="글쓰기 | Rabbit" description="Rabbit 사이트 글 작성 페이지입니다." />

@@ -4,15 +4,15 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Spinner from './components/Spinner';
 import { ROUTER_PATH } from './constants/path';
 
-const EditThread = lazy(() => import('./routes/EditThread'));
-const Home = lazy(() => import('./routes/Home'));
-const Join = lazy(() => import('./routes/Join'));
-const Login = lazy(() => import('./routes/Login'));
-const NotFound = lazy(() => import('./routes/NotFound'));
-const Thread = lazy(() => import('./routes/Thread'));
-const Write = lazy(() => import('./routes/Write'));
-const UserProfile = lazy(() => import('./routes/UserProfile'));
-const ChangePassword = lazy(() => import('./routes/ChangePassword'));
+const EditThread = lazy(() => import('./pages/EditThread'));
+const Home = lazy(() => import('./pages/Home'));
+const Join = lazy(() => import('./pages/Join'));
+const Login = lazy(() => import('./pages/Login'));
+const NotFound = lazy(() => import('./pages/NotFound'));
+const Thread = lazy(() => import('./pages/Thread'));
+const Write = lazy(() => import('./pages/Write'));
+const UserProfile = lazy(() => import('./pages/UserProfile'));
+const ChangePassword = lazy(() => import('./pages/ChangePassword'));
 
 const Router = () => {
   return (

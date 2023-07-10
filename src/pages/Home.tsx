@@ -1,22 +1,23 @@
-import { memo, useEffect, useRef } from 'react';
 import { useInfiniteQuery } from '@tanstack/react-query';
+import { isAxiosError } from 'axios';
+import { memo, useEffect, useRef } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import styled from 'styled-components';
+
 import { fetchThreadList } from '../api/threadApi';
 import {
+  errorMessageState,
+  keywordOptionState,
   orderbyState,
   orderCommendState,
   searchKeywordState,
-  keywordOptionState,
-  errorMessageState,
 } from '../atoms';
 import Header from '../components/Header';
+import Spinner from '../components/Spinner';
 import Post from '../components/ThreadList';
 import { throttle } from '../helper/throttle';
-import { IThreadList } from '../types/thread';
-import Spinner from '../components/Spinner';
-import { isAxiosError } from 'axios';
 import Meta from '../Meta';
+import { IThreadList } from '../types/thread';
 
 interface IPageData {
   data: IThreadList[];
@@ -64,6 +65,7 @@ const Home = () => {
     {
       getNextPageParam: (lastpage) => {
         if (lastpage === null) return undefined;
+
         return lastpage.nextOffset;
       },
       onError: (error) => {
@@ -75,6 +77,7 @@ const Home = () => {
       staleTime: 1000 * 60,
     },
   );
+
   useEffect(() => {
     if (!observerTargetEl.current) return;
     const io = new IntersectionObserver(
@@ -85,8 +88,10 @@ const Home = () => {
       },
       { threshold: 0.5 },
     );
+
     io.observe(observerTargetEl.current);
   }, [throttled]);
+
   return (
     <>
       <Meta title="Rabbit" description="Rabbit 사이트의 홈페이지입니다.(포트폴리오 용)" />
@@ -97,6 +102,7 @@ const Home = () => {
         ) : (
           response?.pages.map((page: IPageData) => {
             if (!page) return null;
+
             return page.data.map((props: IThreadList) => <Post {...props} key={props.post_id} />);
           })
         )}

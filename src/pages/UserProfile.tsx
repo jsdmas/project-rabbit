@@ -1,13 +1,3 @@
-import { memo, useState } from 'react';
-import Header from '../components/Header';
-import { deleteUser, editDescription, getUserProfile, uploadUserProfile } from '../api/userApi';
-import useLoginInfo from '../hooks/useLoginInfo';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import useError from '../hooks/useError';
-import { Link, useParams } from 'react-router-dom';
-import styled from 'styled-components';
-import BackPageIcon from '../components/BackPageIcon';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faComment,
   faGear,
@@ -18,12 +8,23 @@ import {
   faPersonRunning,
   faUnlock,
 } from '@fortawesome/free-solid-svg-icons';
-import { IActivityCount, Iprofile } from '../types/user';
-import Spinner from '../components/Spinner';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { memo, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { Link, useParams } from 'react-router-dom';
+import styled from 'styled-components';
 import Swal from 'sweetalert2';
+
+import { deleteUser, editDescription, getUserProfile, uploadUserProfile } from '../api/userApi';
+import BackPageIcon from '../components/BackPageIcon';
+import Header from '../components/Header';
+import Spinner from '../components/Spinner';
+import useError from '../hooks/useError';
+import useLoginInfo from '../hooks/useLoginInfo';
 import Meta from '../Meta';
 import { media } from '../styles/mediaQuery';
+import { IActivityCount, Iprofile } from '../types/user';
 
 const Grid = styled.section`
   margin: auto;
@@ -222,7 +223,7 @@ const FileInput = styled.input`
 `;
 
 const UserProfile = () => {
-  const [_, { loginUserId, loginUserSnsId }] = useLoginInfo();
+  const [, { loginUserId, loginUserSnsId }] = useLoginInfo();
   const { userid } = useParams();
   const { errorMessage } = useError();
   const queryClient = useQueryClient();
@@ -278,12 +279,14 @@ const UserProfile = () => {
     onError: (error) => errorMessage(error, false),
   });
 
-  const onUploadImage = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const onUploadImage = (event: any) => {
     if (event.currentTarget.files) {
       const userImageFile = event.currentTarget.files[0];
+
       userImage({ userImageFile, loginUserId });
     }
   };
+
   return (
     <>
       <Meta title={`${nickname} Profile | Rabbit`} description={description} image={img_url} />

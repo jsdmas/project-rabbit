@@ -1,23 +1,24 @@
-import { useForm } from 'react-hook-form';
-import Header from '../components/Header';
-import styled from 'styled-components';
-import BackPageIcon from '../components/BackPageIcon';
-import { IPostJoin } from '../types/register';
-import RegexHelper from '../helper/RegexHelper';
-import { postJoin } from '../api/userApi';
+import { faAddressCard, faCheck } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useMutation } from '@tanstack/react-query';
 import { isAxiosError } from 'axios';
 import { useEffect, useState } from 'react';
-import { IErrorTypes } from '../types/error';
-import useError from '../hooks/useError';
-import Spinner from '../components/Spinner';
+import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
 import Swal from 'sweetalert2';
+
+import { postJoin } from '../api/userApi';
+import BackPageIcon from '../components/BackPageIcon';
+import Header from '../components/Header';
+import Spinner from '../components/Spinner';
+import RegexHelper from '../helper/RegexHelper';
+import useError from '../hooks/useError';
 import useLoginInfo from '../hooks/useLoginInfo';
 import Meta from '../Meta';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAddressCard, faCheck } from '@fortawesome/free-solid-svg-icons';
 import { media } from '../styles/mediaQuery';
+import { IErrorTypes } from '../types/error';
+import { IPostJoin } from '../types/register';
 
 const Wrapper = styled.section`
   margin: 7vh auto;
@@ -117,18 +118,22 @@ const Join = () => {
           response: { data },
         } = error;
         const { rtcode, rtmsg }: IErrorTypes = data;
+
         rtcode === 401 ? setErrorMessage(rtmsg) : onErrorLogin(error, false);
       }
     },
   });
   const onVaild = (data: IPostJoin) => {
-    const { confirm, ...restData } = data;
+    const { ...restData } = data;
+
     mutate(restData);
   };
+
   // 로그인 여부
   useEffect(() => {
     if (!userInfoLoading && loginState) navigate('/');
   }, [userInfoLoading, loginState, navigate]);
+
   return (
     <>
       <Meta title="회원가입 | Rabbit" description="Rabbit 회원가입 페이지입니다." />

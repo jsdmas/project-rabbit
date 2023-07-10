@@ -1,21 +1,20 @@
+import { faCheck, faImage, faPencil } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import RegexHelper from '../helper/RegexHelper';
+import Swal from 'sweetalert2';
+
+import { fetchMainTextThread, updateThread } from '../api/threadApi';
 import BackPageIcon from '../components/BackPageIcon';
 import Header from '../components/Header';
-import { useForm } from 'react-hook-form';
-import { updateThread } from '../api/threadApi';
-import { useNavigate, useParams } from 'react-router-dom';
-import { IpostData, IResponse, TTreadId } from '../types/thread';
-import Swal from 'sweetalert2';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { fetchMainTextThread } from '../api/threadApi';
 import Spinner from '../components/Spinner';
+import RegexHelper from '../helper/RegexHelper';
 import useError from '../hooks/useError';
 import useLoginInfo from '../hooks/useLoginInfo';
-import { useEffect } from 'react';
 import Meta from '../Meta';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCheck, faImage, faPencil } from '@fortawesome/free-solid-svg-icons';
 import {
   ContentTextArea,
   ErrorMessage,
@@ -29,6 +28,7 @@ import {
   TitleInput,
   Wrapper,
 } from '../styles/writeBase';
+import { IpostData, IResponse, TTreadId } from '../types/thread';
 
 const UserIdInput = styled.input`
   display: none;
@@ -76,6 +76,7 @@ const EditThread = () => {
       allowOutsideClick: () => !Swal.isLoading(),
     });
   };
+
   // 글 작성자가 아닐경우 home으로 이동, 익명의 작성자 게시글 이라면 수정가능
   useEffect(() => {
     if (userId != null) {
@@ -84,6 +85,7 @@ const EditThread = () => {
       }
     }
   }, [userloading, loginUserId, userId, navigate]);
+
   return (
     <>
       <Meta title={`${postTitle} Edit | Rabbit`} description={postContent} />
