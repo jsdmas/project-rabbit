@@ -12,35 +12,34 @@
     "@typescript-eslint",
     "react-hooks",
     "import",
+    "jsx-a11y",
     "simple-import-sort",
-    "prettier",
-    "jsx-a11y"
+    "prettier"
   ],
 
   "extends": [
-    "eslint:recommended",
     "plugin:react/recommended",
     "plugin:@typescript-eslint/recommended",
     "plugin:jsx-a11y/recommended",
-    "prettier/prettier",
     "plugin:import/recommended",
-    "plugin:prettier/recommended"
+    "plugin:import/typescript",
+    "eslint:recommended",
+    "plugin:prettier/recommended",
+    "prettier/prettier"
   ],
 
   "rules": {
     "react/react-in-jsx-scope": "off",
-
     "import/no-anonymous-default-export": "off",
     "import/newline-after-import": "error",
     "import/first": "error",
     "import/no-unresolved": "off",
 
+    "import/no-duplicates": "error",
     "simple-import-sort/imports": "error",
 
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "warn",
-
-    "prettier/prettier": "error",
 
     "no-multiple-empty-lines": ["error", { "max": 1 }],
     "eol-last": ["error", "always"], // 파일의 마지막에 줄바꿈을 넣을 것인가?

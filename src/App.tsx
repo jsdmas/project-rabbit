@@ -1,9 +1,10 @@
-import Router from "./Router";
-import { ThemeProvider, createGlobalStyle } from "styled-components";
-import { darkTheme, lightTheme } from "./styles/theme";
-import { useRecoilValue } from "recoil";
-import { darkState } from "./atoms";
-import { HelmetProvider } from "react-helmet-async"
+import { HelmetProvider } from 'react-helmet-async';
+import { useRecoilValue } from 'recoil';
+import { createGlobalStyle, ThemeProvider } from 'styled-components';
+
+import { darkState } from './atoms';
+import Router from './Router';
+import { darkTheme, lightTheme } from './styles/theme';
 
 const GlobalStyle = createGlobalStyle`
 
@@ -34,7 +35,7 @@ footer, header, hgroup, menu, nav, section {
 	display: block;
 }
 body {
-	background-color: ${props => props.theme.bgColor};
+	background-color: ${(props) => props.theme.bgColor};
 	line-height: 1;
 	
 }
@@ -56,10 +57,10 @@ table {
 a{
 	text-decoration: none;
 	&:link, &:visited,&:active {
-		color: ${props => props.theme.accentColor};
+		color: ${(props) => props.theme.accentColor};
 	}
 	&:hover{
-		color: ${props => props.theme.buttonColor};
+		color: ${(props) => props.theme.buttonColor};
 		transition: 0.2s ;
 	}
 }
@@ -67,17 +68,18 @@ a{
 `;
 
 const App = () => {
-	const isdark = useRecoilValue(darkState);
-	return (
-		<>
-			<ThemeProvider theme={isdark ? darkTheme : lightTheme}>
-				<HelmetProvider>
-					<GlobalStyle />
-					<Router />
-				</HelmetProvider>
-			</ThemeProvider>
-		</>
-	);
+  const isdark = useRecoilValue(darkState);
+
+  return (
+    <>
+      <ThemeProvider theme={isdark ? darkTheme : lightTheme}>
+        <HelmetProvider>
+          <GlobalStyle />
+          <Router />
+        </HelmetProvider>
+      </ThemeProvider>
+    </>
+  );
 };
 
 export default App;
