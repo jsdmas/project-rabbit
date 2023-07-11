@@ -12,7 +12,7 @@ import {
   orderCommendState,
   searchKeywordState,
 } from '@/atoms';
-import Header from '@/components/Header';
+import Header from '@/components/header/Header';
 import Spinner from '@/components/Spinner';
 import Post from '@/components/ThreadList';
 import { throttle } from '@/helper/throttle';
@@ -28,8 +28,8 @@ interface IPageData {
   rtmsg: string;
 }
 
-const Wrapper = styled.section`
-  margin: auto;
+const Wrapper = styled.main`
+  margin: 80px auto 20px;
 `;
 
 const ErrorMessage = styled.div`
@@ -93,23 +93,21 @@ const Home = () => {
   }, [throttled]);
 
   return (
-    <>
-      <Meta title="Rabbit" description="Rabbit 사이트의 홈페이지입니다.(포트폴리오 용)" />
+    <Wrapper>
+      <Meta title="Rabbit" description="Rabbit 사이트의 홈페이지입니다." />
       <Header remove={remove} />
-      <Wrapper>
-        {isLoading || !response?.pages?.length ? (
-          <Spinner isLoading={isLoading} />
-        ) : (
-          response?.pages.map((page: IPageData) => {
-            if (!page) return null;
+      {isLoading || !response?.pages?.length ? (
+        <Spinner isLoading={isLoading} />
+      ) : (
+        response?.pages.map((page: IPageData) => {
+          if (!page) return null;
 
-            return page.data.map((props: IThreadList) => <Post {...props} key={props.post_id} />);
-          })
-        )}
-        {errorMessage ? <ErrorMessage>☹️ {errorMessage}</ErrorMessage> : null}
-      </Wrapper>
+          return page.data.map((props: IThreadList) => <Post {...props} key={props.post_id} />);
+        })
+      )}
+      {errorMessage ? <ErrorMessage>☹️ {errorMessage}</ErrorMessage> : null}
       <Observer ref={observerTargetEl} />
-    </>
+    </Wrapper>
   );
 };
 

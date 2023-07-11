@@ -1,8 +1,3 @@
-import { useState, memo } from 'react';
-import styled from 'styled-components';
-import lightLogo from '../assets/logo_light.png';
-import darkLogo from '../assets/logo_dark.png';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faArrowRightFromBracket,
   faBars,
@@ -15,26 +10,33 @@ import {
   faSun,
   faXmark,
 } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useQueryClient } from '@tanstack/react-query';
+import { memo, useState } from 'react';
+import { FieldValues, useForm } from 'react-hook-form';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useRecoilState, useResetRecoilState, useSetRecoilState } from 'recoil';
+import styled from 'styled-components';
+
+import { logout } from '@/api/userApi';
+import darkLogo from '@/assets/logo_dark.png';
+import lightLogo from '@/assets/logo_light.png';
+import { throttle } from '@/helper/throttle';
+import useLoginInfo from '@/hooks/useLoginInfo';
+import { media } from '@/styles/mediaQuery';
+
 import {
   darkState,
+  errorMessageState,
+  keywordOptionState,
   OrderBy,
   orderbyState,
   OrderCommends,
   orderCommendState,
-  keywordOptionState,
+  searchHistoryState,
   searchKeywordState,
   SearchOption,
-  errorMessageState,
-  searchHistoryState,
-} from '../atoms';
-import { useQueryClient } from '@tanstack/react-query';
-import { throttle } from '../helper/throttle';
-import { FieldValues, useForm } from 'react-hook-form';
-import useLoginInfo from '../hooks/useLoginInfo';
-import { logout } from '../api/userApi';
-import { media } from '../styles/mediaQuery';
+} from '../../atoms';
 
 const Nav = styled.header`
   z-index: 99;
@@ -304,6 +306,7 @@ const Header = ({ remove }: { remove?: () => void }) => {
   const { register, handleSubmit, setFocus, setValue } = useForm();
   const onVaild = (data: FieldValues) => {
     const { option, search } = data;
+
     if (option === SearchOption.none) setFocus('option');
     if (!search || search.trim() === '') setFocus('search');
     if (option !== SearchOption.none && search.trim() !== '') {
@@ -318,6 +321,7 @@ const Header = ({ remove }: { remove?: () => void }) => {
       queryClient.resetQueries();
     }
   };
+
   return (
     <Nav>
       <Col>
@@ -350,7 +354,9 @@ const Header = ({ remove }: { remove?: () => void }) => {
                     {searchHistory.map((value, index) => {
                       return (
                         <li key={index}>
-                          <span onClick={() => setValue('search', value)}>{value}</span>
+                          <Link to="" onClick={() => setValue('search', value)}>
+                            {value}
+                          </Link>
                           <HistoryButton type="button" onClick={() => handleHistoryDelete(index)}>
                             <FontAwesomeIcon icon={faXmark} />
                           </HistoryButton>

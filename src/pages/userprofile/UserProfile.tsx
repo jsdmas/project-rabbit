@@ -18,7 +18,7 @@ import Swal from 'sweetalert2';
 
 import { deleteUser, editDescription, getUserProfile, uploadUserProfile } from '../../api/userApi';
 import BackPageIcon from '../../components/BackPageIcon';
-import Header from '../../components/Header';
+import Header from '../../components/header/Header';
 import Spinner from '../../components/Spinner';
 import useError from '../../hooks/useError';
 import useLoginInfo from '../../hooks/useLoginInfo';

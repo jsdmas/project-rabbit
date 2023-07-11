@@ -10,7 +10,7 @@ import { deleteThread, fetchThread, patchThreadLike } from '../../api/threadApi'
 import BackPageIcon from '../../components/BackPageIcon';
 import Comment from '../../components/Comment';
 import CommentForm from '../../components/CommentForm';
-import Header from '../../components/Header';
+import Header from '../../components/header/Header';
 import Spinner from '../../components/Spinner';
 import useError from '../../hooks/useError';
 import useLoginInfo from '../../hooks/useLoginInfo';

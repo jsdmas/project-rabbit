@@ -1,24 +1,33 @@
+# ToDo
+  
+구현순위
+  
+1. header 컴포넌트 로직 분리 필요
+2. 공용 Layout 분리하여 통일성 (header, Layout 분리하고 childern으로 받는 등)
+3. home의 header 결합도 느슨하게 하기.
+   - react-query의 무한스크롤 로직 분리 필요
+   - 스타일은 그후에
+
+
 # Rabbit
 
 <img width="328" alt="logo_light" src="https://user-images.githubusercontent.com/105098581/235834084-71f07345-3396-445c-82ab-7c9f88ce0f5e.png">
 
-**23.06.21 배포중단**  
 글을 올리고 자신만의 프로필을 만들 수 있는 SNS 사이트 입니다.  
 로그인 하지 않고도 글 작성이 가능합니다.  
 트위터, reddit 같은 SNS를 참고하여 만들었습니다.
 
 ## 💫 서비스 주소 (23.06.21 배포중단)
 
-### AWS 비용이 부담되서 배포를 중단하게 되었습니다 ㅠㅠ
-
 https://sdmas-rabbit.fly.dev
+### 📈Development Period
 
-### test 계정
+- 2023.03.29 ~ 2023.05.03
+- refactor : 2023.07.08 ~
 
-| email                 | passWord  |
-| --------------------- | --------- |
-| testemail01@naver.com | 1q2w3e4r! |
-| testemail01@test.com  | 123qwe!   |
+# 🛠️ Front-End
+
+- typeScript, React, React-Query, Recoil
 
 # 🌟 Protflio
 
@@ -47,14 +56,7 @@ https://sdmas-rabbit.fly.dev
 |      ![](https://user-images.githubusercontent.com/105098581/235830126-7892efb7-62a6-4d56-9a3b-017660a8d663.gif)       |
 |                                                                                                                        |
 
-# 🛠️ Front-End
 
-- typeScript, React, React-Query, Recoil
-
-### 📈Development Period
-
-- 2023.03.29 ~ 2023.05.03
-- refactor : 2023.07.08 ~
 
 ### 🖼️ 목업
 

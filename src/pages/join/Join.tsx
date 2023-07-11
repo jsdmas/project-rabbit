@@ -10,7 +10,7 @@ import Swal from 'sweetalert2';
 
 import { postJoin } from '../../api/userApi';
 import BackPageIcon from '../../components/BackPageIcon';
-import Header from '../../components/Header';
+import Header from '../../components/header/Header';
 import Spinner from '../../components/Spinner';
 import RegexHelper from '../../helper/RegexHelper';
 import useError from '../../hooks/useError';

@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { createThread } from '@/api/threadApi';
 import BackPageIcon from '@/components/BackPageIcon';
-import Header from '@/components/Header';
+import Header from '@/components/header/Header';
 import RegexHelper from '@/helper/RegexHelper';
 import Meta from '@/Meta';
 import {
