@@ -1,17 +1,18 @@
+import { faFeatherPointed } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { memo } from 'react';
 import { useForm } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
+
 import { postComment } from '../api/threadApi';
 import { replyState } from '../atoms';
 import RegexHelper from '../helper/RegexHelper';
-import { IpostCommentData, TTreadId } from '../types/thread';
 import useError from '../hooks/useError';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFeatherPointed } from '@fortawesome/free-solid-svg-icons';
 import { useTextArea } from '../hooks/useTextArea';
+import { IpostCommentData, TTreadId } from '../types/thread';
 
 const Form = styled.form<{ fromReplyId?: number | null }>`
   margin: auto;
