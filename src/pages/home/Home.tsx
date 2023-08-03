@@ -14,7 +14,7 @@ import {
 } from '@/atoms';
 import Header from '@/components/header/Header';
 import Spinner from '@/components/Spinner';
-import Post from '@/components/ThreadList';
+import Post from '@/components/ThreadList/ThreadList';
 import { throttle } from '@/helper/throttle';
 import Meta from '@/Meta';
 import { IThreadList } from '@/types/thread';
