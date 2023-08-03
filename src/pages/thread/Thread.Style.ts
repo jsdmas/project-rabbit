@@ -9,14 +9,12 @@ export const Wrapper = styled.section`
 `;
 
 export const Head = styled.header`
-  display: grid;
-  grid-template-columns: 1fr 1.2fr 3fr;
-  @media ${media.phone} {
-    grid-template-columns: 2fr 1.5fr 1.5fr;
-  }
+  display: flex;
+  justify-content: space-around;
+  width: 60%;
   img {
-    width: 30%;
-    height: 50%;
+    max-width: 55px;
+    max-height: 55px;
     padding-right: 10px;
   }
   svg {
@@ -24,12 +22,9 @@ export const Head = styled.header`
   }
   div:first-child {
     place-self: center start;
-    font-size: 1.2em;
-    @media ${media.desktop} {
-      font-size: 1.5em;
-    }
+    padding-left: 20px;
   }
-  div:last-child {
+  div:nth-child(3) {
     opacity: 0.5;
     font-size: 0.7em;
     place-self: center end;
@@ -41,6 +36,11 @@ export const Head = styled.header`
     justify-content: end;
     place-self: center end;
   }
+  div:last-child {
+    opacity: 0.5;
+    font-size: 0.7em;
+    place-self: center end;
+  }
 `;
 
 export const Col = styled.div`
@@ -48,19 +48,18 @@ export const Col = styled.div`
 `;
 
 export const Main = styled.main`
-  background-color: ${(props) => props.theme.postColor};
-  min-height: 350px;
+  background-color: ${(props) => props.theme.bgColor};
+  min-height: 150px;
   margin-top: 10px;
-  border-radius: 5px;
   padding: 10px 15px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  line-height: 18px;
 `;
 
 export const ImgDiv = styled.div`
   width: 100%;
-  overflow: scroll;
 `;
 
 export const MainImg = styled.img<{ imgWidthSize?: number }>`
@@ -81,7 +80,6 @@ export const TitleSection = styled.div`
   justify-content: space-between;
   margin: 10px 0px 30px 0px;
   padding-bottom: 10px;
-  border-bottom: 1px solid ${(props) => props.theme.accentColor};
   div:first-child {
     font-family: 'Noto Sans KR', sans-serif;
     font-size: 1.5em;
@@ -89,25 +87,22 @@ export const TitleSection = styled.div`
     word-break: break-all;
     line-height: 35px;
   }
-  div:last-child {
-    font-size: 0.8em;
-    opacity: 0.5;
-    white-space: nowrap;
-  }
 `;
 
 export const LoveBox = styled.div`
-  margin-top: 20px;
   display: flex;
   justify-content: center;
-  color: ${(props) => props.theme.buttonColor};
+  color: ${(props) => props.theme.textColor};
   div {
     padding: 15px;
     background-color: ${(props) => props.theme.bgColor};
-    border: 1px solid ${(props) => props.theme.buttonColor};
+    border: 1px solid ${(props) => props.theme.textColor};
     border-radius: 5px;
     white-space: nowrap;
     cursor: pointer;
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.2);
+    }
   }
 `;
 

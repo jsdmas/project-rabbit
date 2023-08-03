@@ -1,21 +1,22 @@
 import { faHeart, faReply, faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import styled from 'styled-components';
-import { Link, useParams } from 'react-router-dom';
-import { memo, useState } from 'react';
-import { IcommentData, IpostCommentData, TTreadId } from '../types/thread';
-import CommentForm from './CommentForm';
-import { useRecoilState } from 'recoil';
-import { replyState } from '../atoms';
-import { deleteComment, editComment, commentIncrementLike } from '../api/threadApi';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import Swal from 'sweetalert2';
+import { memo, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { Link, useParams } from 'react-router-dom';
+import { useRecoilState } from 'recoil';
+import styled from 'styled-components';
+import Swal from 'sweetalert2';
+
+import { commentIncrementLike, deleteComment, editComment } from '../api/threadApi';
+import { replyState } from '../atoms';
 import RegexHelper from '../helper/RegexHelper';
 import useError from '../hooks/useError';
 import useLoginInfo from '../hooks/useLoginInfo';
-import { media } from '../styles/mediaQuery';
 import { useTextArea } from '../hooks/useTextArea';
+import { media } from '../styles/mediaQuery';
+import { IcommentData, IpostCommentData, TTreadId } from '../types/thread';
+import CommentForm from './CommentForm';
 
 const Grid = styled.section<{ inside?: string }>`
   display: grid;
@@ -202,6 +203,7 @@ const Comment = ({
   const handleCommentLike = () => {
     const now = new Date();
     const incrementTime = new Date(localStorage.getItem('commentIncrementTime') || 0);
+
     if (!incrementTime || now.getTime() - incrementTime.getTime() > 1000 * 10) {
       likeMutate(commentId);
       localStorage.setItem('commentIncrementTime', now.toString());

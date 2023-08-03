@@ -1,7 +1,7 @@
 import { faHeart, faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { memo, useState } from 'react';
+import { memo } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import Swal from 'sweetalert2';
 
@@ -22,7 +22,6 @@ const Thread = () => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const { errorMessage } = useError();
-  const [imgWidth, setImgWidth] = useState(0);
   const [userloading, { loginUserId }] = useLoginInfo();
   const { data: response, isLoading } = useQuery<IResponse>(
     ['thread', threadid],
@@ -86,12 +85,6 @@ const Thread = () => {
     });
   };
 
-  const handleImgLoad = (event: any) => {
-    const imgElement = event.currentTarget as HTMLImageElement;
-
-    setImgWidth(imgElement.naturalWidth);
-  };
-
   return (
     <>
       <Meta title={`${postTitle} | Rabbit`} description={postContent} image={postImg} />
@@ -117,32 +110,23 @@ const Thread = () => {
                 ? `수정됨 : ${postModified?.slice(0, 10)} ${postModified?.slice(11, 19)}`
                 : `posted by ${postCreated?.slice(0, 10)} ${postCreated?.slice(11, 19)}`}
             </S.Col>
+            <S.Col>
+              {/* 로그인유저, 익명유저 식별 */}
+              {userloading ? null : userId == loginUserId || userId == null ? (
+                <>
+                  <Link to={'edit'}>수정</Link>&nbsp;|&nbsp;
+                  <Link to="" onClick={handleThreadDelete}>
+                    삭제
+                  </Link>
+                </>
+              ) : null}
+            </S.Col>
           </S.Head>
           <S.Main>
             <S.TitleSection>
               <S.Col>{postTitle}</S.Col>
-              <S.Col>
-                {/* 로그인유저, 익명유저 식별 */}
-                {userloading ? null : userId == loginUserId || userId == null ? (
-                  <>
-                    <Link to={'edit'}>수정</Link>&nbsp;|&nbsp;
-                    <Link to="" onClick={handleThreadDelete}>
-                      삭제
-                    </Link>
-                  </>
-                ) : null}
-              </S.Col>
             </S.TitleSection>
-            <S.ImgDiv>
-              {postImg ? (
-                <S.MainImg
-                  src={postImg}
-                  alt={postImg}
-                  onLoad={handleImgLoad}
-                  imgWidthSize={imgWidth}
-                />
-              ) : null}
-            </S.ImgDiv>
+            <S.ImgDiv>{postImg ? <S.MainImg src={postImg} alt={postImg} /> : null}</S.ImgDiv>
             {postContent}
             <S.LoveBox>
               <S.Col onClick={likeIncrement}>
