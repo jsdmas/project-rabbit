@@ -5,132 +5,17 @@ import { memo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useParams } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
-import styled from 'styled-components';
 import Swal from 'sweetalert2';
 
-import { commentIncrementLike, deleteComment, editComment } from '../api/threadApi';
-import { replyState } from '../atoms';
-import RegexHelper from '../helper/RegexHelper';
-import useError from '../hooks/useError';
-import useLoginInfo from '../hooks/useLoginInfo';
-import { useTextArea } from '../hooks/useTextArea';
-import { media } from '../styles/mediaQuery';
-import { IcommentData, IpostCommentData, TTreadId } from '../types/thread';
-import CommentForm from './CommentForm';
-
-const Grid = styled.section<{ inside?: string }>`
-  display: grid;
-  grid-template-rows: 3fr 0.2fr;
-  gap: 10px;
-  padding-left: ${(props) => (props.inside ? props.inside : '')};
-  padding-top: 10px;
-`;
-
-const User = styled.article`
-  grid-column: 1 / -1;
-  display: grid;
-  grid-template-columns: 1fr 3fr;
-  gap: 10px;
-`;
-
-const FormWrapper = styled.article<{ fromReplyId?: number | null }>`
-  grid-column: 1 / -1;
-  visibility: ${(props) => (props.fromReplyId ? '' : 'hidden')};
-`;
-
-const UserImg = styled.figure`
-  height: 100%;
-  place-items: center;
-  place-content: center;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  img {
-    width: 30%;
-    @media ${media.tablet} {
-      width: 30%;
-    }
-    @media ${media.desktop} {
-      width: 20%;
-    }
-  }
-`;
-
-const UserInfo = styled.div`
-  display: grid;
-  grid-template-columns: 2fr 2fr 1fr 1fr;
-  font-size: 0.8em;
-  gap: 10px;
-  span:nth-child(2) {
-    opacity: 0.5;
-  }
-  svg {
-    color: ${(props) => props.theme.buttonColor};
-    cursor: pointer;
-    &:hover {
-      color: ${(props) => props.theme.accentColor};
-      transition: 0.2s;
-    }
-  }
-`;
-
-const UserInfoCol = styled.span`
-  white-space: nowrap;
-  display: flex;
-`;
-
-const UserInfoColTime = styled.span`
-  display: none;
-  @media ${media.tablet} {
-    display: flex;
-  }
-`;
-
-const ReplyButton = styled.button`
-  background-color: ${(props) => props.theme.accentColor};
-  border: none;
-  font-size: 0.7em;
-  border-radius: 5px;
-  color: #fff;
-  cursor: pointer;
-  white-space: nowrap;
-`;
-
-const UserComment = styled.div<{ commentEdit: boolean }>`
-  grid-column: 1 / -1;
-  visibility: ${(props) => (props.commentEdit ? 'none' : '')};
-`;
-
-const PatchCommentForm = styled.form<{ commentEdit: boolean }>`
-  grid-column: 1 / -1;
-  visibility: ${(props) => (props.commentEdit ? '' : 'none')};
-  display: grid;
-  grid-template-columns: 1fr 0.2fr;
-  height: 100%;
-  button {
-    border: none;
-    background-color: ${(props) => props.theme.buttonColor};
-    color: #fff;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  span {
-    margin-top: 10px;
-    color: ${(props) => props.theme.accentColor};
-  }
-`;
-
-const CommentTextarea = styled.textarea`
-  height: 6vh;
-  width: 90%;
-  resize: none;
-  border: 1px solid ${(props) => props.theme.accentColor};
-  border-radius: 5px;
-`;
-
-const CommentUserIdInput = styled.input`
-  display: none;
-`;
+import { commentIncrementLike, deleteComment, editComment } from '../../api/threadApi';
+import { replyState } from '../../atoms';
+import RegexHelper from '../../helper/RegexHelper';
+import useError from '../../hooks/useError';
+import useLoginInfo from '../../hooks/useLoginInfo';
+import { useTextArea } from '../../hooks/useTextArea';
+import { IcommentData, IpostCommentData, TTreadId } from '../../types/thread';
+import CommentForm from '../CommentForm';
+import * as S from './Comment.Style';
 
 const Comment = ({
   inside,
@@ -216,39 +101,39 @@ const Comment = ({
   };
 
   return (
-    <Grid inside={inside}>
-      <User>
-        <UserImg>
+    <S.Grid inside={inside}>
+      <S.User>
+        <S.UserImg>
           {commentWriteUserImgUrl ? (
             <img alt={commentWriteUserImgUrl} src={commentWriteUserImgUrl} />
           ) : (
             <FontAwesomeIcon icon={faUser} />
           )}
           {!commentParentNum ? (
-            <ReplyButton
+            <S.ReplyButton
               onClick={() => (commentId === replyId ? setReplyId(null) : setReplyId(commentId))}
               type="button"
             >
               <FontAwesomeIcon icon={faReply} />
               &nbsp;답글
-            </ReplyButton>
+            </S.ReplyButton>
           ) : null}
-        </UserImg>
-        <UserInfo>
-          <UserInfoCol>
+        </S.UserImg>
+        <S.UserInfo>
+          <S.UserInfoCol>
             {commentWriteUser ? (
               <Link to={`/user/${commentUserId}`}>{commentWriteUser}</Link>
             ) : (
               'anonymous'
             )}
-          </UserInfoCol>
-          <UserInfoCol>
+          </S.UserInfoCol>
+          <S.UserInfoCol>
             {commentModified
               ? `수정:${commentModified.slice(0, 10)}`
               : commentCreated?.slice(0, 10)}
-            <UserInfoColTime>&nbsp;&nbsp;{commentCreated?.slice(11, 19)}</UserInfoColTime>
-          </UserInfoCol>
-          <UserInfoCol>
+            <S.UserInfoColTime>&nbsp;&nbsp;{commentCreated?.slice(11, 19)}</S.UserInfoColTime>
+          </S.UserInfoCol>
+          <S.UserInfoCol>
             {/* 익명 작성자는 수정/삭제 가능 다른 로그인 유저가 작성한 버튼은 보이지 않는다. */}
             {userloading ? null : commentUserId == loginUserId || commentUserId == null ? (
               <>
@@ -261,16 +146,19 @@ const Comment = ({
                 </Link>
               </>
             ) : null}
-          </UserInfoCol>
-          <UserInfoCol>
+          </S.UserInfoCol>
+          <S.UserInfoCol>
             <FontAwesomeIcon icon={faHeart} onClick={handleCommentLike} /> &nbsp;&nbsp;{commentLike}
-          </UserInfoCol>
+          </S.UserInfoCol>
           {!commentEdit ? (
-            <UserComment commentEdit={commentEdit}>{commentContent}</UserComment>
+            <S.UserComment commentEdit={commentEdit}>{commentContent}</S.UserComment>
           ) : (
-            <PatchCommentForm commentEdit={commentEdit} onSubmit={handleSubmit(commentEditSubmit)}>
-              <CommentUserIdInput {...register('commentUserId')} defaultValue={commentUserId} />
-              <CommentTextarea
+            <S.PatchCommentForm
+              commentEdit={commentEdit}
+              onSubmit={handleSubmit(commentEditSubmit)}
+            >
+              <S.CommentUserIdInput {...register('commentUserId')} defaultValue={commentUserId} />
+              <S.CommentTextarea
                 defaultValue={commentContent}
                 onKeyDown={onkeydown}
                 {...register('commentContent', {
@@ -291,18 +179,18 @@ const Comment = ({
               />
               <button ref={buttonRef}>수정</button>
               <span>{errors.commentContent?.message}</span>
-            </PatchCommentForm>
+            </S.PatchCommentForm>
           )}
-        </UserInfo>
-      </User>
+        </S.UserInfo>
+      </S.User>
       {!commentParentNum ? (
         commentId === replyId ? (
-          <FormWrapper fromReplyId={replyId}>
+          <S.FormWrapper fromReplyId={replyId}>
             <CommentForm commentParentNum={replyId} />
-          </FormWrapper>
+          </S.FormWrapper>
         ) : null
       ) : null}
-    </Grid>
+    </S.Grid>
   );
 };
 
