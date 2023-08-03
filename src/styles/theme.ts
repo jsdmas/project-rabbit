@@ -1,11 +1,11 @@
 import { DefaultTheme } from 'styled-components';
 
 export const lightTheme: DefaultTheme = {
-  bgColor: '#F9F7F7',
+  bgColor: '#f5f5f5',
   postColor: '#DBE2EF',
   textColor: '#000',
   buttonColor: '#3F72AF',
-  accentColor: '#284B75',
+  accentColor: '#000',
 };
 
 export const darkTheme: DefaultTheme = {

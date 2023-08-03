@@ -14,7 +14,7 @@ import {
 } from '@/atoms';
 import Header from '@/components/header/Header';
 import Spinner from '@/components/Spinner';
-import Post from '@/components/ThreadList/ThreadList';
+import ThreadList from '@/components/ThreadList/ThreadList';
 import { throttle } from '@/helper/throttle';
 import Meta from '@/Meta';
 import { IThreadList } from '@/types/thread';
@@ -102,7 +102,9 @@ const Home = () => {
         response?.pages.map((page: IPageData) => {
           if (!page) return null;
 
-          return page.data.map((props: IThreadList) => <Post {...props} key={props.post_id} />);
+          return page.data.map((props: IThreadList) => (
+            <ThreadList {...props} key={props.post_id} />
+          ));
         })
       )}
       {errorMessage ? <ErrorMessage>☹️ {errorMessage}</ErrorMessage> : null}

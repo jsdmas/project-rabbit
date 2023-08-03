@@ -4,20 +4,13 @@ import styled from 'styled-components';
 export const Wrapper = styled.section`
   width: 100%;
   height: 100%;
-  max-width: 320px;
+  max-width: 520px;
   max-height: 250px;
-  margin: 30px auto;
+  margin: 0px auto;
   padding: 10px;
-  border-radius: 5px;
-  border: 1px solid ${(props) => props.theme.accentColor};
-  box-shadow: 5px 5px 5px 0px rgba(0, 0, 0, 0.3);
   display: grid;
-  grid-template-rows: 0.5fr 0.6fr 2fr 0.5fr;
+  grid-template-rows: 0.2fr 0.8fr;
   row-gap: 10px;
-  background-color: ${(props) => props.theme.postColor};
-  &:first-child {
-    margin-top: 10vh;
-  }
 `;
 
 export const UserInfo = styled.article`
@@ -45,43 +38,44 @@ export const Col = styled.span`
 export const Title = styled.h2`
   font-size: 24px;
   font-family: 'Noto Sans KR', sans-serif;
-  width: 100%;
-  height: 100%;
-  padding-bottom: 10%;
   text-overflow: ellipsis;
   place-self: center start;
+  overflow: hidden;
+`;
+
+export const TitleLink = styled(Link)`
+  border-left: 2px solid ${(props) => props.theme.accentColor};
+  margin-left: 5px;
+  padding-left: 10px;
+  color: ${(props) => props.theme.buttonColor};
+  width: 100%;
+  min-height: 140px;
+
+  display: grid;
+  grid-template-rows: 0.2fr 0.7fr 0.1fr;
   transition: 0.2s ease-in;
   &:hover {
-    background-color: ${(props) => props.theme.accentColor};
+    background-color: ${(props) => props.theme.buttonColor};
     color: #fff;
   }
 `;
 
-export const TitleLink = styled(Link)`
-  color: ${(props) => props.theme.buttonColor};
-  overflow: hidden;
-`;
-
 export const Content = styled.div`
-  border: 1px solid ${(props) => props.theme.buttonColor};
   border-radius: inherit;
-  padding: 10px;
   display: -webkit-box;
   overflow: hidden;
   text-overflow: ellipsis;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 4; /* 라인수 */
-  line-height: 1.8em;
+  -webkit-line-clamp: 3; /* 라인수 */
+  line-height: 1.68em;
   color: ${(props) => props.theme.textColor};
 `;
 
 export const PostInfo = styled.div`
-  margin-top: 10px;
-  display: grid;
-  grid-template-columns: 0.3fr 0.3fr 1fr;
-  place-items: center center;
+  margin-top: 5px;
+  font-size: 12px;
   span:last-child {
-    margin-top: 2px;
+    padding-left: 10px;
   }
   color: ${(props) => props.theme.textColor};
 `;

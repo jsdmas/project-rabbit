@@ -30,18 +30,18 @@ const ThreadList = (props: IThreadList) => {
       </S.UserInfo>
       <S.TitleLink to={`${ROUTER_PATH.THREAD}/${post_id}`}>
         <S.Title>{title}</S.Title>
+        <S.Content>{content}</S.Content>
+        <S.PostInfo>
+          <span>
+            <FontAwesomeIcon icon={faHeart} />
+            &nbsp;{like ? like : 0}
+          </span>
+          <span>
+            <FontAwesomeIcon icon={faMessage} />
+            &nbsp;{commentCnt}
+          </span>
+        </S.PostInfo>
       </S.TitleLink>
-      <S.Content>{content}</S.Content>
-      <S.PostInfo>
-        <span>
-          <FontAwesomeIcon icon={faHeart} />
-          &nbsp;{like ? like : 0}
-        </span>
-        <span>
-          <FontAwesomeIcon icon={faMessage} />
-          &nbsp;{commentCnt}
-        </span>
-      </S.PostInfo>
     </S.Wrapper>
   );
 };

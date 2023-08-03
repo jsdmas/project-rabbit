@@ -19,7 +19,7 @@ export const Nav = styled.header`
   width: 100%;
   max-width: 1440px;
   min-height: 50px;
-  background-color: ${(props) => props.theme.postColor};
+  background-color: ${(props) => props.theme.bgColor};
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
   div:nth-child(1) {
     place-self: center start;
@@ -59,7 +59,7 @@ export const Form = styled.form`
   svg {
     position: relative;
     left: 20px;
-    color: ${(props) => props.theme.buttonColor};
+    color: #000;
   }
   input {
     padding: 5px 10px 5px 22px;
@@ -68,9 +68,9 @@ export const Form = styled.form`
     width: 100%;
   }
   select {
-    padding: 5px 0px;
+    padding: 5px 10px;
     border: 1px solid ${(props) => props.theme.accentColor};
-    color: ${(props) => props.theme.buttonColor};
+    color: #000;
     border-radius: 5px;
   }
 `;
@@ -110,7 +110,7 @@ export const Item = styled.div`
 
 export const MenuNav = styled.span`
   place-self: center end;
-  color: ${(props) => props.theme.buttonColor};
+  color: ${(props) => props.theme.accentColor};
   padding: 0px 15px;
 `;
 
@@ -118,8 +118,8 @@ export const SearchButton = styled.button`
   white-space: nowrap;
   place-self: center end;
   border: none;
-  padding: 5px;
-  background-color: ${(props) => props.theme.buttonColor};
+  padding: 5px 10px;
+  background-color: ${(props) => props.theme.accentColor};
   color: #fff;
   cursor: pointer;
   border-radius: 5px;
