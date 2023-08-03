@@ -3,7 +3,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { memo, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import styled from 'styled-components';
 import Swal from 'sweetalert2';
 
 import { deleteThread, fetchThread, patchThreadLike } from '../../api/threadApi';
@@ -15,127 +14,8 @@ import Spinner from '../../components/Spinner';
 import useError from '../../hooks/useError';
 import useLoginInfo from '../../hooks/useLoginInfo';
 import Meta from '../../Meta';
-import { media } from '../../styles/mediaQuery';
 import { IcommentData, IResponse, TTreadId } from '../../types/thread';
-
-const Wrapper = styled.section`
-  margin-top: 8vh;
-  color: ${(props) => props.theme.textColor};
-  padding: 0px 1em;
-`;
-
-const Head = styled.header`
-  display: grid;
-  grid-template-columns: 1fr 1.2fr 3fr;
-  @media ${media.phone} {
-    grid-template-columns: 2fr 1.5fr 1.5fr;
-  }
-  img {
-    width: 30%;
-    height: 50%;
-    padding-right: 10px;
-  }
-  svg {
-    padding-right: 10px;
-  }
-  div:first-child {
-    place-self: center start;
-    font-size: 1.2em;
-    @media ${media.desktop} {
-      font-size: 1.5em;
-    }
-  }
-  div:last-child {
-    opacity: 0.5;
-    font-size: 0.7em;
-    place-self: center end;
-  }
-  div:nth-child(2) {
-    font-size: 0.8em;
-    display: flex;
-    align-items: center;
-    justify-content: end;
-    place-self: center end;
-  }
-`;
-
-const Col = styled.div`
-  place-self: center center;
-`;
-
-const Main = styled.main`
-  background-color: ${(props) => props.theme.postColor};
-  min-height: 350px;
-  margin-top: 10px;
-  border-radius: 5px;
-  padding: 10px 15px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-`;
-
-const ImgDiv = styled.div`
-  width: 100%;
-  overflow: scroll;
-`;
-
-const MainImg = styled.img<{ imgWidthSize?: number }>`
-  width: ${(props) => props.imgWidthSize};
-  @media ${media.phone} {
-    max-width: 600px;
-  }
-  @media ${media.tablet} {
-    max-width: 768px;
-  }
-  @media ${media.desktop} {
-    max-width: 1200px;
-  }
-`;
-
-const TitleSection = styled.div`
-  display: flex;
-  justify-content: space-between;
-  margin: 10px 0px 30px 0px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid ${(props) => props.theme.accentColor};
-  div:first-child {
-    font-family: 'Noto Sans KR', sans-serif;
-    font-size: 1.5em;
-    padding-right: 5px;
-    word-break: break-all;
-    line-height: 35px;
-  }
-  div:last-child {
-    font-size: 0.8em;
-    opacity: 0.5;
-    white-space: nowrap;
-  }
-`;
-
-const LoveBox = styled.div`
-  margin-top: 20px;
-  display: flex;
-  justify-content: center;
-  color: ${(props) => props.theme.buttonColor};
-  div {
-    padding: 15px;
-    background-color: ${(props) => props.theme.bgColor};
-    border: 1px solid ${(props) => props.theme.buttonColor};
-    border-radius: 5px;
-    white-space: nowrap;
-    cursor: pointer;
-  }
-`;
-
-const CommentWrapper = styled.article`
-  margin-top: 10px;
-  padding: 0px 10px;
-  width: 95%;
-`;
-
-const CommentSection = styled.div`
-  border-top: 1px solid ${(props) => props.theme.postColor};
-`;
+import * as S from './Thread.Style';
 
 const Thread = () => {
   const { threadid } = useParams() as TTreadId;
@@ -219,29 +99,29 @@ const Thread = () => {
       {isLoading || deleteRequset ? (
         <Spinner isLoading={isLoading} />
       ) : (
-        <Wrapper>
-          <Head>
-            <Col>
+        <S.Wrapper>
+          <S.Head>
+            <S.Col>
               <BackPageIcon />
-            </Col>
-            <Col>
+            </S.Col>
+            <S.Col>
               {postWriteUserImgUrl ? (
                 <img alt={postWriteUserImgUrl} src={postWriteUserImgUrl} />
               ) : (
                 <FontAwesomeIcon icon={faUser} />
               )}{' '}
               {postWriteUser ? <Link to={`/user/${userId}`}>{postWriteUser}</Link> : 'anonymous'}
-            </Col>
-            <Col>
+            </S.Col>
+            <S.Col>
               {postModified
                 ? `수정됨 : ${postModified?.slice(0, 10)} ${postModified?.slice(11, 19)}`
                 : `posted by ${postCreated?.slice(0, 10)} ${postCreated?.slice(11, 19)}`}
-            </Col>
-          </Head>
-          <Main>
-            <TitleSection>
-              <Col>{postTitle}</Col>
-              <Col>
+            </S.Col>
+          </S.Head>
+          <S.Main>
+            <S.TitleSection>
+              <S.Col>{postTitle}</S.Col>
+              <S.Col>
                 {/* 로그인유저, 익명유저 식별 */}
                 {userloading ? null : userId == loginUserId || userId == null ? (
                   <>
@@ -251,42 +131,42 @@ const Thread = () => {
                     </Link>
                   </>
                 ) : null}
-              </Col>
-            </TitleSection>
-            <ImgDiv>
+              </S.Col>
+            </S.TitleSection>
+            <S.ImgDiv>
               {postImg ? (
-                <MainImg
+                <S.MainImg
                   src={postImg}
                   alt={postImg}
                   onLoad={handleImgLoad}
                   imgWidthSize={imgWidth}
                 />
               ) : null}
-            </ImgDiv>
+            </S.ImgDiv>
             {postContent}
-            <LoveBox>
-              <Col onClick={likeIncrement}>
+            <S.LoveBox>
+              <S.Col onClick={likeIncrement}>
                 <FontAwesomeIcon icon={faHeart} />
                 &nbsp;&nbsp;{postLike ? postLike : 0}
-              </Col>
-            </LoveBox>
-          </Main>
-          <CommentWrapper>
+              </S.Col>
+            </S.LoveBox>
+          </S.Main>
+          <S.CommentWrapper>
             <CommentForm />
             {response?.commentData?.map((parent: IcommentData) =>
               parent.commentParentNum === null ? (
-                <CommentSection key={parent.commentId}>
+                <S.CommentSection key={parent.commentId}>
                   <Comment {...parent} />
                   {response?.commentData
                     ?.filter((child) => child.commentParentNum === parent.commentId)
                     .map((child) => {
                       return <Comment {...child} inside={'10vw'} key={child.commentId} />;
                     })}
-                </CommentSection>
+                </S.CommentSection>
               ) : null,
             )}
-          </CommentWrapper>
-        </Wrapper>
+          </S.CommentWrapper>
+        </S.Wrapper>
       )}
     </>
   );
