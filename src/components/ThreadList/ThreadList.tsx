@@ -4,12 +4,14 @@ import { Link } from 'react-router-dom';
 
 import { ROUTER_PATH } from '@/constants/path';
 import { THREADLIST_NAME } from '@/constants/ThreadList';
+import { createdRefine } from '@/helper/createdRefine';
 
 import { IThreadList } from '../../types/thread';
 import * as S from './ThreadList.Style';
 
 const ThreadList = (props: IThreadList) => {
   const { title, content, created, like, post_id, user_id, nickname, userimg, commentCnt } = props;
+  const createdTime = createdRefine(created);
 
   return (
     <S.Wrapper>
@@ -24,9 +26,7 @@ const ThreadList = (props: IThreadList) => {
             THREADLIST_NAME.ANONYMOUS
           )}
         </S.Col>
-        <S.Col>
-          posted by {created.slice(0, 10)}&nbsp;&nbsp;{created.slice(11, 19)}
-        </S.Col>
+        <S.Col>{createdTime}</S.Col>
       </S.UserInfo>
       <S.TitleLink to={`${ROUTER_PATH.THREAD}/${post_id}`}>
         <S.Title>{title}</S.Title>
