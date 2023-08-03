@@ -2,6 +2,9 @@ import { faHeart, faMessage, faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from 'react-router-dom';
 
+import { ROUTER_PATH } from '@/constants/path';
+import { THREADLIST_NAME } from '@/constants/ThreadList';
+
 import { IThreadList } from '../../types/thread';
 import * as S from './ThreadList.Style';
 
@@ -14,12 +17,18 @@ const ThreadList = (props: IThreadList) => {
         <S.Col>
           {userimg ? <img alt={`${user_id}`} src={userimg} /> : <FontAwesomeIcon icon={faUser} />}
         </S.Col>
-        <S.Col>{nickname ? <Link to={`/user/${user_id}`}>{nickname}</Link> : 'anonymous'}</S.Col>
+        <S.Col>
+          {nickname ? (
+            <Link to={`${ROUTER_PATH.USER}/${user_id}`}>{nickname}</Link>
+          ) : (
+            THREADLIST_NAME.ANONYMOUS
+          )}
+        </S.Col>
         <S.Col>
           posted by {created.slice(0, 10)}&nbsp;&nbsp;{created.slice(11, 19)}
         </S.Col>
       </S.UserInfo>
-      <S.TitleLink to={`/thread/${post_id}`}>
+      <S.TitleLink to={`${ROUTER_PATH.THREAD}/${post_id}`}>
         <S.Title>{title}</S.Title>
       </S.TitleLink>
       <S.Content>{content}</S.Content>
