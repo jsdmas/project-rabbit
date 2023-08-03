@@ -1,4 +1,4 @@
-import { faHeart, faReply, faUser } from '@fortawesome/free-solid-svg-icons';
+import { faCommentDots, faHeart, faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { memo, useState } from 'react';
@@ -17,18 +17,20 @@ import { IcommentData, IpostCommentData, TTreadId } from '../../types/thread';
 import CommentForm from '../CommentForm';
 import * as S from './Comment.Style';
 
-const Comment = ({
-  inside,
-  commentContent,
-  commentCreated,
-  commentLike,
-  commentWriteUser,
-  commentModified,
-  commentWriteUserImgUrl,
-  commentParentNum,
-  commentId,
-  commentUserId,
-}: IcommentData) => {
+const Comment = (Props: IcommentData) => {
+  const {
+    inside,
+    commentContent,
+    commentCreated,
+    commentLike,
+    commentWriteUser,
+    commentModified,
+    commentWriteUserImgUrl,
+    commentParentNum,
+    commentId,
+    commentUserId,
+  } = Props;
+
   const { threadid } = useParams() as TTreadId;
   const queryClient = useQueryClient();
   const [commentEdit, setCommentEdit] = useState(false);
@@ -114,8 +116,7 @@ const Comment = ({
               onClick={() => (commentId === replyId ? setReplyId(null) : setReplyId(commentId))}
               type="button"
             >
-              <FontAwesomeIcon icon={faReply} />
-              &nbsp;답글
+              <FontAwesomeIcon icon={faCommentDots} />
             </S.ReplyButton>
           ) : null}
         </S.UserImg>
@@ -124,7 +125,7 @@ const Comment = ({
             {commentWriteUser ? (
               <Link to={`/user/${commentUserId}`}>{commentWriteUser}</Link>
             ) : (
-              'anonymous'
+              '익명'
             )}
           </S.UserInfoCol>
           <S.UserInfoCol>
@@ -134,7 +135,6 @@ const Comment = ({
             <S.UserInfoColTime>&nbsp;&nbsp;{commentCreated?.slice(11, 19)}</S.UserInfoColTime>
           </S.UserInfoCol>
           <S.UserInfoCol>
-            {/* 익명 작성자는 수정/삭제 가능 다른 로그인 유저가 작성한 버튼은 보이지 않는다. */}
             {userloading ? null : commentUserId == loginUserId || commentUserId == null ? (
               <>
                 <Link to="" onClick={() => setCommentEdit((prev) => !prev)}>

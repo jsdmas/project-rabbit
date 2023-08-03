@@ -50,7 +50,7 @@ export const Col = styled.div`
 export const Main = styled.main`
   background-color: ${(props) => props.theme.bgColor};
   min-height: 150px;
-  margin-top: 10px;
+  margin: auto;
   padding: 10px 15px;
   display: flex;
   flex-direction: column;
@@ -107,7 +107,7 @@ export const LoveBox = styled.div`
 `;
 
 export const CommentWrapper = styled.article`
-  margin-top: 10px;
+  margin: auto;
   padding: 0px 10px;
   width: 95%;
 `;

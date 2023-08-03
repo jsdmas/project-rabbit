@@ -49,10 +49,10 @@ export const UserInfo = styled.div`
     opacity: 0.5;
   }
   svg {
-    color: ${(props) => props.theme.buttonColor};
+    color: ${(props) => props.theme.textColor};
     cursor: pointer;
     &:hover {
-      color: ${(props) => props.theme.accentColor};
+      color: ${(props) => props.theme.textColor};
       transition: 0.2s;
     }
   }
@@ -90,10 +90,10 @@ export const PatchCommentForm = styled.form<{ commentEdit: boolean }>`
   visibility: ${(props) => (props.commentEdit ? '' : 'none')};
   display: grid;
   grid-template-columns: 1fr 0.2fr;
-  height: 100%;
+  height: 20%;
   button {
     border: none;
-    background-color: ${(props) => props.theme.buttonColor};
+    background-color: ${(props) => props.theme.accentColor};
     color: #fff;
     border-radius: 5px;
     cursor: pointer;
