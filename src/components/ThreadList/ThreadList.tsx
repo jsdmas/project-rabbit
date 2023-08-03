@@ -1,6 +1,5 @@
 import { faHeart, faMessage, faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { memo } from 'react';
 import { Link } from 'react-router-dom';
 
 import { IThreadList } from '../../types/thread';
@@ -38,4 +37,4 @@ const ThreadList = (props: IThreadList) => {
   );
 };
 
-export default memo(ThreadList);
+export default ThreadList;
