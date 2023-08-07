@@ -1,37 +1,40 @@
-# ToDo
-  
-구현순위
-  
-1. header 컴포넌트 로직 분리 필요
-2. 공용 Layout 분리하여 통일성 (header, Layout 분리하고 childern으로 받는 등)
-3. home의 header 결합도 느슨하게 하기.
-   - react-query의 무한스크롤 로직 분리 필요
-   - 스타일은 그후에
-
-
 # Rabbit
 
 <img width="328" alt="logo_light" src="https://user-images.githubusercontent.com/105098581/235834084-71f07345-3396-445c-82ab-7c9f88ce0f5e.png">
 
-글을 올리고 자신만의 프로필을 만들 수 있는 SNS 사이트 입니다.  
-로그인 하지 않고도 글 작성이 가능합니다.  
-트위터, reddit 같은 SNS를 참고하여 만들었습니다.
+> AWS DB, 웹 애플리케이션 배포까지 하며 기본적인 웹 아키텍처 이해도가 높아졌습니다.
+> 댓글 & 게시글 CRUD, 유저 프로필 사진, 소개글 변경, 비밀번호 변경 등의 기능을 구현하였습니다.
+> REST 아키텍처 스타일을 준수하며 설계하였고 passport 라이브러리를 사용하여 로그인 전략을 구현하며 OAuth 개념을 익혔습니다.
 
-## 💫 서비스 주소 (23.06.21 배포중단)
+> 배포의경우 AWS 비용문제로 서버를 중단하게 되었습니다.
 
-https://sdmas-rabbit.fly.dev
+| 소개 | 글을 올리고 자신만의 프로필을 만들 수 있는 SNS 사이트 입니다. |
+| --- | --- |
+| 기간 | 1차 완성 : 23.03.29 ~ 23.05.03 / 리팩토링 : 23.07.08 ~ 진행중 |
+| 인원 | 개인 프로젝트 |
+
+|![](https://file.notion.so/f/s/77bd244e-046e-489f-bd9d-5dcda8d2daea/Untitled.png?id=88940a51-881f-403a-bd13-3bbdd1040c23&table=block&spaceId=4ad879ee-8801-419a-8198-54a28ce85176&expirationTimestamp=1691532000000&signature=fWjSw_PuyLlXJW2dxQ90_yNtOWCGdeovr_wpyiDnVgM&downloadName=Untitled.png)|![](https://file.notion.so/f/s/b01571ba-09d9-4f90-b495-a521ad604314/Untitled.png?id=b0c8452e-b35e-4314-b081-8da633a72d4b&table=block&spaceId=4ad879ee-8801-419a-8198-54a28ce85176&expirationTimestamp=1691532000000&signature=xhiAxlasuDRdc8PuFUdl7p1x_g6CLvNz0jh0AgZIGao&downloadName=Untitled.png)|
+|![](https://file.notion.so/f/s/d9bd9eaa-a5bd-4cd4-81d1-81ed388b1f11/Untitled.png?id=b7ab07d6-ab19-40c5-9895-193f05016ece&table=block&spaceId=4ad879ee-8801-419a-8198-54a28ce85176&expirationTimestamp=1691532000000&signature=ZV3DyNKvGvTzxgnqIglMQqEcjM9NZdpYX1mOEBuNGCU&downloadName=Untitled.png)|![](https://file.notion.so/f/s/0df7dfbb-3b9f-4239-9d56-40f3cf403afe/Untitled.png?id=09916a23-4427-468d-ac8e-237df4b8d705&table=block&spaceId=4ad879ee-8801-419a-8198-54a28ce85176&expirationTimestamp=1691532000000&signature=hVEjujjiO_QKCbc7WdOxlvKoY0NTaFRUxVVTH2j9JA8&downloadName=Untitled.png)|
+
+### 💾 **기술 스택**
+
+- Style : `Styled-Components`
+- state management : `Recoil`
+- asynchronous state management ****:**** `React-Query`
+- Language : `TypeScript`
+- Interface : `React.js`
+- DB : `AWS RDS`
+- DBMS : `MYSQL`
+
 ### 📈Development Period
 
 - 2023.03.29 ~ 2023.05.03
 - refactor : 2023.07.08 ~
 
-# 🛠️ Front-End
-
-
-- typeScript, React, React-Query, Recoil
 
 # 🌟 기능
 
+스타일 리펙토링 전 사진 입니다.
 |                                                   게시글 무한 스크롤                                                   |                                                  게시글 최신순 정렬                                                   |
 | :--------------------------------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------------------: |
 |      ![](https://user-images.githubusercontent.com/105098581/235679195-eb821f04-584a-43e4-bfd4-cb6e3acbba3b.gif)       |      ![](https://user-images.githubusercontent.com/105098581/235680606-346e4323-09f9-4d93-8e81-9758c14ac812.gif)      |
@@ -52,10 +55,3 @@ https://sdmas-rabbit.fly.dev
 |                                                        다크모드                                                        |                                                                                                                       |
 |      ![](https://user-images.githubusercontent.com/105098581/235830126-7892efb7-62a6-4d56-9a3b-017660a8d663.gif)       |
 |                                                                                                                        |
-
-
-
-### 🖼️ 목업
-
-| [![My Skills](https://skillicons.dev/icons?i=figma&theme=light)](https://skillicons.dev) | [figma-rabbit](https://www.figma.com/file/VdqnJ2uhOuZA9jhywhxCsX/Like-Reddit?node-id=8-70&t=WSYYUJuWCmMMVJgE-0) |
-| ---------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
