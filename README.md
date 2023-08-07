@@ -27,11 +27,8 @@ https://sdmas-rabbit.fly.dev
 
 # 🛠️ Front-End
 
+
 - typeScript, React, React-Query, Recoil
-
-# 🌟 Protflio
-
-- [googleDirve-pdf](https://drive.google.com/file/d/1jb7t18hgKlEVAN2PKNw9Jixh079meQMA/view?usp=sharing)
 
 # 🌟 기능
 
