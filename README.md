@@ -2,17 +2,18 @@
 
 <img width="328" alt="logo_light" src="https://user-images.githubusercontent.com/105098581/235834084-71f07345-3396-445c-82ab-7c9f88ce0f5e.png">
 
-> AWS DB, 웹 애플리케이션 배포까지 하며 기본적인 웹 아키텍처 이해도가 높아졌습니다.
-> 댓글 & 게시글 CRUD, 유저 프로필 사진, 소개글 변경, 비밀번호 변경 등의 기능을 구현하였습니다.
-> REST 아키텍처 스타일을 준수하며 설계하였고 passport 라이브러리를 사용하여 로그인 전략을 구현하며 OAuth 개념을 익혔습니다.
-
+> - AWS DB, 웹 애플리케이션 배포까지 하며 기본적인 웹 아키텍처 이해도가 높아졌습니다.  
+> - 댓글 & 게시글 CRUD, 유저 프로필 사진, 소개글 변경, 비밀번호 변경 등의 기능을 구현하였습니다.  
+> - REST 아키텍처 스타일을 준수하며 설계하였고 passport 라이브러리를 사용하여 로그인 전략을 구현하며 OAuth 개념을 익혔습니다.  
+  
 > 배포의경우 AWS 비용문제로 서버를 중단하게 되었습니다.
-
+  
 | 소개 | 글을 올리고 자신만의 프로필을 만들 수 있는 SNS 사이트 입니다. |
 | --- | --- |
 | 기간 | 1차 완성 : 23.03.29 ~ 23.05.03 / 리팩토링 : 23.07.08 ~ 진행중 |
 | 인원 | 개인 프로젝트 |
 
+  
 
 |![](https://file.notion.so/f/s/77bd244e-046e-489f-bd9d-5dcda8d2daea/Untitled.png?id=88940a51-881f-403a-bd13-3bbdd1040c23&table=block&spaceId=4ad879ee-8801-419a-8198-54a28ce85176&expirationTimestamp=1691532000000&signature=fWjSw_PuyLlXJW2dxQ90_yNtOWCGdeovr_wpyiDnVgM&downloadName=Untitled.png)|![](https://file.notion.so/f/s/b01571ba-09d9-4f90-b495-a521ad604314/Untitled.png?id=b0c8452e-b35e-4314-b081-8da633a72d4b&table=block&spaceId=4ad879ee-8801-419a-8198-54a28ce85176&expirationTimestamp=1691532000000&signature=xhiAxlasuDRdc8PuFUdl7p1x_g6CLvNz0jh0AgZIGao&downloadName=Untitled.png)|
 |![](https://file.notion.so/f/s/d9bd9eaa-a5bd-4cd4-81d1-81ed388b1f11/Untitled.png?id=b7ab07d6-ab19-40c5-9895-193f05016ece&table=block&spaceId=4ad879ee-8801-419a-8198-54a28ce85176&expirationTimestamp=1691532000000&signature=ZV3DyNKvGvTzxgnqIglMQqEcjM9NZdpYX1mOEBuNGCU&downloadName=Untitled.png)|![](https://file.notion.so/f/s/0df7dfbb-3b9f-4239-9d56-40f3cf403afe/Untitled.png?id=09916a23-4427-468d-ac8e-237df4b8d705&table=block&spaceId=4ad879ee-8801-419a-8198-54a28ce85176&expirationTimestamp=1691532000000&signature=hVEjujjiO_QKCbc7WdOxlvKoY0NTaFRUxVVTH2j9JA8&downloadName=Untitled.png)|
