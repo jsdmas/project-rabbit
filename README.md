@@ -21,7 +21,7 @@
 
 - Style : `Styled-Components`
 - state management : `Recoil`
-- asynchronous state management \***\*:\*\*** `React-Query`
+- asynchronous state management : `React-Query`
 - Language : `TypeScript`
 - Interface : `React.js`
 - DB : `AWS RDS`
