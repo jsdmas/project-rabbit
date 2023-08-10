@@ -13,9 +13,9 @@
 | 기간 | 1차 완성 : 23.03.29 ~ 23.05.03 / 리팩토링 : 23.07.08 ~ 진행중 |
 | 인원 | 개인 프로젝트                                                 |
 
-| ![](https://file.notion.so/f/s/77bd244e-046e-489f-bd9d-5dcda8d2daea/Untitled.png?id=88940a51-881f-403a-bd13-3bbdd1040c23&table=block&spaceId=4ad879ee-8801-419a-8198-54a28ce85176&expirationTimestamp=1691532000000&signature=fWjSw_PuyLlXJW2dxQ90_yNtOWCGdeovr_wpyiDnVgM&downloadName=Untitled.png) | ![](https://file.notion.so/f/s/b01571ba-09d9-4f90-b495-a521ad604314/Untitled.png?id=b0c8452e-b35e-4314-b081-8da633a72d4b&table=block&spaceId=4ad879ee-8801-419a-8198-54a28ce85176&expirationTimestamp=1691532000000&signature=xhiAxlasuDRdc8PuFUdl7p1x_g6CLvNz0jh0AgZIGao&downloadName=Untitled.png) |
-| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| ![](https://file.notion.so/f/s/d9bd9eaa-a5bd-4cd4-81d1-81ed388b1f11/Untitled.png?id=b7ab07d6-ab19-40c5-9895-193f05016ece&table=block&spaceId=4ad879ee-8801-419a-8198-54a28ce85176&expirationTimestamp=1691532000000&signature=ZV3DyNKvGvTzxgnqIglMQqEcjM9NZdpYX1mOEBuNGCU&downloadName=Untitled.png) | ![](https://file.notion.so/f/s/0df7dfbb-3b9f-4239-9d56-40f3cf403afe/Untitled.png?id=09916a23-4427-468d-ac8e-237df4b8d705&table=block&spaceId=4ad879ee-8801-419a-8198-54a28ce85176&expirationTimestamp=1691532000000&signature=hVEjujjiO_QKCbc7WdOxlvKoY0NTaFRUxVVTH2j9JA8&downloadName=Untitled.png) |
+| ![](https://github.com/jsdmas/frontend-interview/assets/105098581/cb7d26ec-d179-4b3b-aed9-c4f8f63e83fa) | ![](https://github.com/jsdmas/frontend-interview/assets/105098581/3997bebf-4ad6-41c6-93c9-6f50e3306a64) |
+| ------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| ![](https://github.com/jsdmas/frontend-interview/assets/105098581/eb9e430f-0f0a-4cd1-85b5-1ae8e3b5f698) | ![](https://github.com/jsdmas/frontend-interview/assets/105098581/a9d363f4-8e1e-478d-b616-fb10c7d94858) |
 
 ### 💾 **기술 스택**
 
@@ -44,14 +44,14 @@
   이러한 변경으로 인해 **리소스 크기는 204kB 차이**가 나며, 실행 시 앱의 **렌더링 속도가 0.76초 빨라졌습니다**.
 
   **Code Splitting 전**
-  ![](https://file.notion.so/f/s/32249e34-4935-4968-8375-69ca7e51d5b2/Untitled.png?id=a8de9186-ef46-4421-8a5c-710f8625d555&table=block&spaceId=4ad879ee-8801-419a-8198-54a28ce85176&expirationTimestamp=1691539200000&signature=4pxxOYtufpiGSyhdazH3EIl2jugC1UQmeG2UugZa4_g&downloadName=Untitled.png)
-  ![](https://file.notion.so/f/s/ba35e552-64e4-43de-b6dd-4ba80e5cfc86/Untitled.png?id=a173cd7c-3466-47a9-9653-97f5f01f5b20&table=block&spaceId=4ad879ee-8801-419a-8198-54a28ce85176&expirationTimestamp=1691539200000&signature=j2Yhz6R_xT_1iJwa1dHVsN_EJbc9wC35NFs6UmXlC-M&downloadName=Untitled.png)
-  ![](https://file.notion.so/f/s/60158ceb-c63c-4f17-8a9f-e8f675dc7d4a/Untitled.png?id=06a88f6e-185b-4709-9ad2-b80be3ff4d23&table=block&spaceId=4ad879ee-8801-419a-8198-54a28ce85176&expirationTimestamp=1691539200000&signature=fk1eLduW0B4sG3RqKGUmA-2kITrUjP3R_jm0Z-zV2Ss&downloadName=Untitled.png)
+  ![Untitled (2)](https://github.com/jsdmas/frontend-interview/assets/105098581/4b749823-7c10-4b75-acad-dc6f3ce09edf)
+  ![](https://github.com/jsdmas/frontend-interview/assets/105098581/cc6be9a9-448d-4034-b0e3-ec636e0fbae4)
+  ![](https://github.com/jsdmas/frontend-interview/assets/105098581/942e60f5-6f40-4058-87b4-d71b53c9a5ff)
 
   **Code Splitting 후**
-  ![](https://file.notion.so/f/s/ce5f7240-563c-4ea4-8d27-4312868d6b23/Untitled.png?id=3b276eb9-5aac-4874-8b38-53f4989b27c0&table=block&spaceId=4ad879ee-8801-419a-8198-54a28ce85176&expirationTimestamp=1691539200000&signature=PEk9Ysr8VkxhsmqpxStxd0Nq1WQ6haOfeimMnfW_72A&downloadName=Untitled.png)
-  ![](https://file.notion.so/f/s/089b6701-4deb-4e24-af0c-f238f8c09c6f/Untitled.png?id=87212d55-fbcc-4914-862e-8aabfca0930b&table=block&spaceId=4ad879ee-8801-419a-8198-54a28ce85176&expirationTimestamp=1691539200000&signature=XIBfj9U5JbaBqpEEz7TVWxi2mMHZhj6BDEeJWw6uYuo&downloadName=Untitled.png)
-  ![](https://file.notion.so/f/s/1fe352a5-8c13-4900-b43f-2ee624e64f9b/Untitled.png?id=5ce59b54-728b-4635-8c3d-04c81358752b&table=block&spaceId=4ad879ee-8801-419a-8198-54a28ce85176&expirationTimestamp=1691539200000&signature=18ZzWvO38QJOGO3yqHcwBnSfpwKd2RDleeyTrHyM9-w&downloadName=Untitled.png)
+  ![Untitled (5)](https://github.com/jsdmas/frontend-interview/assets/105098581/b125ff1c-549c-4990-89ac-bfbb4a31dead)
+  ![](https://github.com/jsdmas/frontend-interview/assets/105098581/aff906f7-b1ff-4de0-b39a-a98b3ef01706)
+  ![](https://github.com/jsdmas/frontend-interview/assets/105098581/490c2a7e-2204-4f2f-bf2e-864310aa2a11)
 
 - 스크롤 최적화
 
@@ -63,22 +63,22 @@
 
   **throttle 적용 무한스크롤**
 
-  ![](https://file.notion.so/f/s/c12a0e71-d142-4d63-8987-62afab768a85/Untitled.gif?id=4f3311b8-9a76-4111-8731-409c04d2d76e&table=block&spaceId=4ad879ee-8801-419a-8198-54a28ce85176&expirationTimestamp=1691539200000&signature=QDi0-Grbbvis6_tyJth9kRR3N0aQ5wYZTFgCBXy6suw&downloadName=Untitled.gif)
+  ![](https://github.com/jsdmas/frontend-interview/assets/105098581/da9db9ae-5c4f-4321-a57d-0ac0e43c9d2d)
 
   **Cache된 무한스크롤 게시글 목록 데이터**
-  ![](https://file.notion.so/f/s/e238710b-15a1-45e6-a5bc-8d0a1ff65b50/Untitled.png?id=c6dcd086-5761-4cce-a017-986a4e09cad6&table=block&spaceId=4ad879ee-8801-419a-8198-54a28ce85176&expirationTimestamp=1691539200000&signature=9POIJRMVbmWcncC14qjSVDCs0ChCynu-ZkXTC2Slh_M&downloadName=Untitled.png)
+  ![](https://github.com/jsdmas/frontend-interview/assets/105098581/451a4e7e-8af0-4828-b489-12cfca95ce31)
 
 - 페이지 데이터 변경
   댓글이나 좋아요같은 변경사항이 일어난 경우 React-Query의 **useMutation**을 사용해 성공, 실패시 ajax요청을 처리해주고 해당 페이지의 **queryKey의 유효성을 제거**해주며 **서버에 새롭게 데이터를 요청**하도록 구현하였습니다.
   이를 통해 **데이터 관리 및 상태 업데이트, 유효성 관리 에 대한 지식이 향상**되었습니다.  
-  ![](https://file.notion.so/f/s/2e6211b1-fc79-40d1-a7e7-02fa950abe77/Untitled.gif?id=6ddd8df4-3023-4e44-8596-8a5b29606a7d&table=block&spaceId=4ad879ee-8801-419a-8198-54a28ce85176&expirationTimestamp=1691539200000&signature=cORNvgi3kjGuyLjImVEh12IkUsW5cV-9Vnz3vhab9AU&downloadName=Untitled.gif)
+  ![](https://github.com/jsdmas/frontend-interview/assets/105098581/c51b97c9-7d9a-4867-a504-b6692e74fb65)
 - page별 cache 적용
   페이지 재방문시 서버에서 다시 데이터를 가져오는 것은 불필요한 비용을 발생시키고 페이지 이동이 매끄럽지 못해 사용자 경험을 저해한다 생각했습니다.  
   이를위해 React-Query 라이브러리를 이용하여 페이지별로 Cache기능을 구현하여 네트워크 비용을 감소시켰습니다.
 
   > **queriesMap** 이라는 프로퍼티로 요청결과를 캐싱하여 저장하고 있습니다.
 
-  ![](https://file.notion.so/f/s/d5e23e3f-7225-453c-aa14-eeecf73a42eb/Untitled.png?id=91fcc9a7-d58e-4cc0-80bf-0a0a6123de5a&table=block&spaceId=4ad879ee-8801-419a-8198-54a28ce85176&expirationTimestamp=1691539200000&signature=s3HcmSmtsTsxZK5t1VzuVdo8d75JoA0jEbPefM7Fl1k&downloadName=Untitled.png)
+  ![](https://github.com/jsdmas/frontend-interview/assets/105098581/e9ecb75e-89f8-4966-b0e4-eff3ecda8939)
 
 - 사용자 경험
 
@@ -92,15 +92,15 @@
 
   **사진용량 초과 메시지**
 
-  ![](https://file.notion.so/f/s/f4acb025-07d5-45fd-bb08-4886877f167c/Untitled.gif?id=d605a890-78fb-45f3-ae36-6a4ed37f759d&table=block&spaceId=4ad879ee-8801-419a-8198-54a28ce85176&expirationTimestamp=1691539200000&signature=CrZXe5GAjU8R5jcPqUA4V9qTy-ODgA3vJso0sR4r-vE&downloadName=Untitled.gif)
+  ![](https://github.com/jsdmas/frontend-interview/assets/105098581/135c6f23-8113-4b91-8af4-6815b022b07d)
 
   **비밀번호 변경 메시지**
 
-  ![](https://file.notion.so/f/s/22c1d593-31ee-4af3-a021-27f6996057d6/Untitled.gif?id=bd61524d-501e-4207-9a73-ed93c07e602d&table=block&spaceId=4ad879ee-8801-419a-8198-54a28ce85176&expirationTimestamp=1691539200000&signature=o3wmoUWT6qkBs2kSaAU4zmZrDQL4Lg7pWaIsM5WHKbE&downloadName=Untitled.gif)
+  ![](https://github.com/jsdmas/frontend-interview/assets/105098581/fc69fab9-b208-4044-965a-588c806021e9)
 
 - 검색엔진 최적화
   React-Helmet 라이브러리를 사용하여 각 페이지마다 메타데이터를 설정하여 **SEO를 최적화** 하였습니다.  
-  ![](https://file.notion.so/f/s/28fad2a2-d953-4612-a41c-b70815a60828/Untitled.png?id=93a1e655-e68e-4310-8b1d-f034555ca48d&table=block&spaceId=4ad879ee-8801-419a-8198-54a28ce85176&expirationTimestamp=1691539200000&signature=B_FFceWQ97zlILWn366ol3d8uwoQhavWP9AtKAmNurs&downloadName=Untitled.png)
+  ![](https://github.com/jsdmas/frontend-interview/assets/105098581/0e158272-935b-4602-9a82-5229d7d4495b)
 
 ### ‼️ **깨달은 점**
 
