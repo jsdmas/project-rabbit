@@ -1,4 +1,4 @@
 {
-    "ignore": [],
-    "exec": "babel-node server/server.js"
+  "ignore": [],
+  "exec": "babel-node server/server.js"
 }

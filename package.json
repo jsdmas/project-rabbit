@@ -2,7 +2,7 @@
   "name": "rabbit",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://localhost:3001",
+  "proxy": "http://localhost:8001",
   "homepage": ".",
   "dependencies": {
     "@craco/craco": "^7.1.0",
@@ -56,7 +56,7 @@
     "start": "NODE_ENV=production node backend/server.js",
     "build": "npm run build:server && npm run build:react",
     "dev:react": "craco start",
-    "dev:server": "nodemon",
+    "dev:server": "npm run build:server && nodemon",
     "build:react": "BUILD_PATH='backend/build' craco build",
     "build:server": "babel server -d backend"
   },
