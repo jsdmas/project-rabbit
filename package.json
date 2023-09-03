@@ -2,7 +2,7 @@
   "name": "rabbit",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://localhost:8001",
+  "proxy": "http://localhost:3001",
   "homepage": ".",
   "dependencies": {
     "@craco/craco": "^7.1.0",

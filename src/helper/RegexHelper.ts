@@ -5,6 +5,7 @@ class RegexHelper {
     if (RegexHelper.current === null) {
       RegexHelper.current = new RegexHelper();
     }
+
     return RegexHelper.current;
   }
 
@@ -20,6 +21,7 @@ class RegexHelper {
     ) {
       return false;
     }
+
     return true;
   }
 
@@ -29,8 +31,9 @@ class RegexHelper {
    * @param  {string} compare 검사 대상
    */
   compareTo(origin: string, compare: string) {
-    var src = origin.trim();
-    var dsc = compare.trim();
+    const src = origin.trim();
+    const dsc = compare.trim();
+
     return src === dsc ? true : false;
   }
 
@@ -42,9 +45,11 @@ class RegexHelper {
     const regexExpr =
       /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
     const src = typeof content == 'string' ? content.trim() : content;
+
     if (!src || !regexExpr.test(src)) {
       return false;
     }
+
     return true;
   }
 }

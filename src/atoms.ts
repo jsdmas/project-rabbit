@@ -68,6 +68,7 @@ export const searchHistoryState = atom<string[]>({
     ({ onSet, setSelf }) => {
       // 새로고침 시 로컬 스토리지에서 값을 불러옴
       const savedValue = localStorage.getItem('searchHistory');
+
       // 만약 저장된 값이 존재한다면
       if (savedValue != null) {
         // json으로 변환하여 가져온다
