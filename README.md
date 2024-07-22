@@ -60,14 +60,6 @@
 
   ![](https://github.com/jsdmas/frontend-interview/assets/105098581/da9db9ae-5c4f-4321-a57d-0ac0e43c9d2d)
 
-  **Cache된 무한스크롤 게시글 목록 데이터**
-  ![](https://github.com/jsdmas/frontend-interview/assets/105098581/451a4e7e-8af0-4828-b489-12cfca95ce31)
-
-- 페이지 데이터 변경
-  댓글이나 좋아요같은 변경사항이 일어난 경우 React-Query의 **useMutation**을 사용해 성공, 실패시 ajax요청을 처리해주고 해당 페이지의 **queryKey의 유효성을 제거**해주며 **서버에 새롭게 데이터를 요청**하도록 구현하였습니다.
-  이를 통해 **데이터 관리 및 상태 업데이트, 유효성 관리 에 대한 지식이 향상**되었습니다.  
-  ![](https://github.com/jsdmas/frontend-interview/assets/105098581/c51b97c9-7d9a-4867-a504-b6692e74fb65)
-
 - 사용자 경험
 
   - 회원가입시 서버에서 **이미 사용중인 이메일이 존재**할 경우 사용자에게 알려주도록 구현했습니다.
