@@ -67,13 +67,6 @@
   댓글이나 좋아요같은 변경사항이 일어난 경우 React-Query의 **useMutation**을 사용해 성공, 실패시 ajax요청을 처리해주고 해당 페이지의 **queryKey의 유효성을 제거**해주며 **서버에 새롭게 데이터를 요청**하도록 구현하였습니다.
   이를 통해 **데이터 관리 및 상태 업데이트, 유효성 관리 에 대한 지식이 향상**되었습니다.  
   ![](https://github.com/jsdmas/frontend-interview/assets/105098581/c51b97c9-7d9a-4867-a504-b6692e74fb65)
-- page별 cache 적용
-  페이지 재방문시 서버에서 다시 데이터를 가져오는 것은 불필요한 비용을 발생시키고 페이지 이동이 매끄럽지 못해 사용자 경험을 저해한다 생각했습니다.  
-  이를위해 React-Query 라이브러리를 이용하여 페이지별로 Cache기능을 구현하여 네트워크 비용을 감소시켰습니다.
-
-  > **queriesMap** 이라는 프로퍼티로 요청결과를 캐싱하여 저장하고 있습니다.
-
-  ![](https://github.com/jsdmas/frontend-interview/assets/105098581/e9ecb75e-89f8-4966-b0e4-eff3ecda8939)
 
 - 사용자 경험
 
@@ -92,10 +85,6 @@
   **비밀번호 변경 메시지**
 
   ![](https://github.com/jsdmas/frontend-interview/assets/105098581/fc69fab9-b208-4044-965a-588c806021e9)
-
-- 검색엔진 최적화
-  React-Helmet 라이브러리를 사용하여 각 페이지마다 메타데이터를 설정하여 **SEO를 최적화** 하였습니다.  
-  ![](https://github.com/jsdmas/frontend-interview/assets/105098581/0e158272-935b-4602-9a82-5229d7d4495b)
 
 ### ‼️ **깨달은 점**
 
